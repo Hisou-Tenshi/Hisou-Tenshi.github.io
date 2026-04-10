@@ -264,7 +264,8 @@ html::before {
     animation: finish-scale 1.1s cubic-bezier(0.2, 0.75, 0.2, 1) forwards;
 }
 
-html[data-theme="Dark"] {    
+html[data-theme="Dark"] {
+    --main_bg_color: url(../img/background_dark.PNG);
     --main_text_color: #f8fafc;
     --gradient: linear-gradient(135deg, #3b6cff 0%, #5b4bff 35%, #d2b4ff 72%);
     --purple_text_color: #b79cff;
@@ -288,6 +289,13 @@ html[data-theme="Dark"] {
     --glass-contrast: 1.06;
     --glass-brightness: 1.04;
     --edge_gradient: linear-gradient(135deg, rgba(236,240,255,0.68), rgba(124,140,255,0.40) 22%, rgba(6,8,28,0.92) 50%, rgba(148,98,255,0.38) 78%, rgba(236,240,255,0.68));
+}
+
+/* 夜间去掉全屏暗色/模糊罩层，让背景图完整露出（root 里对 .marisa-filter 用了 !important） */
+html[data-theme="Dark"] .marisa-filter {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
 }
 
 #marisa-loading-center {

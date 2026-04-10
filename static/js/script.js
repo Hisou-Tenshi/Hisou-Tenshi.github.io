@@ -398,12 +398,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function getSidebarDefaults() {
     return {
-        addressLines: ['幻想郷 妖怪の山', '文々。新聞'],
+        addressLines: ['幻想郷', '有頂天'],
         titles: { personal: 'Personal', acgn: 'ACGMN+', xp: 'XP' },
         personalTags: ['二次元', '和风', '文化底蕴', '圣地巡礼', '飞友', '铁宅', '技术宅(存疑)', '军迷(伪)', '交响乐(雅)', '面向AI编程'],
         acgnTags: ['東方Project', 'GalGame', '魔女の旅々', 'YuzuSoft', 'Key', '京アニ', '废萌', '纯爱', '致郁', '关系性', 'ボカロ'],
         xpTags: ['JK&JC', '和服', '魔女', '巫女', '白毛', '黑长直', '醋溜便当', '貧乳は希少価値だ', '白丝', '黑丝', '百合', '后宫'],
         updates: [
+            { title: 'background & logo update', date: '2026-04-10' },
             { title: 'style update', date: '2025-12-17' },
             { title: 'projects information update', date: '2025-12-16' },
             { title: 'homepage update', date: '2025-09-27' },
@@ -798,7 +799,7 @@ window.addEventListener('resize', () => {
 function getRightHeaderDefaults() {
     var basePath = getBasePath();
     return {
-        logoBgUrl: basePath + 'static/img/title.png',
+        logoBgUrl: basePath + 'static/img/head.PNG',
         logoFrameUrl: basePath + 'static/img/logokuang2.png',
         welcomeHtml: '夢と現と交えては、<span class="gradientText">幻想郷</span>に、遊ぶがいい',
         desc1Html: '私は　非想非非想天の娘　<span class="purpleText">比那名居 天子</span>　や',
@@ -873,7 +874,7 @@ function renderRightHeader() {
     logoDiv.className = 'index-logo';
     logoDiv.style.backgroundImage = 'url(' + data.logoBgUrl + ')';
     var logoImg = document.createElement('img');
-    logoImg.style.cssText = 'position: absolute;top:-25%;left:-20%;width: 140%; aspect-ratio: 1/1;';
+    logoImg.style.cssText = 'position: absolute;top:-35%;left:-30%;width: 155%; aspect-ratio: 1/1;';
     logoImg.src = data.logoFrameUrl;
     logoDiv.appendChild(logoImg);
     container.appendChild(logoDiv);

@@ -167,11 +167,27 @@ GitHub Pages 不支持在运行时列目录，因此通过此脚本预先生成�
 
 ### 1. 环境准备与密钥传递
 
-推荐通过环境变量传递密码，避免在命令历史中留下明文：
+推荐通过环境变量传递密码，避免在命令历史中留下明文。
+
+Linux / macOS / Git Bash / WSL（与 Staticrypt 文档一致）：
 
 ```bash
 export STATICRYPT_PASSWORD=********
 ```
+
+Windows **命令提示符（cmd.exe）** 使用 `set`，`export` 在 cmd 中不可用：
+
+```bat
+set STATICRYPT_PASSWORD=********
+```
+
+Windows **PowerShell** 使用 `$env:` 赋值：
+
+```powershell
+$env:STATICRYPT_PASSWORD = "********"
+```
+
+说明：以上写法只对**当前终端窗口**生效；关闭窗口后需重新设置。密码中含空格或 `&` 等特殊字符时，PowerShell 请用引号包起来；cmd 中若遇解析问题，可改用 `set "STATICRYPT_PASSWORD=你的密码"`。
 
 之后运行 `staticrypt` 时，如果未显式指定 `-p` 参数，会自动读取该环境变量作为密码。
 
@@ -184,6 +200,26 @@ staticrypt A.html \
   -t my_template.html \
   --template-title "Protected Page" \
   --template-instructions "To unlock this file, you should enter the author's mail address." \
+  --remember 1
+```
+
+Windows `cmd.exe`：
+
+```bat
+staticrypt A.html ^
+  -t my_template.html ^
+  --template-title "Protected Page" ^
+  --template-instructions "To unlock this file, you should enter the author's mail address." ^
+  --remember 1
+```
+
+Windows PowerShell：
+
+```powershell
+staticrypt A.html `
+  -t my_template.html `
+  --template-title "Protected Page" `
+  --template-instructions "To unlock this file, you should enter the author's mail address." `
   --remember 1
 ```
 
@@ -214,6 +250,26 @@ staticrypt \
   -d /Users/page/Documents
 ```
 
+```bat
+staticrypt ^
+  D:\path\to\Hisou-Tenshi.github.io\download\download.html ^
+  -t D:\path\to\Hisou-Tenshi.github.io\template\my_template.html ^
+  --template-title "Protected Page" ^
+  --template-instructions "To unlock this file, you should enter the author's mail address." ^
+  --remember 1 ^
+  -d D:\output
+```
+
+```powershell
+staticrypt `
+  D:\path\to\Hisou-Tenshi.github.io\download\download.html `
+  -t D:\path\to\Hisou-Tenshi.github.io\template\my_template.html `
+  --template-title "Protected Page" `
+  --template-instructions "To unlock this file, you should enter the author's mail address." `
+  --remember 1 `
+  -d D:\output
+```
+
 #### 3.2 关于页加密
 
 ```bash
@@ -224,6 +280,26 @@ staticrypt \
   --template-instructions "To unlock this file, you should enter the author's mail address." \
   --remember 1 \
   -d /Users/page/Documents
+```
+
+```bat
+staticrypt ^
+  D:\path\to\Hisou-Tenshi.github.io\about-us\about-us.html ^
+  -t D:\path\to\Hisou-Tenshi.github.io\template\my_template.html ^
+  --template-title "Protected Page" ^
+  --template-instructions "To unlock this file, you should enter the author's mail address." ^
+  --remember 1 ^
+  -d D:\output
+```
+
+```powershell
+staticrypt `
+  D:\path\to\Hisou-Tenshi.github.io\about-us\about-us.html `
+  -t D:\path\to\Hisou-Tenshi.github.io\template\my_template.html `
+  --template-title "Protected Page" `
+  --template-instructions "To unlock this file, you should enter the author's mail address." `
+  --remember 1 `
+  -d D:\output
 ```
 
 #### 3.3 生成带分享链接的加密页
@@ -238,6 +314,28 @@ staticrypt \
   --template-instructions "To unlock this file, you should enter the author's mail address." \
   --remember 1 \
   -d /Users/page/Documents \
+  --share https://hisou-tenshi.github.io/download/index.html
+```
+
+```bat
+staticrypt ^
+  D:\path\to\Hisou-Tenshi.github.io\download\download.html ^
+  -t D:\path\to\Hisou-Tenshi.github.io\template\my_template.html ^
+  --template-title "Protected Page" ^
+  --template-instructions "To unlock this file, you should enter the author's mail address." ^
+  --remember 1 ^
+  -d D:\output ^
+  --share https://hisou-tenshi.github.io/download/index.html
+```
+
+```powershell
+staticrypt `
+  D:\path\to\Hisou-Tenshi.github.io\download\download.html `
+  -t D:\path\to\Hisou-Tenshi.github.io\template\my_template.html `
+  --template-title "Protected Page" `
+  --template-instructions "To unlock this file, you should enter the author's mail address." `
+  --remember 1 `
+  -d D:\output `
   --share https://hisou-tenshi.github.io/download/index.html
 ```
 
