@@ -504,7 +504,7 @@ function getBasePath() {
 function getNavbarDefaults() {
     var basePath = getBasePath();
     return {
-        logoSrc: basePath + 'static/img/title.PNG',
+        logoSrc: basePath + 'static/img/title.png',
         logoHref: 'https://hisou-tenshi.github.io/',
         logoText: '全人類の緋想天',
         links: [
@@ -798,7 +798,7 @@ window.addEventListener('resize', () => {
 function getRightHeaderDefaults() {
     var basePath = getBasePath();
     return {
-        logoBgUrl: basePath + 'static/img/title.PNG',
+        logoBgUrl: basePath + 'static/img/title.png',
         logoFrameUrl: basePath + 'static/img/logokuang2.png',
         welcomeHtml: '夢と現と交えては、<span class="gradientText">幻想郷</span>に、遊ぶがいい',
         desc1Html: '私は　非想非非想天の娘　<span class="purpleText">比那名居 天子</span>　や',
