@@ -1,7 +1,7 @@
-## 射命丸文的个人主页（Shameimaru-Ayaya.github.io）
+## 比那名居天子的个人主页（Hisou-Tenshi.github.io）
 
 静态博客 / 个人主页项目，基于 GitHub Pages 与纯前端实现。  
-仓库地址即站点源码，`main` 分支直接部署到 `https://shameimaru-ayaya.github.io/`。
+仓库地址即站点源码，`main` 分支直接部署到 `https://hisou-tenshi.github.io/`。
 
 ---
 
@@ -37,7 +37,7 @@
 在仓库根目录执行：
 
 ```bash
-cd /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io
+cd /path/to/Hisou-Tenshi.github.io
 python3 -m http.server 8080
 ```
 
@@ -131,7 +131,7 @@ python3 -m http.server 8080
 使用方式（每次变更 BGM 文件夹后执行）：
 
 ```bash
-cd /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io
+cd /path/to/Hisou-Tenshi.github.io
 python3 generate_playlist.py
 ```
 
@@ -206,8 +206,8 @@ staticrypt A.html \
 
 ```bash
 staticrypt \
-  /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io/download/download.html \
-  -t /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io/template/my_template.html \
+  /path/to/Hisou-Tenshi.github.io/download/download.html \
+  -t /path/to/Hisou-Tenshi.github.io/template/my_template.html \
   --template-title "Protected Page" \
   --template-instructions "To unlock this file, you should enter the author's mail address." \
   --remember 1 \
@@ -218,8 +218,8 @@ staticrypt \
 
 ```bash
 staticrypt \
-  /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io/about-us/about-us.html \
-  -t /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io/template/my_template.html \
+  /path/to/Hisou-Tenshi.github.io/about-us/about-us.html \
+  -t /path/to/Hisou-Tenshi.github.io/template/my_template.html \
   --template-title "Protected Page" \
   --template-instructions "To unlock this file, you should enter the author's mail address." \
   --remember 1 \
@@ -232,13 +232,13 @@ staticrypt \
 
 ```bash
 staticrypt \
-  /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io/download/download.html \
-  -t /Users/page/Documents/GitHub/KirisameMarisa-DAZE.github.io/template/my_template.html \
+  /path/to/Hisou-Tenshi.github.io/download/download.html \
+  -t /path/to/Hisou-Tenshi.github.io/template/my_template.html \
   --template-title "Protected Page" \
   --template-instructions "To unlock this file, you should enter the author's mail address." \
   --remember 1 \
   -d /Users/page/Documents \
-  --share https://shameimaru-ayaya.github.io/download/index.html
+  --share https://hisou-tenshi.github.io/download/index.html
 ```
 
 注意：
@@ -275,7 +275,7 @@ staticrypt \
    - Pages 来源为 `main` 分支。
 
 3. 等待数十秒到数分钟，访问：
-   - `https://shameimaru-ayaya.github.io/`
+   - `https://hisou-tenshi.github.io/`
 
 如修改了 `static/bgm/` 下的内容，记得先执行 `python3 generate_playlist.py`，再提交推送。
 

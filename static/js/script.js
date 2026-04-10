@@ -1,4 +1,4 @@
-console.log('%cCopyright © 2022-2025 GitHub@ShameimaruAya',
+console.log('%cCopyright © 2022-2026 GitHub@HisouTenshi',
     'background-color: #ff00ff; color: white; font-size: 24px; font-weight: bold; padding: 10px;'
 );
 console.log('%c   /\\_/\\', 'color: #8B4513; font-size: 20px;');
@@ -273,7 +273,7 @@ if (pageLoading) {
     var nonHomeSlugs = ['about-us','contact-us','tools','privacy-policy','terms-and-conditions','download'];
     var isHome = !nonHomeSlugs.some(function (slug) {
         return window.location.pathname.indexOf('/' + slug + '/') !== -1;
-    }) && (window.location.pathname === '/' || window.location.pathname.indexOf('/index.html') !== -1 || /\/KirisameMarisa-DAZE.github\.io\/?$/.test(window.location.pathname));
+    }) && (window.location.pathname === '/' || window.location.pathname.indexOf('/index.html') !== -1 || /\/(?:KirisameMarisa-DAZE|Hisou-Tenshi)\.github\.io\/?$/.test(window.location.pathname));
     var minDurationMs = isHome ? 3000 : 1000;
     var minLoadingPromise = new Promise(function(resolve) {
         setTimeout(resolve, minDurationMs);
@@ -420,7 +420,7 @@ function getSidebarDefaults() {
 }
 
 function renderSidebar() {
-    var container = document.querySelector('.marisa-left');
+    var container = document.querySelector('.marisa-left-scroll') || document.querySelector('.marisa-left');
     if (!container) return;
     var defaults = getSidebarDefaults();
     var overrides = window.sidebarOverrides || {};
@@ -432,6 +432,8 @@ function renderSidebar() {
         xpTags: overrides.xpTags || defaults.xpTags,
         updates: overrides.updates || defaults.updates
     };
+    // Clear previously rendered blocks (in case of re-render).
+    // We only remove inside the chosen container so we don't touch the fixed logo block in `.marisa-left`.
     container.querySelectorAll('.left-div.left-des, .left-div.left-tag, .left-div.left-time').forEach(function (el) {
         if (el && el.parentNode) el.parentNode.removeChild(el);
     });
@@ -495,24 +497,24 @@ function getBasePath() {
     var slugs = ['about-us', 'contact-us', 'tools', 'privacy-policy', 'terms-and-conditions', 'download'];
     var isSub = slugs.some(function (slug) {
         return window.location.pathname.indexOf('/' + slug + '/') !== -1;
-    }) || !(/\/$|\/index\.html$|\/KirisameMarisa-DAZE\.github\.io\/?$/.test(window.location.pathname));
+    }) || !(/\/$|\/index\.html$|\/(?:KirisameMarisa-DAZE|Hisou-Tenshi)\.github\.io\/?$/.test(window.location.pathname));
     return isSub ? '../' : './';
 }
 
 function getNavbarDefaults() {
     var basePath = getBasePath();
     return {
-        logoSrc: basePath + 'static/img/title.jpeg',
-        logoHref: 'https://Shameimaru-Ayaya.github.io/',
-        logoText: '射命丸文',
+        logoSrc: basePath + 'static/img/title.PNG',
+        logoHref: 'https://hisou-tenshi.github.io/',
+        logoText: '全人類の緋想天',
         links: [
-            { href: 'https://Shameimaru-Ayaya.github.io/', text: 'Home' },
-            { href: 'https://Shameimaru-Ayaya.github.io/about-us/', text: 'About us' },
-            { href: 'https://Shameimaru-Ayaya.github.io/contact-us/', text: 'Contact us' },
-            { href: 'https://Shameimaru-Ayaya.github.io/tools/', text: 'Tools' },
-            { href: 'https://Shameimaru-Ayaya.github.io/download/', text: 'Download' },
-            { href: 'https://Shameimaru-Ayaya.github.io/privacy-policy/', text: 'Privacy Policy' },
-            { href: 'https://Shameimaru-Ayaya.github.io/terms-and-conditions/', text: 'Terms and Conditions' }
+            { href: 'https://hisou-tenshi.github.io/', text: 'Home' },
+            { href: 'https://hisou-tenshi.github.io/about-us/', text: 'About us' },
+            { href: 'https://hisou-tenshi.github.io/contact-us/', text: 'Contact us' },
+            { href: 'https://hisou-tenshi.github.io/tools/', text: 'Tools' },
+            { href: 'https://hisou-tenshi.github.io/download/', text: 'Download' },
+            { href: 'https://hisou-tenshi.github.io/privacy-policy/', text: 'Privacy Policy' },
+            { href: 'https://hisou-tenshi.github.io/terms-and-conditions/', text: 'Terms and Conditions' }
         ]
     };
 }
@@ -796,16 +798,16 @@ window.addEventListener('resize', () => {
 function getRightHeaderDefaults() {
     var basePath = getBasePath();
     return {
-        logoBgUrl: basePath + 'static/img/title.jpeg',
-        logoFrameUrl: basePath + 'static/img/logokuang.png',
+        logoBgUrl: basePath + 'static/img/title.PNG',
+        logoFrameUrl: basePath + 'static/img/logokuang2.png',
         welcomeHtml: '夢と現と交えては、<span class="gradientText">幻想郷</span>に、遊ぶがいい',
-        desc1Html: '私は　伝統の幻想ブン屋　<span class="purpleText">射命丸文</span>　や',
+        desc1Html: '私は　非想非非想天の娘　<span class="purpleText">比那名居 天子</span>　や',
         desc2Html: '<span class="purpleText textBackground">あなた、ご自分の事ばかりですのね</span>',
         showSnake: false,
         icons: [
             {
                 tip: 'GitHub',
-                href: 'https://github.com/Shameimaru-Ayaya',
+                href: 'https://github.com/Hisou-Tenshi',
                 onclick: '',
                 target: '_blank',
                 viewBox: '0 0 1024 1024',
@@ -871,7 +873,7 @@ function renderRightHeader() {
     logoDiv.className = 'index-logo';
     logoDiv.style.backgroundImage = 'url(' + data.logoBgUrl + ')';
     var logoImg = document.createElement('img');
-    logoImg.style.cssText = 'position: absolute;top:-20%;left:-14%;width: 133%; aspect-ratio: 1/1;';
+    logoImg.style.cssText = 'position: absolute;top:-25%;left:-20%;width: 140%; aspect-ratio: 1/1;';
     logoImg.src = data.logoFrameUrl;
     logoDiv.appendChild(logoImg);
     container.appendChild(logoDiv);
@@ -958,8 +960,8 @@ function renderRightHeader() {
 function getFooterDefaults() {
     return {
         startYear: 2022,
-        author: 'GitHub@Shameimaru-Ayaya',
-        authorUrl: 'https://github.com/Shameimaru-Ayaya',
+        author: 'GitHub@Hisou-Tenshi',
+        authorUrl: 'https://github.com/Hisou-Tenshi',
         rights: 'All rights reserved.'
     };
 }
