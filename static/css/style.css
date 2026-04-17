@@ -281,7 +281,7 @@ html[data-theme="Dark"] {
     --back_filter: 6px;
     --back_filter_color: rgba(2, 4, 20, 0.82);
     --fill: #ffffff;
-    --glass-bg: linear-gradient(135deg, rgba(6, 10, 36, 0.86), rgba(30, 12, 52, 0.82));
+    --glass-bg: linear-gradient(135deg, rgba(18, 30, 72, 0.48), rgba(58, 28, 96, 0.42));
     --glass-border: rgba(255, 255, 255, 0.16);
     --glass-shadow: 0 20px 45px rgba(0, 0, 0, 0.75);
     --glass-blur: 12px;
