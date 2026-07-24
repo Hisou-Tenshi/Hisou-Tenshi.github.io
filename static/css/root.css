@@ -1,41 +1,9 @@
 /*
---svgcolor svg图标的颜色
---main-bg-color主页背景
---main-text-color文本颜色
---gradient标题渐变颜色
-
---purple-text-color描述紫色文本颜色
---text-bg-color描述紫色文本背景颜色
---item-bg-color项目背景颜色
---item-hover-color项目鼠标移入颜色
---item-left-title-color项目标题颜色
---item-left-text-color项目描述颜色
---footer-text-color底部文本颜色
---left-tag-item左侧标签颜色
---card-filter卡片模糊的数值
---back-filter背景模糊的数值
---back-filter-color全局阴影遮罩
-
-*/
-/*卡片模糊的数值非常吃性能,背景模糊的数值可以模糊也可以不模糊
-
-0为不模糊,数值越大模糊程度越高
-
-这两个任选其一进行模糊
-
-一个有数字另一个建议为0
-
-内置4套白天主题修改办法
-
-每套主题的结构都为html{
-    
-}
-
-只有最下面的会生效,也就是将你要设置的主题剪切到最下面
+  Hisou-Tenshi Design Tokens
+  Legacy themes 1–4 kept for reference; Theme 5 (Liquid Glass) is active.
 */
 
-/*非常吃性能,低配手机会卡顿*/
-/*卡片模糊背景＋黑色透明卡片+白色svg**/
+/* Theme 1 — dark glass (legacy) */
 html {
     --name: 主题1;
     --main_bg_color: url(../img/background.PNG);
@@ -52,12 +20,11 @@ html {
     --card_filter: 15px;
     --back_filter: 0px;
     --back_filter_color: #00000030;
-     --fill:#ffffff;
+    --fill: #ffffff;
 }
 
+/* Theme 2 — light frosted (legacy) */
 html {
-
-    /*图片模糊背景＋白色透明卡片+黑色svg*/
     --name: 主题2;
     --main_bg_color: url(../img/background.PNG);
     --main_text_color: #000000;
@@ -73,12 +40,11 @@ html {
     --card_filter: 0px;
     --back_filter: 20px;
     --back_filter_color: #00000030;
-     --fill:#000000;
+    --fill: #000000;
 }
 
+/* Theme 3 — blue gradient (legacy) */
 html {
-    /*蓝色渐变+黑色svg**/
-
     --name: 主题3;
     --main_bg_color: linear-gradient(50deg, #a2d1ff, #ffffff);
     --main_text_color: #000000;
@@ -94,13 +60,11 @@ html {
     --card_filter: 0px;
     --back_filter: 0px;
     --back_filter_color: #00000000;
-     --fill:#000000;
+    --fill: #000000;
 }
 
-
-
+/* Theme 4 — minimal white (legacy) */
 html {
-    /*白色简约+黑色svg**/
     --name: 主题4;
     --main_bg_color: #ffffff;
     --main_text_color: #000000;
@@ -116,65 +80,201 @@ html {
     --card_filter: 0px;
     --back_filter: 0px;
     --back_filter_color: #00000000;
-     --fill:#000000;
+    --fill: #000000;
 }
 
+/*
+  Theme 5 — iOS 26 / visionOS Liquid Glass (ACTIVE)
+  Cool blue-gray tint · medium blur · layered thickness · dynamic vars for JS
+*/
 html {
-    /*图片模糊背景＋黑色透明卡片+白色svg - 优化版 (Glassmorphism)*/
-    --name: 主题5;
+    --name: Liquid Glass;
     --main_bg_color: url(../img/background.PNG);
-    --main_text_color: #f9fbff;
-    --gradient: linear-gradient(135deg, #6ecbff 0%, #b9d8ff 34%, #ffd1f0 72%, #ffffff 100%);
-    --purple_text_color: #7ad7ff;
-    --text_bg_color: rgba(255, 255, 255, 0.20);
-    --item_bg_color: rgba(140, 205, 255, 0.18);
-    --item_hover_color: rgba(255, 205, 240, 0.18);
-    --item_border_color: rgba(255, 255, 255, 0.16);
-    --item_left_title_color: rgba(255, 255, 255, 0.95);
-    --item_left_text_color: rgba(255, 255, 255, 0.78);
-    --footer_text_color: rgba(255, 255, 255, 0.72);
-    --left_tag_item: rgba(255, 175, 235, 0.18);
-    --card_filter: 10px;
+    --main_text_color: #ffffff;
+    --gradient: linear-gradient(135deg, #7ecbff 0%, #b8d4f0 36%, #e8d4f0 70%, #ffffff 100%);
+    --purple_text_color: #8ad4ff;
+    /* Matches .gradientText stops — used for headline stroke */
+    --gradient-stroke-1: #7ecbff;
+    --gradient-stroke-2: #b8d4f0;
+    --gradient-stroke-3: #e8d4f0;
+    --gradient-stroke-4: #ffffff;
+    --text_bg_color: rgba(110, 190, 255, 0.28);
+    --item_bg_color: rgba(120, 200, 255, 0.28);
+    --item_hover_color: rgba(150, 215, 255, 0.36);
+    --item_border_color: rgba(255, 255, 255, 0.42);
+    --item_left_title_color: #ffffff;
+    --item_left_text_color: #ffffff;
+    --footer_text_color: #ffffff;
+    --left_tag_item: rgba(120, 210, 255, 0.22);
+    --card_filter: 20px;
     --back_filter: 4px;
-    --back_filter_color: rgba(120, 190, 255, 0.12);
-    --fill: #f9fbff;
-    --shadow-sm: 0 4px 8px rgba(18, 40, 90, 0.12);
-    --shadow-md: 0 12px 26px rgba(18, 40, 90, 0.16);
+    --back_filter_color: rgba(100, 190, 255, 0.08);
+    --fill: #ffffff;
+    --shadow-sm: 0 4px 12px rgba(20, 80, 140, 0.12);
+    --shadow-md: 0 14px 32px rgba(20, 80, 140, 0.16);
+
+    /* ── Liquid Glass Design Tokens ── */
+    --glass-blur: 20px;
+    --glass-blur-base: 20px;
+    --glass-blur-hover: 22px;
+    --glass-blur-scrolled: 24px;
+    --glass-saturate: 200%;
+    --glass-contrast: 1.06;
+    --glass-brightness: 1.08;
+    --glass-opacity: 0.48;
+    --glass-opacity-base: 0.48;
+    --glass-opacity-scrolled: 0.62;
+    --glass-opacity-dense: 0.66;
+    --glass-inset: 2px;
+    /* Default light-sky tint; JS may override from background sample */
+    --glass-tint-r: 120;
+    --glass-tint-g: 200;
+    --glass-tint-b: 255;
+    /* Whiteness / fill depth — capped so bright BGs never wash out white text */
+    --glass-white-top: 0.26;
+    --glass-white-hover: 0.32;
+    --glass-white-max: 0.28;
+    --glass-tint-alpha: 0.42;
+    --glass-tint-mid-alpha: 0.30;
+    --glass-tint-deep-alpha: 0.52;
+    --glass-fill-alpha: 0.32;
+    --glass-fill-hover-alpha: 0.38;
+    --glass-tint: rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-tint-alpha));
+    --glass-tint-mid: rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-tint-mid-alpha));
+    --glass-tint-deep: rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-tint-deep-alpha));
+    --glass-bg:
+        linear-gradient(
+            165deg,
+            rgba(255, 255, 255, var(--glass-white-top)) 0%,
+            rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-fill-alpha)) 42%,
+            rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-tint-deep-alpha)) 100%
+        ),
+        var(--glass-tint);
+    --glass-bg-hover:
+        linear-gradient(
+            165deg,
+            rgba(255, 255, 255, var(--glass-white-hover)) 0%,
+            rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-fill-hover-alpha)) 45%,
+            rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), var(--glass-tint-deep-alpha)) 100%
+        ),
+        var(--glass-tint);
+    --glass-border: rgba(255, 255, 255, 0.55);
+    --glass-border-soft: rgba(255, 255, 255, 0.28);
+    --glass-edge:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.88) 0%,
+            rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), 0.45) 24%,
+            rgba(255, 255, 255, 0.12) 48%,
+            rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), 0.35) 76%,
+            rgba(255, 255, 255, 0.72) 100%
+        );
+    --glass-highlight: inset 0 1px 0 0 rgba(255, 255, 255, 0.62);
+    --glass-highlight-strong: inset 0 1px 0 0 rgba(255, 255, 255, 0.78),
+        inset 0 -1px 0 0 rgba(var(--glass-tint-r), var(--glass-tint-g), var(--glass-tint-b), 0.18);
+    --glass-reflect: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+    --glass-shadow:
+        0 1px 2px rgba(20, 80, 140, 0.06),
+        0 8px 24px rgba(20, 90, 160, 0.14),
+        0 20px 48px rgba(15, 70, 130, 0.12);
+    --glass-shadow-hover:
+        0 2px 4px rgba(20, 80, 140, 0.08),
+        0 12px 32px rgba(20, 90, 160, 0.18),
+        0 28px 56px rgba(15, 70, 130, 0.16);
+    --glass-shadow-pressed:
+        0 1px 2px rgba(20, 80, 140, 0.08),
+        0 4px 12px rgba(20, 90, 160, 0.12);
+    --glass-text: #ffffff;
+    --glass-text-muted: #ffffff;
+    --glass-text-shadow: 0 1px 2px rgba(0, 20, 50, 0.45);
+    --glass-radius: 16px;
+    --glass-radius-sm: 12px;
+    --glass-radius-pill: 999px;
+    --glass-ease: cubic-bezier(0.25, 0.1, 0.25, 1);
+    --glass-ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --glass-duration: 0.32s;
+    --glass-scale-hover: 1.015;
+    --glass-scale-press: 0.985;
+    --glass-luma: 0.55;
+    --glass-env-dense: 0;
+
+    /* Legacy aliases mapped to Liquid Glass */
     --edge_padding: 1px;
-    --edge_gradient: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(125,205,255,0.55) 22%, rgba(255,255,255,0.18) 50%, rgba(255,175,235,0.45) 78%, rgba(255,255,255,0.9));
-    --glass-bg: linear-gradient(135deg, rgba(135, 205, 255, 0.48), rgba(255, 195, 235, 0.45));
-    --glass-border: rgba(255, 255, 255, 0.18);
-    --glass-shadow: 0 16px 40px rgba(18, 40, 90, 0.18);
-    --glass-blur: 10px;
-    --glass-saturate: 1.22;
-    --glass-contrast: 1.03;
-    --glass-brightness: 1.07;
+    --edge_gradient: var(--glass-edge);
 }
 
-/* 移动端背景设置 */
+/* Dynamic state hooks (JS toggles on <html>) */
+html[data-glass-scroll="1"] {
+    --glass-blur: var(--glass-blur-scrolled);
+    --glass-opacity: var(--glass-opacity-scrolled);
+}
+
+html[data-glass-dense="1"] {
+    --glass-opacity: var(--glass-opacity-dense);
+    --glass-blur: var(--glass-blur-scrolled);
+}
+
+/* Bright background: clamp whiteness + deepen tint for white-text contrast */
+html[data-glass-bright="1"] {
+    --glass-white-top: 0.12;
+    --glass-white-hover: 0.16;
+    --glass-tint-alpha: 0.58;
+    --glass-tint-mid-alpha: 0.42;
+    --glass-tint-deep-alpha: 0.68;
+    --glass-fill-alpha: 0.46;
+    --glass-fill-hover-alpha: 0.52;
+    --glass-brightness: 1.0;
+    --glass-text-shadow: 0 1px 3px rgba(0, 20, 50, 0.65), 0 0 1px rgba(0, 10, 30, 0.4);
+}
+
+html[data-glass-bright="1"] .left-div::after,
+html[data-glass-bright="1"] .projectItem::after,
+html[data-glass-bright="1"] .iconItem::after,
+html[data-glass-bright="1"] .liquid-glass::after {
+    opacity: 0.35;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.10) 0%,
+        rgba(255, 255, 255, 0.02) 55%,
+        transparent 100%
+    );
+}
+
+/* Mobile background */
 @media (max-width: 800px) {
     html {
-      --main_bg_color: url(../img/mobile-bg.jpg); /* 移动端背景图 */
-      --back_filter: 1px; /* 移动端模糊强度 */
+        --main_bg_color: url(../img/mobile-bg.jpg);
+        --back_filter: 1px;
+        --glass-blur: 18px;
+        --glass-blur-base: 18px;
+        --glass-blur-hover: 20px;
+        --glass-blur-scrolled: 22px;
     }
-    
-    /* 调整模糊层 */
+
     .marisa-filter {
         background: var(--back_filter_color);
         backdrop-filter: blur(var(--back_filter)) !important;
         height: 100vh;
     }
 }
-  
-/* 保持 PC 端设置 */
+
 @media (min-width: 801px) {
     html {
-      --back_filter: 0px; /* PC 端模糊 */
+        --back_filter: 0px;
     }
-    /* 调整模糊层 */
+
     .marisa-filter {
         background: var(--back_filter_color);
         backdrop-filter: blur(var(--back_filter)) !important;
         height: 100vh;
+    }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        --glass-duration: 0.01ms;
+        --glass-scale-hover: 1;
+        --glass-scale-press: 1;
     }
 }

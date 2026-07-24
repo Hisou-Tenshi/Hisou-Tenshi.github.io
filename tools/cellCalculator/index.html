@@ -30,81 +30,122 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 		<link rel="stylesheet" href="../../static/js/Meting.min.js">
 		<script src="../../static/js/APlayer.min.js"></script>
 		<style>
-			body {
-				font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-				background-color: #fff;
-				color: #000;
-			}
-			html {
-				--main_bg_color: #fff;
-				--back_filter: 0px;
-				--back_filter_color: #fff;
-			}
-			h1 {
-				text-align: center;
-				margin-bottom: 30px;
-			}
 			.section {
-				background: #fff;
-				border: 1px solid #ddd;
+				background: var(--glass-bg);
+				backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) contrast(var(--glass-contrast)) brightness(var(--glass-brightness));
+				-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate)) contrast(var(--glass-contrast)) brightness(var(--glass-brightness));
+				border: 1px solid var(--glass-border);
 				padding: 20px;
 				margin: 20px auto;
-				border-radius: 12px;
+				border-radius: var(--glass-radius);
 				max-width: 600px;
-				box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+				box-shadow: var(--glass-shadow), var(--glass-highlight), var(--glass-reflect);
+				color: var(--glass-text, var(--main_text_color));
+				text-shadow: var(--glass-text-shadow);
+				position: relative;
+				overflow: hidden;
+				transition:
+					transform var(--glass-duration) var(--glass-ease),
+					box-shadow var(--glass-duration) var(--glass-ease);
+			}
+			.section::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				border-radius: inherit;
+				padding: 1px;
+				background: var(--glass-edge);
+				-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+				-webkit-mask-composite: xor;
+				mask-composite: exclude;
+				pointer-events: none;
+				opacity: 0.8;
+			}
+			.section:hover {
+				transform: scale(var(--glass-scale-hover));
+				box-shadow: var(--glass-shadow-hover), var(--glass-highlight-strong);
 			}
 			.section h2 {
 				margin-top: 0;
-				color: #007acc;
+				color: var(--purple_text_color);
 				font-size: 1.2em;
+				position: relative;
+				z-index: 1;
 			}
 			.form-row {
 				display: flex;
 				align-items: center;
 				margin-top: 12px;
+				position: relative;
+				z-index: 1;
 			}
 			.form-row label {
 				flex: 1;
 			}
 			.form-row input {
 				flex: 2;
-				padding: 6px;
+				padding: 8px 10px;
 				font-size: 1em;
-				border: 1px solid #ccc;
-				border-radius: 6px;
+				border: 1px solid var(--glass-border-soft);
+				border-radius: 8px;
 				margin-right: 8px;
+				background: rgba(var(--glass-tint-r, 120), var(--glass-tint-g, 200), var(--glass-tint-b, 255), 0.28);
+				color: #ffffff;
+				outline: none;
 			}
 			.form-row select, .form-row span {
 				flex: 1;
+				color: var(--main_text_color);
+			}
+			.form-row select {
+				background: rgba(var(--glass-tint-r, 120), var(--glass-tint-g, 200), var(--glass-tint-b, 255), 0.28);
+				border: 1px solid var(--glass-border-soft);
+				border-radius: 8px;
+				padding: 6px;
+				color: #ffffff;
 			}
 			button {
 				margin-top: 15px;
 				padding: 8px 16px;
-				background-color: #007acc;
-				color: #fff;
-				border: none;
-				border-radius: 6px;
+				background: var(--glass-bg);
+				backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+				-webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+				color: var(--main_text_color);
+				border: 1px solid var(--glass-border);
+				border-radius: var(--glass-radius-sm);
 				cursor: pointer;
-				transition: background-color 0.2s;
+				box-shadow: var(--glass-shadow), var(--glass-highlight);
+				text-shadow: var(--glass-text-shadow);
+				transition:
+					transform var(--glass-duration) var(--glass-ease),
+					box-shadow var(--glass-duration) var(--glass-ease),
+					background var(--glass-duration) var(--glass-ease);
+				position: relative;
+				z-index: 1;
 			}
 			button:hover {
-				background-color: #005fa3;
+				background: var(--glass-bg-hover);
+				transform: scale(var(--glass-scale-hover));
+				box-shadow: var(--glass-shadow-hover), var(--glass-highlight-strong);
+			}
+			button:active {
+				transform: scale(var(--glass-scale-press));
 			}
 			.output {
 				margin-top: 15px;
-				padding: 10px;
-				background-color: #f0f8ff;
-				border: 1px solid #cce;
-				border-radius: 6px;
+				padding: 12px;
+				background: rgba(var(--glass-tint-r, 120), var(--glass-tint-g, 200), var(--glass-tint-b, 255), 0.24);
+				border: 1px solid var(--glass-border-soft);
+				border-radius: var(--glass-radius-sm);
 				font-weight: bold;
-				color: #222;
+				color: #ffffff;
+				text-shadow: var(--glass-text-shadow);
 				white-space: pre-line;
+				position: relative;
+				z-index: 1;
 			}
 			sup {
 				font-size: 0.8em;
-			}
-			.navbar-link {
-				color: white !important; /* 使用 !important 确保覆盖全局样式（可选） */
 			}
 		</style>
 	</head>
@@ -172,6 +213,7 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 		</div>
 	</body>
 	
+	<script src="../../static/js/site-content.js"></script>
 	<script src="../../static/js/script.js"> </script>
 	<script>
 		

@@ -36,6 +36,8 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 		<div class="marisa-navbar"></div> <!-- 导航栏开始 -->
 		<div class="marisa-main"> <!-- 主内容容器 -->
 			<div class="marisa-left"> <!-- 左侧边栏 -->
+				<div class="marisa-left-scroll">
+				</div>
 			</div>
 			<div class="marisa-right"> <!-- 右侧主内容 -->
 				<header> <!-- 头部开始 -->
@@ -49,7 +51,7 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 					</div>
 					<div class="left-div left-des" style="width:100%; margin:0;">
 						<!-- PDF生成按钮 -->
-						<button onclick="window.print()" class="print-button">
+						<button type="button" onclick="exportPanelPdf(this)" class="print-button">
 							<i class="fas fa-download"></i>Get PDF
 						</button>
 
@@ -273,6 +275,7 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 		</div>
 				<!-- 在body标签结束前添加 -->
 	</body>
+	<script src="../static/js/site-content.js"></script>
 	<script src="../static/js/script.js"> </script>
 
 </html>

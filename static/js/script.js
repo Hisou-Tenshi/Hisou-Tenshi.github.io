@@ -156,6 +156,7 @@ document.addEventListener('DOMContentLoaded', function () {
         changeTheme(themeState, true);
     }
     initThemeSwitch();
+    initSiteBackground();
 
     if (window.matchMedia) {
         var media = window.matchMedia('(prefers-color-scheme: dark)');
@@ -324,32 +325,36 @@ if (pageLoading) {
 var originalTitle = document.title;
 var currentTitlePair = null;
 var titleRecoveryTimer = null;
-var TITLE_PAIRS = [
-    { away: '( - ω - ) zzZ 睡着啦 ~', back: '( ･ω･)ﾉ 醒来了哦 ~' },
-    { away: '┌(。Д。)┐ 藏起来了 ~', back: '(^・ω・^ ) 找到你啦 ~' },
-    { away: '(；ω；) 人家想你 ~', back: '(*^▽^*) 好开心呀 ~' },
-    { away: '(>_<) 页面崩溃！', back: '(^_^) 又好了呢！' },
-    { away: '(￣ω￣;) 休息一下 ~', back: '(｀・ω・´) 开始工作！' },
-    { away: '(´⊙ω⊙) 面煮好啦 ~', back: '(๑¯∀¯๑) 开动啦 ~' },
-    { away: '(´⊙ω⊙) 去探险啦！', back: '(●´ω｀●) 带回宝藏 ~' },
-    { away: '🌧️ 下雨收衣服啦', back: '🌈 天晴晒太阳 ~' },
-    { away: '( ˘ω˘ )ｽﾔｧ 电量不足…', back: '(๑•̀ㅂ•́)و✧ 充满活力！' },
-    { away: '(｡•́︿•̀｡) 偷偷说再见…', back: '(っ´ω｀ｃ) 悄悄回来啦' },
-    { away: '(＞﹏＜) 故事暂停…', back: '(๑´ㅂ๑) 继续读下去 ~' },
-    { away: '(☆▽☆) 变成小星星 ~', back: '(´▽｀) 变回月亮啦' },
-    { away: '(ﾟ⊿ﾟ) 突然消失！', back: '(★ω★) 魔法出现 ~' },
-    { away: '(´･ω･) 乖乖等你 ~', back: '(っ´▽｀)っ 欢迎回来！' },
-    { away: '(=｀ω´=) 嗷呜，走开啦', back: '(^・x・^) 呼噜，蹭蹭你' },
-    { away: '(⊙ˍ⊙) 天黑请闭眼', back: '(◕‿◕) 天亮啦 ~'},
-    { away: '(×_×) 螺丝飞走啦', back: '(✔ᴗ✔) 修好咯！' },
-    { away: '( •́ _ •̀) 演出暂停…', back: '(✧∇✧) 好戏继续！' },
-    { away: '(ｏ・_・)ノ” 咻~飞走了', back: '( ﾟ▽ﾟ)/ 噗，又出现' },
-    { away: '(。-ω-) 秋天落叶…', back: '(๑•̀ㅂ•́)و 春天发芽！' },
-    { away: '(◉_◉) 角色掉线！', back: '(^∇^) 重新连接 ~' }
-];
+
+function getSiteContent() {
+    return window.SITE_CONTENT || {};
+}
+
+function applyPageContentOverrides() {
+    if (window.__sitePageOverridesApplied) return;
+    window.__sitePageOverridesApplied = true;
+    var pageId = window.SITE_PAGE;
+    if (!pageId) return;
+    var page = (getSiteContent().pages || {})[pageId];
+    if (!page) return;
+    var keys = ['sidebarOverrides', 'navbarOverrides', 'rightHeaderOverrides', 'footerOverrides'];
+    keys.forEach(function (key) {
+        if (!page[key]) return;
+        window[key] = Object.assign({}, page[key], window[key] || {});
+    });
+}
+
+applyPageContentOverrides();
+
+function getTitlePairs() {
+    var pairs = getSiteContent().titlePairs;
+    return (pairs && pairs.length) ? pairs : [{ away: originalTitle, back: originalTitle }];
+}
+
 function pickTitlePair() {
-    var i = Math.floor(Math.random() * TITLE_PAIRS.length);
-    return TITLE_PAIRS[i];
+    var pairs = getTitlePairs();
+    var i = Math.floor(Math.random() * pairs.length);
+    return pairs[i];
 }
 document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
@@ -397,35 +402,65 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getSidebarDefaults() {
+    var basePath = getBasePath();
+    var c = getSiteContent().sidebar || {};
+    var rh = getSiteContent().rightHeader || {};
     return {
-        addressLines: ['幻想郷', '有頂天'],
-        titles: { personal: 'Personal', acgn: 'ACGMN+', xp: 'XP' },
-        personalTags: ['二次元', '和风', '文化底蕴', '圣地巡礼', '飞友', '铁宅', '技术宅(存疑)', '军迷(伪)', '交响乐(雅)', '面向AI编程'],
-        acgnTags: ['東方Project', 'GalGame', '魔女の旅々', 'YuzuSoft', 'Key', '京アニ', '废萌', '纯爱', '致郁', '关系性', 'ボカロ'],
-        xpTags: ['JK&JC', '和服', '魔女', '巫女', '白毛', '黑长直', '醋溜便当', '貧乳は希少価値だ', '白丝', '黑丝', '百合', '后宫'],
-        updates: [
-            { title: 'background & logo update', date: '2026-04-10' },
-            { title: 'style update', date: '2025-12-17' },
-            { title: 'projects information update', date: '2025-12-16' },
-            { title: 'homepage update', date: '2025-09-27' },
-            { title: 'information update for about-us', date: '2025-09-22' },
-            { title: 'information update', date: '2025-07-18' },
-            { title: 'Downloader', date: '2025-03-08' },
-            { title: 'About us', date: '2025-03-07' },
-            { title: 'ver 2.1.1', date: '2025-03-06' },
-            { title: 'ver 2.1.0', date: '2025-03-05' },
-            { title: 'ver 2.0.0', date: '2025-03-05' },
-            { title: 'ver 1.0.0', date: '2025-02-24' }
-        ]
+        showLogo: (c.showLogo !== undefined) ? c.showLogo : true,
+        logoBgUrl: basePath + (c.logoBgUrl || rh.logoBgUrl || 'static/img/head.PNG'),
+        logoFrameUrl: basePath + (c.logoFrameUrl || rh.logoFrameUrl || 'static/img/logokuang2.png'),
+        addressLines: c.addressLines || [],
+        titles: c.titles || {},
+        personalTags: c.personalTags || [],
+        acgnTags: c.acgnTags || [],
+        xpTags: c.xpTags || [],
+        updates: c.updates || []
     };
 }
 
+function renderSidebarLogo(left, data) {
+    var existing = left.querySelector(':scope > .logo');
+    if (!data.showLogo) {
+        if (existing && existing.parentNode) existing.parentNode.removeChild(existing);
+        return;
+    }
+    var logo = existing;
+    if (!logo) {
+        logo = document.createElement('div');
+        logo.className = 'logo';
+        var scroll = left.querySelector('.marisa-left-scroll');
+        if (scroll) {
+            left.insertBefore(logo, scroll);
+        } else {
+            left.insertBefore(logo, left.firstChild);
+        }
+    }
+    logo.style.backgroundImage = 'url(' + data.logoBgUrl + ')';
+    var frame = logo.querySelector('img');
+    if (!frame) {
+        frame = document.createElement('img');
+        frame.style.cssText = 'position: absolute;top:-35%;left:-30%;width: 155%; aspect-ratio: 1/1;';
+        logo.appendChild(frame);
+    }
+    frame.src = data.logoFrameUrl;
+}
+
 function renderSidebar() {
-    var container = document.querySelector('.marisa-left-scroll') || document.querySelector('.marisa-left');
-    if (!container) return;
+    var left = document.querySelector('.marisa-left');
+    if (!left) return;
+    // Prefer (or create) the scroll container so long sidebar content never spills past the footer.
+    var container = left.querySelector('.marisa-left-scroll');
+    if (!container) {
+        container = document.createElement('div');
+        container.className = 'marisa-left-scroll';
+        left.appendChild(container);
+    }
     var defaults = getSidebarDefaults();
     var overrides = window.sidebarOverrides || {};
     var data = {
+        showLogo: (overrides.showLogo !== undefined) ? overrides.showLogo : defaults.showLogo,
+        logoBgUrl: overrides.logoBgUrl || defaults.logoBgUrl,
+        logoFrameUrl: overrides.logoFrameUrl || defaults.logoFrameUrl,
         addressLines: overrides.addressLines || defaults.addressLines,
         titles: Object.assign({}, defaults.titles, overrides.titles || {}),
         personalTags: overrides.personalTags || defaults.personalTags,
@@ -433,8 +468,9 @@ function renderSidebar() {
         xpTags: overrides.xpTags || defaults.xpTags,
         updates: overrides.updates || defaults.updates
     };
+    renderSidebarLogo(left, data);
     // Clear previously rendered blocks (in case of re-render).
-    // We only remove inside the chosen container so we don't touch the fixed logo block in `.marisa-left`.
+    // We only remove inside the scroll container so we don't touch the fixed logo block in `.marisa-left`.
     container.querySelectorAll('.left-div.left-des, .left-div.left-tag, .left-div.left-time').forEach(function (el) {
         if (el && el.parentNode) el.parentNode.removeChild(el);
     });
@@ -502,21 +538,127 @@ function getBasePath() {
     return isSub ? '../' : './';
 }
 
+/* Site background: exact basename match; extension jpg/png case-insensitive */
+var SITE_BG_EXTS = ['PNG', 'png', 'jpg', 'JPG', 'jpeg', 'JPEG'];
+var siteBgCache = Object.create(null);
+var siteBgPending = Object.create(null);
+var siteBgResolveToken = 0;
+var siteBgApplyTimer = null;
+
+function getStaticImgDir() {
+    return getBasePath() + 'static/img/';
+}
+
+/* Paths consumed via var(--main_bg_color) in static/css/*.css must use ../img/ (sheet-relative). */
+function toCssBgUrl(stem, ext) {
+    return 'url(../img/' + stem + '.' + ext + ')';
+}
+
+function probeExactImageUrl(dirUrl, stem, onDone) {
+    var cacheKey = dirUrl + '\0' + stem;
+    if (Object.prototype.hasOwnProperty.call(siteBgCache, cacheKey)) {
+        onDone(siteBgCache[cacheKey]);
+        return;
+    }
+    if (siteBgPending[cacheKey]) {
+        siteBgPending[cacheKey].push(onDone);
+        return;
+    }
+    siteBgPending[cacheKey] = [onDone];
+    var i = 0;
+    function finish(result) {
+        siteBgCache[cacheKey] = result;
+        var waiters = siteBgPending[cacheKey] || [];
+        delete siteBgPending[cacheKey];
+        waiters.forEach(function (cb) { cb(result); });
+    }
+    function next() {
+        if (i >= SITE_BG_EXTS.length) {
+            finish(null);
+            return;
+        }
+        var ext = SITE_BG_EXTS[i++];
+        var probeUrl = dirUrl + stem + '.' + ext;
+        var img = new Image();
+        img.onload = function () {
+            finish({ probeUrl: probeUrl, cssValue: toCssBgUrl(stem, ext) });
+        };
+        img.onerror = next;
+        img.src = probeUrl;
+    }
+    next();
+}
+
+function getSiteBackgroundStem(theme, isMobile) {
+    if (isMobile) return 'mobile-bg';
+    if (theme === 'Dark') return 'background_dark';
+    return 'background';
+}
+
+function applySiteBackground(done) {
+    var dirUrl = getStaticImgDir();
+    var theme = (document.documentElement.getAttribute('data-theme') || themeState || 'Light');
+    var isMobile = window.matchMedia && window.matchMedia('(max-width: 800px)').matches;
+    var stem = getSiteBackgroundStem(theme, isMobile);
+    var token = ++siteBgResolveToken;
+    probeExactImageUrl(dirUrl, stem, function (result) {
+        if (token !== siteBgResolveToken) return;
+        if (result && result.cssValue) {
+            document.documentElement.style.setProperty('--main_bg_color', result.cssValue);
+        } else {
+            /* Image missing/failed: solid black instead of a broken url() */
+            document.documentElement.style.setProperty('--main_bg_color', '#000');
+        }
+        if (typeof done === 'function') done(result || null);
+        if (typeof window.__onSiteBackgroundApplied === 'function') {
+            window.__onSiteBackgroundApplied(result || null);
+        }
+    });
+}
+
+function scheduleSiteBackground() {
+    clearTimeout(siteBgApplyTimer);
+    siteBgApplyTimer = setTimeout(function () {
+        siteBgApplyTimer = null;
+        applySiteBackground();
+    }, 0);
+}
+
+function initSiteBackground() {
+    scheduleSiteBackground();
+    if (window.matchMedia) {
+        var mq = window.matchMedia('(max-width: 800px)');
+        var onViewportChange = function () { scheduleSiteBackground(); };
+        if (typeof mq.addEventListener === 'function') {
+            mq.addEventListener('change', onViewportChange);
+        } else if (typeof mq.addListener === 'function') {
+            mq.addListener(onViewportChange);
+        }
+    }
+    if (!window.__siteBgThemeObserver) {
+        window.__siteBgThemeObserver = new MutationObserver(function (mutations) {
+            for (var i = 0; i < mutations.length; i++) {
+                if (mutations[i].attributeName === 'data-theme') {
+                    scheduleSiteBackground();
+                    break;
+                }
+            }
+        });
+        window.__siteBgThemeObserver.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['data-theme']
+        });
+    }
+}
+
 function getNavbarDefaults() {
     var basePath = getBasePath();
+    var c = getSiteContent().navbar || {};
     return {
-        logoSrc: basePath + 'static/img/title.png',
-        logoHref: 'https://hisou-tenshi.github.io/',
-        logoText: '全人類の緋想天',
-        links: [
-            { href: 'https://hisou-tenshi.github.io/', text: 'Home' },
-            { href: 'https://hisou-tenshi.github.io/about-us/', text: 'About us' },
-            { href: 'https://hisou-tenshi.github.io/contact-us/', text: 'Contact us' },
-            { href: 'https://hisou-tenshi.github.io/tools/', text: 'Tools' },
-            { href: 'https://hisou-tenshi.github.io/download/', text: 'Download' },
-            { href: 'https://hisou-tenshi.github.io/privacy-policy/', text: 'Privacy Policy' },
-            { href: 'https://hisou-tenshi.github.io/terms-and-conditions/', text: 'Terms and Conditions' }
-        ]
+        logoSrc: basePath + (c.logoSrc || 'static/img/title.png'),
+        logoHref: c.logoHref || '',
+        logoText: c.logoText || '',
+        links: c.links || []
     };
 }
 
@@ -798,55 +940,15 @@ window.addEventListener('resize', () => {
 
 function getRightHeaderDefaults() {
     var basePath = getBasePath();
+    var c = getSiteContent().rightHeader || {};
     return {
-        logoBgUrl: basePath + 'static/img/head.PNG',
-        logoFrameUrl: basePath + 'static/img/logokuang2.png',
-        welcomeHtml: '夢と現と交えては、<span class="gradientText">幻想郷</span>に、遊ぶがいい',
-        desc1Html: '私は　非想非非想天の娘　<span class="purpleText">比那名居 天子</span>　や',
-        desc2Html: '<span class="purpleText textBackground">あなた、ご自分の事ばかりですのね</span>',
-        showSnake: false,
-        icons: [
-            {
-                tip: 'GitHub',
-                href: 'https://github.com/Hisou-Tenshi',
-                onclick: '',
-                target: '_blank',
-                viewBox: '0 0 1024 1024',
-                path: 'M682.215454 981.446137c-25.532318 0-42.553863-17.021545-42.553864-42.553864v-165.960067c4.255386-34.043091-8.510773-59.575409-29.787704-80.852341-12.766159-12.766159-17.021545-29.787704-8.510773-42.553864 4.255386-17.021545 21.276932-25.532318 34.043091-29.787704 123.406204-12.766159 238.301635-55.320023 238.301635-255.323181 0-46.80925-17.021545-93.6185-51.064636-131.916976-12.766159-12.766159-12.766159-29.787704-8.510772-42.553864 12.766159-34.043091 12.766159-68.086182 4.255386-102.129272-21.276932 4.255386-55.320023 17.021545-110.640045 55.320022-8.510773 8.510773-21.276932 8.510773-34.043091 4.255387-89.363113-25.532318-187.236999-25.532318-276.600112 0-12.766159 4.255386-25.532318 4.255386-38.298477-4.255387C307.741455 104.836549 269.442978 92.07039 248.166047 87.815004c-8.510773 34.043091-8.510773 68.086182 4.255386 102.129272 4.255386 17.021545 4.255386 34.043091-8.510773 42.553864-34.043091 38.298477-51.064636 85.107727-51.064636 131.916976 0 200.003158 114.895431 242.557022 238.301635 255.323181 17.021545 0 29.787704 12.766159 34.043091 29.787704 4.255386 17.021545 0 34.043091-8.510773 42.553864-21.276932 21.276932-29.787704 46.80925-29.787704 76.596954v165.960068c0 25.532318-17.021545 42.553863-42.553863 42.553863s-42.553863-17.021545-42.553864-42.553863v-72.341568c-127.66159 21.276932-182.981613-51.064636-221.28009-97.873886-17.021545-21.276932-29.787704-38.298477-46.80925-42.553864-21.276932-4.255386-38.298477-29.787704-29.787704-51.064636 4.255386-21.276932 29.787704-38.298477 51.064636-29.787704 42.553863 12.766159 68.086182 42.553863 93.6185 72.341568 34.043091 46.80925 63.830795 80.852341 153.193908 63.830795v-4.255386c0-25.532318 4.255386-55.320023 12.766159-76.596955-119.150818-25.532318-246.812408-102.129272-246.812408-327.664748 0-63.830795 21.276932-123.406204 59.575409-170.215454-17.021545-59.575409-12.766159-114.895431 12.766159-170.215454 4.255386-12.766159 12.766159-21.276932 25.532318-25.532318 17.021545-4.255386 72.341568-12.766159 187.236999 59.575409 93.6185-21.276932 191.492386-21.276932 280.855499 0 110.640045-72.341568 170.215454-63.830795 187.236999-59.575409 12.766159 4.255386 21.276932 12.766159 25.532319 25.532318 21.276932 55.320023 25.532318 110.640045 12.766159 165.960067 38.298477 46.80925 59.575409 106.384659 59.575408 170.215454 0 242.557022-144.683136 306.387817-246.812408 331.920135 8.510773 25.532318 12.766159 55.320023 12.766159 80.852341V938.892273c0 25.532318-17.021545 42.553863-42.553863 42.553864z'
-            },
-            {
-                tip: 'Mail',
-                href: 'mailto:shameimaru.ayaaya@gmail.com',
-                onclick: '',
-                target: '_blank',
-                viewBox: '0 0 1024 1024',
-                path: 'M858.656 192 165.344 192C109.472 192 64 237.44 64 293.312l0 469.376C64 818.56 109.472 864 165.344 864l693.312 0C914.528 864 960 818.56 960 762.688L960 293.312C960 237.44 914.528 192 858.656 192zM858.656 800 165.344 800C144.736 800 128 783.264 128 762.688L128 293.312C128 272.736 144.736 256 165.344 256l684.544 0-307.488 279.808c-14.592 14.56-38.272 14.528-54.752-1.792l-244.256-206.752C229.856 315.84 209.664 317.504 198.272 331.008c-11.424 13.472-9.76 33.664 3.744 45.088l242.304 204.96c19.904 19.904 46.048 29.792 72.032 29.792 25.632 0 51.136-9.632 70.176-28.736L896 300.544l0 462.144C896 783.264 879.264 800 858.656 800z'
-            },
-            {
-                tip: 'X',
-                href: 'https://x.com/__MasterSpark__',
-                onclick: '',
-                target: '_blank',
-                viewBox: '0 0 1088 1024',
-                path: 'M647.488 433.344L1052.544 0h-96L604.864 376.32 323.968 0H0l424.768 568.96L0 1023.552h96l371.392-397.44 296.64 397.44H1088l-440.512-590.08zM516.032 574.08l-43.008-56.64-342.4-450.88h147.392l276.352 363.904 43.008 56.64L956.608 960h-147.456l-293.12-385.92z'
-            },
-            {
-                tip: 'Facebook',
-                href: 'https://www.facebook.com/share/18ScAECBgU/?mibextid=wwXIfr',
-                onclick: '',
-                target: '_blank',
-                viewBox: '0 0 1024 1024',
-                path: 'M764.276115 324.243956a66.170784 66.170784 0 0 0-52.936627-26.468313H610.429042v-66.170785h66.170784a66.170784 66.170784 0 0 0 66.170784-66.170784V66.177898a66.170784 66.170784 0 0 0-66.170784-66.170785h-92.639098a226.800363 226.800363 0 0 0-114.144603 29.776853C428.459385 54.59801 378.831297 105.880368 378.831297 208.445084v87.676289H312.660512a60.049987 60.049987 0 0 0-46.319549 19.851235A73.118717 73.118717 0 0 0 246.489728 362.292157v99.256177a66.170784 66.170784 0 0 0 66.170784 66.170784h66.170785v430.110098a66.170784 66.170784 0 0 0 66.170784 66.170784h99.256176a66.170784 66.170784 0 0 0 66.170785-66.170784v-430.110098h77.750671a66.170784 66.170784 0 0 0 62.862245-47.973819l23.159775-99.256176a58.561144 58.561144 0 0 0-9.925618-56.245167z m-76.096402 137.304378H544.258257v496.280882h-99.256176v-496.280882H312.660512v-99.256177h132.341569v-153.847073C445.002081 74.449246 557.492414 66.177898 583.960728 66.177898H676.599826v99.256176h-86.02202c-47.973819 0-46.319549 39.702471-46.319549 39.702471v157.155612h167.081231z'
-            },
-            {
-                tip: 'Instagram',
-                href: 'https://www.instagram.com/shikikamiyama/profilecard/?igsh=MWFnZWVmZHJpeDN2aQ==',
-                onclick: '',
-                target: '_blank',
-                viewBox: '0 0 1024 1024',
-                path: 'M725.333333 341.333333a42.666667 42.666667 0 1 1 0-85.333333 42.666667 42.666667 0 0 1 0 85.333333zM341.333333 170.666667a170.666667 170.666667 0 0 0-170.666666 170.666666v341.333334a170.666667 170.666667 0 0 0 170.666666 170.666666h341.333334a170.666667 170.666667 0 0 0 170.666666-170.666666V341.333333a170.666667 170.666667 0 0 0-170.666666-170.666666H341.333333z m0-85.333334h341.333334a256 256 0 0 1 256 256v341.333334a256 256 0 0 1-256 256H341.333333a256 256 0 0 1-256-256V341.333333a256 256 0 0 1 256-256z m90.88 624.554667a42.666667 42.666667 0 0 1 31.957334-79.104 128 128 0 1 0-70.869334-70.826667 42.666667 42.666667 0 1 1-79.104 32 213.333333 213.333333 0 1 1 118.058667 117.930667z'
-            }
-        ]
+        logoBgUrl: basePath + (c.logoBgUrl || 'static/img/head.PNG'),
+        logoFrameUrl: basePath + (c.logoFrameUrl || 'static/img/logokuang2.png'),
+        welcomeHtml: c.welcomeHtml || '',
+        desc1Html: c.desc1Html || '',
+        desc2Html: c.desc2Html || '',
+        showSnake: (c.showSnake !== undefined) ? c.showSnake : false,
+        icons: c.icons || []
     };
 }
 
@@ -959,11 +1061,12 @@ function renderRightHeader() {
 }
 
 function getFooterDefaults() {
+    var c = getSiteContent().footer || {};
     return {
-        startYear: 2022,
-        author: 'GitHub@Hisou-Tenshi',
-        authorUrl: 'https://github.com/Hisou-Tenshi',
-        rights: 'All rights reserved.'
+        startYear: c.startYear || 2022,
+        author: c.author || '',
+        authorUrl: c.authorUrl || '',
+        rights: c.rights || ''
     };
 }
 
@@ -985,3 +1088,568 @@ function renderFooter() {
     
     footer.innerHTML = 'Copyright © ' + yearStr + ' <a href="' + data.authorUrl + '">' + data.author + '.</a><br>' + data.rights;
 }
+
+/* ═══════════════════════════════════════════
+   Dynamic Liquid Glass
+   JS only writes CSS variables / data attrs
+   ═══════════════════════════════════════════ */
+(function initDynamicGlass() {
+    var root = document.documentElement;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var scrollQueued = false;
+    var lumaQueued = false;
+    var lastScrollFlag = null;
+    var lastDenseFlag = null;
+    var lastLuma = -1;
+    var scrollIdleTimer = null;
+
+    function setVar(name, value) {
+        root.style.setProperty(name, value);
+    }
+
+    function setFlag(attr, on) {
+        if (on) root.setAttribute(attr, '1');
+        else root.removeAttribute(attr);
+    }
+
+    function onScroll() {
+        if (scrollQueued) return;
+        scrollQueued = true;
+        requestAnimationFrame(function () {
+            scrollQueued = false;
+            var y = window.scrollY || document.documentElement.scrollTop || 0;
+            var scrolled = y > 12;
+            if (scrolled !== lastScrollFlag) {
+                lastScrollFlag = scrolled;
+                setFlag('data-glass-scroll', scrolled);
+            }
+            clearTimeout(scrollIdleTimer);
+            if (scrolled && !reduceMotion) {
+                scrollIdleTimer = setTimeout(function () {
+                    if ((window.scrollY || 0) <= 12) {
+                        lastScrollFlag = false;
+                        setFlag('data-glass-scroll', false);
+                    }
+                }, 900);
+            }
+        });
+    }
+
+    function sampleBackgroundLuma() {
+        if (lumaQueued) return;
+        lumaQueued = true;
+        requestAnimationFrame(function () {
+            lumaQueued = false;
+            var theme = root.getAttribute('data-theme') || 'Light';
+            var estimated = theme === 'Dark' ? 0.28 : 0.58;
+
+            try {
+                var probe = document.createElement('canvas');
+                probe.width = 8;
+                probe.height = 8;
+                var ctx = probe.getContext('2d', { willReadFrequently: true });
+                if (ctx) {
+                    var bgImg = getComputedStyle(root, '::before').backgroundImage;
+                    if (!bgImg || bgImg === 'none') {
+                        bgImg = getComputedStyle(root).getPropertyValue('--main_bg_color');
+                    }
+                    var urlMatch = String(bgImg).match(/url\(["']?([^"')]+)["']?\)/);
+                    if (urlMatch) {
+                        var img = new Image();
+                        img.crossOrigin = 'anonymous';
+                        img.onload = function () {
+                            try {
+                                ctx.drawImage(img, 0, 0, 8, 8);
+                                var data = ctx.getImageData(0, 0, 8, 8).data;
+                                var sum = 0;
+                                var rSum = 0;
+                                var gSum = 0;
+                                var bSum = 0;
+                                var count = 0;
+                                for (var i = 0; i < data.length; i += 4) {
+                                    rSum += data[i];
+                                    gSum += data[i + 1];
+                                    bSum += data[i + 2];
+                                    sum += (0.2126 * data[i] + 0.7152 * data[i + 1] + 0.0722 * data[i + 2]) / 255;
+                                    count++;
+                                }
+                                applyGlassEnv(sum / count, rSum / count, gSum / count, bSum / count);
+                            } catch (e) {
+                                applyGlassEnv(estimated);
+                            }
+                        };
+                        img.onerror = function () { applyGlassEnv(estimated); };
+                        img.src = urlMatch[1];
+                        return;
+                    }
+                }
+            } catch (e) { /* ignore */ }
+
+            applyGlassEnv(estimated);
+        });
+    }
+
+    function boostTint(r, g, b, dark, luma) {
+        // Push sample toward vivid chroma; avoid muddy gray midtones
+        var max = Math.max(r, g, b);
+        var min = Math.min(r, g, b);
+        var mid = (r + g + b) / 3;
+        if (max - min < 18) {
+            if (dark) return { r: 110, g: 80, b: 230 };
+            return { r: 90, g: 165, b: 230 };
+        }
+        var satBoost = dark ? 1.55 : 1.45;
+        // Bright backgrounds: less lift, slightly darker channels so white text stays readable
+        var lift = dark ? 28 : (luma > 0.62 ? 8 : 28);
+        var ceil = luma > 0.68 ? 210 : 255;
+        function channel(v) {
+            var pushed = mid + (v - mid) * satBoost + lift * 0.35;
+            if (luma > 0.62) pushed *= 0.88;
+            return Math.max(40, Math.min(ceil, Math.round(pushed)));
+        }
+        return { r: channel(r), g: channel(g), b: channel(b) };
+    }
+
+    function applyGlassEnv(luma, r, g, b) {
+        if (Math.abs(luma - lastLuma) < 0.02 && r == null) return;
+        lastLuma = luma;
+        setVar('--glass-luma', luma.toFixed(3));
+
+        var theme = root.getAttribute('data-theme') || 'Light';
+        var dark = theme === 'Dark';
+        var tint;
+        if (r != null && g != null && b != null) {
+            tint = boostTint(r, g, b, dark, luma);
+        } else if (dark) {
+            tint = { r: 95, g: 70, b: 210 };
+        } else {
+            tint = luma > 0.65 ? { r: 70, g: 140, b: 210 } : { r: 120, g: 200, b: 255 };
+        }
+        setVar('--glass-tint-r', String(tint.r));
+        setVar('--glass-tint-g', String(tint.g));
+        setVar('--glass-tint-b', String(tint.b));
+
+        var dense = luma < 0.38 || luma > 0.78;
+        if (dense !== lastDenseFlag) {
+            lastDenseFlag = dense;
+            setFlag('data-glass-dense', dense);
+        }
+
+        // Whiteness cap: as background gets brighter, cut white overlay and deepen tint
+        var bright = luma >= 0.58;
+        setFlag('data-glass-bright', bright);
+
+        var whiteMax = dark ? 0.22 : 0.28;
+        var whiteTop;
+        var whiteHover;
+        var tintAlpha;
+        var fillAlpha;
+        var deepAlpha;
+
+        if (luma >= 0.78) {
+            whiteTop = 0.08;
+            whiteHover = 0.12;
+            tintAlpha = dark ? 0.62 : 0.64;
+            fillAlpha = dark ? 0.52 : 0.54;
+            deepAlpha = dark ? 0.72 : 0.74;
+        } else if (luma >= 0.65) {
+            whiteTop = 0.12;
+            whiteHover = 0.16;
+            tintAlpha = dark ? 0.56 : 0.58;
+            fillAlpha = dark ? 0.46 : 0.48;
+            deepAlpha = dark ? 0.66 : 0.68;
+        } else if (luma >= 0.58) {
+            whiteTop = 0.18;
+            whiteHover = 0.22;
+            tintAlpha = dark ? 0.50 : 0.50;
+            fillAlpha = dark ? 0.40 : 0.40;
+            deepAlpha = dark ? 0.60 : 0.58;
+        } else {
+            whiteTop = dark ? 0.18 : 0.26;
+            whiteHover = dark ? 0.24 : 0.32;
+            tintAlpha = dark ? 0.48 : 0.42;
+            fillAlpha = dark ? 0.38 : 0.32;
+            deepAlpha = dark ? 0.58 : 0.52;
+        }
+
+        whiteTop = Math.min(whiteTop, whiteMax);
+        whiteHover = Math.min(whiteHover, whiteMax + 0.04);
+
+        setVar('--glass-white-top', whiteTop.toFixed(3));
+        setVar('--glass-white-hover', whiteHover.toFixed(3));
+        setVar('--glass-tint-alpha', tintAlpha.toFixed(3));
+        setVar('--glass-tint-mid-alpha', (tintAlpha * 0.72).toFixed(3));
+        setVar('--glass-tint-deep-alpha', deepAlpha.toFixed(3));
+        setVar('--glass-fill-alpha', fillAlpha.toFixed(3));
+        setVar('--glass-fill-hover-alpha', (fillAlpha + 0.06).toFixed(3));
+        setVar('--glass-brightness', luma >= 0.65 ? '1.0' : (dark ? '1.06' : '1.08'));
+
+        // Always pure white body text (emphasis colors stay in CSS)
+        setVar('--glass-text', '#ffffff');
+        setVar('--glass-text-muted', '#ffffff');
+        setVar('--main_text_color', '#ffffff');
+        setVar('--item_left_title_color', '#ffffff');
+        setVar('--item_left_text_color', '#ffffff');
+        setVar('--footer_text_color', '#ffffff');
+        setVar('--fill', '#ffffff');
+        setVar('--glass-text-shadow', bright || dark
+            ? '0 1px 3px rgba(0, 20, 50, 0.65), 0 0 1px rgba(0, 10, 30, 0.4)'
+            : '0 1px 2px rgba(0, 20, 50, 0.45)');
+        setVar('--glass-opacity-base', dense || bright ? '0.64' : (dark ? '0.50' : '0.48'));
+    }
+
+    function onThemeChange() {
+        lastLuma = -1;
+        sampleBackgroundLuma();
+    }
+
+    window.__onSiteBackgroundApplied = function () {
+        lastLuma = -1;
+        sampleBackgroundLuma();
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () {
+        sampleBackgroundLuma();
+    }, { passive: true });
+
+    var observer = new MutationObserver(function (mutations) {
+        for (var i = 0; i < mutations.length; i++) {
+            if (mutations[i].attributeName === 'data-theme') {
+                onThemeChange();
+                break;
+            }
+        }
+    });
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function () {
+            onScroll();
+            sampleBackgroundLuma();
+        });
+    } else {
+        onScroll();
+        sampleBackgroundLuma();
+    }
+})();
+
+/* ---- Panel PDF export (section text → canvas → PDF, no html2canvas) ---- */
+(function () {
+    var JSPDF_CDN = 'https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js';
+    var loadPromise = null;
+
+    function loadJsPdf() {
+        if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+        if (window.jsPDF) return Promise.resolve(window.jsPDF);
+        if (loadPromise) return loadPromise;
+        loadPromise = new Promise(function (resolve, reject) {
+            var script = document.createElement('script');
+            script.src = JSPDF_CDN;
+            script.async = true;
+            script.onload = function () {
+                var Ctor = (window.jspdf && window.jspdf.jsPDF) || window.jsPDF;
+                if (Ctor) resolve(Ctor);
+                else reject(new Error('jsPDF unavailable'));
+            };
+            script.onerror = function () {
+                loadPromise = null;
+                reject(new Error('Failed to load jsPDF'));
+            };
+            document.head.appendChild(script);
+        });
+        return loadPromise;
+    }
+
+    function sanitizeFilename(name) {
+        return String(name || 'document')
+            .replace(/[\\/:*?"<>|]+/g, '_')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .slice(0, 80) || 'document';
+    }
+
+    function normalizeText(text) {
+        return String(text || '')
+            .replace(/\u00a0/g, ' ')
+            .replace(/[ \t]+\n/g, '\n')
+            .replace(/\n[ \t]+/g, '\n')
+            .replace(/[ \t]{2,}/g, ' ')
+            .trim();
+    }
+
+    function collectBlocks(panel) {
+        var blocks = [];
+
+        function push(type, text, opts) {
+            text = normalizeText(text);
+            if (!text) return;
+            blocks.push(Object.assign({ type: type, text: text }, opts || {}));
+        }
+
+        var header = panel.querySelector(':scope > .header');
+        if (header) {
+            var h1 = header.querySelector('h1');
+            if (h1) push('h1', h1.textContent);
+            var address = header.querySelector('address');
+            if (address) {
+                var addrLines = (address.innerText || address.textContent || '').split(/\n+/);
+                addrLines.forEach(function (line) { push('meta', line, { align: 'center' }); });
+            }
+            blocks.push({ type: 'rule' });
+        }
+
+        var sections = panel.querySelectorAll(':scope > section');
+        if (!sections.length) {
+            // Fallback: whole panel text
+            var clone = panel.cloneNode(true);
+            var btn = clone.querySelector('.print-button');
+            if (btn && btn.parentNode) btn.parentNode.removeChild(btn);
+            push('p', clone.innerText || clone.textContent);
+            return blocks;
+        }
+
+        Array.prototype.forEach.call(sections, function (section) {
+            var title = section.querySelector(':scope > .section-title');
+            if (title) push('h2', title.textContent);
+
+            Array.prototype.forEach.call(section.children, function (child) {
+                if (child.classList && child.classList.contains('section-title')) return;
+
+                if (child.classList && child.classList.contains('experience-item')) {
+                    var expTitle = child.querySelector('.experience-title');
+                    var expSub = child.querySelector('.experience-subtitle');
+                    var expDur = child.querySelector('.experience-duration');
+                    if (expTitle) push('h3', expTitle.textContent);
+                    if (expSub) push('meta', expSub.textContent);
+                    if (expDur) push('meta', expDur.textContent);
+
+                    // Walk direct content: text nodes + nested lists/paragraphs
+                    Array.prototype.forEach.call(child.childNodes, function (node) {
+                        if (node.nodeType === 3) {
+                            push('p', node.textContent);
+                            return;
+                        }
+                        if (node.nodeType !== 1) return;
+                        var tag = node.tagName;
+                        if (node.classList && (
+                            node.classList.contains('experience-header') ||
+                            node.classList.contains('experience-title') ||
+                            node.classList.contains('experience-subtitle') ||
+                            node.classList.contains('experience-duration')
+                        )) return;
+                        if (tag === 'UL' || tag === 'OL') {
+                            Array.prototype.forEach.call(node.querySelectorAll(':scope > li'), function (li) {
+                                push('li', li.innerText || li.textContent);
+                            });
+                            return;
+                        }
+                        if (tag === 'BR') return;
+                        push('p', node.innerText || node.textContent);
+                    });
+                    return;
+                }
+
+                if (child.tagName === 'UL' || child.tagName === 'OL') {
+                    Array.prototype.forEach.call(child.querySelectorAll(':scope > li'), function (li) {
+                        push('li', li.innerText || li.textContent);
+                    });
+                    return;
+                }
+
+                push('p', child.innerText || child.textContent);
+            });
+        });
+
+        return blocks;
+    }
+
+    function wrapLine(ctx, text, maxWidth) {
+        var chars = Array.from(String(text || ''));
+        if (!chars.length) return [''];
+        var lines = [];
+        var current = '';
+        for (var i = 0; i < chars.length; i++) {
+            var ch = chars[i];
+            if (ch === '\n') {
+                lines.push(current);
+                current = '';
+                continue;
+            }
+            var trial = current + ch;
+            if (ctx.measureText(trial).width > maxWidth && current) {
+                lines.push(current);
+                current = ch;
+            } else {
+                current = trial;
+            }
+        }
+        if (current) lines.push(current);
+        return lines.length ? lines : [''];
+    }
+
+    function styleFor(type, ctx, opts) {
+        opts = opts || {};
+        if (type === 'h1') {
+            ctx.font = '700 28px "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+            return { size: 28, gap: 14, align: 'center', color: '#111111' };
+        }
+        if (type === 'h2') {
+            ctx.font = '700 18px "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+            return { size: 18, gap: 12, align: 'left', color: '#111111', rule: true };
+        }
+        if (type === 'h3') {
+            ctx.font = '700 14px "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+            return { size: 14, gap: 8, align: 'left', color: '#111111' };
+        }
+        if (type === 'meta') {
+            ctx.font = '400 12px "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+            return {
+                size: 12,
+                gap: 6,
+                align: opts.align || 'left',
+                color: '#444444'
+            };
+        }
+        if (type === 'li') {
+            ctx.font = '400 13px "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+            return { size: 13, gap: 8, align: 'left', color: '#222222', bullet: true };
+        }
+        ctx.font = '400 13px "Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+        return { size: 13, gap: 10, align: 'left', color: '#222222' };
+    }
+
+    function renderBlocksToCanvases(blocks) {
+        // A4 at ~2x CSS px
+        var pageW = 1190;
+        var pageH = 1684;
+        var marginX = 72;
+        var marginY = 72;
+        var contentW = pageW - marginX * 2;
+        var lineGap = 1.45;
+
+        var pages = [];
+        var canvas = null;
+        var ctx = null;
+        var y = 0;
+
+        function newPage() {
+            canvas = document.createElement('canvas');
+            canvas.width = pageW;
+            canvas.height = pageH;
+            ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, pageW, pageH);
+            ctx.textBaseline = 'top';
+            y = marginY;
+            pages.push(canvas);
+        }
+
+        function ensureSpace(need) {
+            if (!canvas || y + need > pageH - marginY) newPage();
+        }
+
+        function drawRule() {
+            ensureSpace(18);
+            ctx.strokeStyle = '#222222';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(marginX, y + 6);
+            ctx.lineTo(pageW - marginX, y + 6);
+            ctx.stroke();
+            y += 18;
+        }
+
+        newPage();
+
+        blocks.forEach(function (block) {
+            if (block.type === 'rule') {
+                drawRule();
+                return;
+            }
+
+            var style = styleFor(block.type, ctx, block);
+            var prefix = style.bullet ? '•  ' : '';
+            var text = prefix + block.text.replace(/\s*\n\s*/g, ' ');
+            var lines = wrapLine(ctx, text, contentW);
+            var lineH = style.size * lineGap;
+
+            lines.forEach(function (line, idx) {
+                ensureSpace(lineH + (idx === lines.length - 1 ? style.gap : 0));
+                styleFor(block.type, ctx, block);
+                ctx.fillStyle = style.color;
+                var x = marginX;
+                if (style.align === 'center') {
+                    x = Math.max(marginX, (pageW - ctx.measureText(line).width) / 2);
+                }
+                ctx.fillText(line, x, y);
+                y += lineH;
+            });
+
+            if (style.rule) {
+                ctx.strokeStyle = '#333333';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(marginX, y);
+                ctx.lineTo(pageW - marginX, y);
+                ctx.stroke();
+                y += 8;
+            }
+            y += style.gap;
+        });
+
+        return pages;
+    }
+
+    function restoreButton(btn, html) {
+        btn.disabled = false;
+        btn.removeAttribute('aria-busy');
+        btn.innerHTML = html;
+    }
+
+    window.exportPanelPdf = function (btn) {
+        if (!btn || typeof btn.closest !== 'function') return;
+        var panel = btn.closest('.left-div.left-des');
+        if (!panel) return;
+
+        var titleEl = panel.querySelector('.header h1');
+        var pageTitle = document.querySelector('content > .title');
+        var rawName = (titleEl && titleEl.textContent) ||
+            (pageTitle && pageTitle.textContent) ||
+            document.title ||
+            'document';
+        var filename = sanitizeFilename(rawName) + '.pdf';
+        var originalHtml = btn.innerHTML;
+
+        btn.disabled = true;
+        btn.setAttribute('aria-busy', 'true');
+        btn.innerHTML = 'Generating…';
+
+        loadJsPdf()
+            .then(function (JsPDF) {
+                var blocks = collectBlocks(panel);
+                if (!blocks.length) throw new Error('panel content empty');
+
+                var pages = renderBlocksToCanvases(blocks);
+                var pdf = new JsPDF({ unit: 'pt', format: 'a4', orientation: 'portrait' });
+                var pdfW = pdf.internal.pageSize.getWidth();
+                var pdfH = pdf.internal.pageSize.getHeight();
+
+                pages.forEach(function (pageCanvas, index) {
+                    if (index > 0) pdf.addPage();
+                    var img = pageCanvas.toDataURL('image/jpeg', 0.95);
+                    pdf.addImage(img, 'JPEG', 0, 0, pdfW, pdfH);
+                });
+
+                pdf.save(filename);
+            })
+            .catch(function (err) {
+                console.error('[exportPanelPdf]', err);
+                alert('PDF 生成失败，请稍后重试。');
+            })
+            .then(function () {
+                restoreButton(btn, originalHtml);
+            });
+    };
+})();
+

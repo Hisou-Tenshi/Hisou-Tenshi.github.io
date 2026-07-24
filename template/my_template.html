@@ -17,12 +17,12 @@
                 margin-top: 20px;
                 margin-bottom: 20px;
                 border: 0;
-                border-top: 1px solid #eee;
+                border-top: 1px solid rgba(255, 255, 255, 0.18);
             }
 
             .staticrypt-page {
                 width: 360px;
-                padding: 20px 0; /* 增加垂直内边距替代原有布局 */
+                padding: 20px 0;
                 margin: 0 auto;
                 box-sizing: border-box;
             }
@@ -30,29 +30,106 @@
             .staticrypt-form {
                 position: relative;
                 z-index: 1;
-                background: #ffffff;
+                overflow: hidden;
                 max-width: 360px;
                 margin: 0 auto;
                 padding: 45px;
                 text-align: center;
-                box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
+                border-radius: 16px;
+                color: #ffffff;
+                text-shadow: 0 1px 2px rgba(0, 20, 50, 0.45);
+                background:
+                    linear-gradient(
+                        165deg,
+                        rgba(255, 255, 255, 0.22) 0%,
+                        rgba(90, 160, 230, 0.40) 42%,
+                        rgba(70, 140, 210, 0.52) 100%
+                    ),
+                    rgba(90, 160, 230, 0.48);
+                backdrop-filter: blur(20px) saturate(200%);
+                -webkit-backdrop-filter: blur(20px) saturate(200%);
+                border: 1px solid rgba(255, 255, 255, 0.45);
+                box-shadow:
+                    0 1px 2px rgba(20, 80, 140, 0.08),
+                    0 8px 24px rgba(20, 90, 160, 0.16),
+                    0 20px 48px rgba(15, 70, 130, 0.14),
+                    inset 0 1px 0 0 rgba(255, 255, 255, 0.42),
+                    inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+                transition: transform 0.32s cubic-bezier(0.25, 0.1, 0.25, 1), box-shadow 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+
+            .staticrypt-form::after {
+                content: '';
+                position: absolute;
+                top: 2px;
+                left: 2px;
+                right: 2px;
+                height: calc(42% - 2px);
+                min-height: 18px;
+                border-radius: inherit;
+                background: linear-gradient(
+                    180deg,
+                    rgba(255, 255, 255, 0.12) 0%,
+                    rgba(255, 255, 255, 0.03) 55%,
+                    transparent 100%
+                );
+                pointer-events: none;
+                opacity: 0.65;
+                z-index: 0;
+            }
+
+            .staticrypt-form > * {
+                position: relative;
+                z-index: 1;
+            }
+
+            .staticrypt-form::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                border-radius: inherit;
+                padding: 1px;
+                background: linear-gradient(
+                    135deg,
+                    rgba(255, 255, 255, 0.72) 0%,
+                    rgba(190, 220, 255, 0.35) 24%,
+                    rgba(255, 255, 255, 0.08) 48%,
+                    rgba(160, 190, 230, 0.28) 76%,
+                    rgba(255, 255, 255, 0.55) 100%
+                );
+                -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+                -webkit-mask-composite: xor;
+                mask-composite: exclude;
+                pointer-events: none;
+                opacity: 0.85;
+            }
+
+            .staticrypt-form:hover {
+                transform: scale(1.015);
+                box-shadow:
+                    0 2px 4px rgba(20, 80, 140, 0.08),
+                    0 12px 32px rgba(20, 90, 160, 0.18),
+                    0 28px 56px rgba(15, 70, 130, 0.16),
+                    inset 0 1px 0 0 rgba(255, 255, 255, 0.48);
             }
 
             .staticrypt-form input[type="password"],
             input[type="text"] {
-                background: inherit;
-                border: 0;
-                box-sizing: border-box; /* This ensures padding is included in the total width */
+                background: rgba(90, 160, 230, 0.28);
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                border-radius: 10px;
+                box-sizing: border-box;
                 font-size: 14px;
                 outline: 0;
-                padding: 15px 30px 15px 15px; /* Adjust the padding to ensure there is space for the icon */
+                padding: 15px 30px 15px 15px;
                 width: 100%;
+                color: #ffffff;
             }
 
             .staticrypt-password-container {
                 position: relative;
                 outline: 0;
-                background: #f2f2f2;
+                background: transparent;
                 width: 100%;
                 border: 0;
                 margin: 0 0 15px;
@@ -62,56 +139,72 @@
             .staticrypt-toggle-password-visibility {
                 cursor: pointer;
                 height: 20px;
-                opacity: 60%;
+                opacity: 70%;
                 padding: 13px;
                 position: absolute;
                 right: 0;
                 top: 50%;
                 transform: translateY(-50%);
                 width: 20px;
+                filter: brightness(1.4);
             }
 
             .staticrypt-form .staticrypt-decrypt-button {
                 text-transform: uppercase;
                 outline: 0;
-                background: /*[|template_color_primary|]*/ 0;
+                background:
+                    linear-gradient(
+                        165deg,
+                        rgba(255, 255, 255, 0.35) 0%,
+                        rgba(140, 190, 240, 0.35) 100%
+                    );
+                backdrop-filter: blur(12px) saturate(160%);
+                -webkit-backdrop-filter: blur(12px) saturate(160%);
                 width: 100%;
-                border: 0;
+                border: 1px solid rgba(255, 255, 255, 0.35);
+                border-radius: 12px;
                 padding: 15px;
-                color: #ffffff;
+                color: rgba(248, 251, 255, 0.96);
                 font-size: 14px;
+                font-weight: 600;
                 cursor: pointer;
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.45), 0 8px 20px rgba(40, 70, 120, 0.16);
+                transition: transform 0.28s cubic-bezier(0.25, 0.1, 0.25, 1), filter 0.28s ease;
             }
 
             .staticrypt-form .staticrypt-decrypt-button:hover,
             .staticrypt-form .staticrypt-decrypt-button:active,
             .staticrypt-form .staticrypt-decrypt-button:focus {
-                background: /*[|template_color_primary|]*/ 0;
-                filter: brightness(92%);
+                filter: brightness(1.08);
+                transform: scale(1.015);
+            }
+
+            .staticrypt-form .staticrypt-decrypt-button:active {
+                transform: scale(0.985);
             }
 
             .staticrypt-html {
                 height: 100%;
-                margin: 0; /* 新增 */
+                margin: 0;
             }
             
             .staticrypt-body {
-                height: 100vh; /* 修改为视口高度 */
-                min-height: 100%; /* 新增 */
+                height: 100vh;
+                min-height: 100%;
                 margin: 0;
-                display: flex; /* 新增弹性布局 */
+                display: flex;
                 flex-direction: column;
             }
 
             .staticrypt-content {
-                flex: 1; /* 占据剩余空间 */
-                display: flex; /* 新增弹性布局 */
-                align-items: center; /* 垂直居中 */
-                min-height: 100vh; /* 新增 */
+                flex: 1;
+                display: flex;
+                align-items: center;
+                min-height: 100vh;
                 margin-bottom: 1em;
-                background: url('../static/img/background.PNG') no-repeat center center fixed;
+                background: #000 url('../static/img/background.PNG') no-repeat center center fixed;
                 background-size: cover;
-                font-family: "Arial", sans-serif;
+                font-family: -apple-system, BlinkMacSystemFont, "Nunito", "Segoe UI", sans-serif;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
             }
@@ -119,6 +212,8 @@
             .staticrypt-instructions {
                 margin-top: -1em;
                 margin-bottom: 1em;
+                position: relative;
+                z-index: 1;
             }
 
             .staticrypt-title {
@@ -129,6 +224,9 @@
                 display: flex;
                 align-items: center;
                 margin-bottom: 1em;
+                position: relative;
+                z-index: 1;
+                color: #ffffff;
             }
 
             .staticrypt-remember input[type="checkbox"] {
@@ -152,19 +250,11 @@
                 width: 2rem;
                 height: 2rem;
                 vertical-align: text-bottom;
-                border: 0.25em solid gray;
+                border: 0.25em solid rgba(255, 255, 255, 0.35);
                 border-right-color: transparent;
                 border-radius: 50%;
                 -webkit-animation: spinner-border 0.75s linear infinite;
                 animation: spinner-border 0.75s linear infinite;
-                animation-duration: 0.75s;
-                animation-timing-function: linear;
-                animation-delay: 0s;
-                animation-iteration-count: infinite;
-                animation-direction: normal;
-                animation-fill-mode: none;
-                animation-play-state: running;
-                animation-name: spinner-border;
             }
 
             @keyframes spinner-border {
@@ -182,7 +272,7 @@
 
             @media (max-width: 768px) {
                 .staticrypt-content {
-                    background: url('../static/img/mobile-bg.jpg') no-repeat center center fixed;
+                    background: #000 url('../static/img/mobile-bg.jpg') no-repeat center center fixed;
                     background-size: cover;
                 }
             }
@@ -307,6 +397,39 @@
                     alert(templateError);
                 }
             });
+        </script>
+        <script>
+            (function () {
+                var EXTS = ['PNG', 'png', 'jpg', 'JPG', 'jpeg', 'JPEG'];
+                var dir = '../static/img/';
+                var stem = (window.matchMedia && window.matchMedia('(max-width: 800px)').matches)
+                    ? 'mobile-bg'
+                    : 'background';
+                var i = 0;
+                function apply(url) {
+                    var el = document.querySelector('.staticrypt-content');
+                    if (!el) return;
+                    if (!url) {
+                        el.style.background = '#000';
+                        el.style.backgroundSize = '';
+                        return;
+                    }
+                    el.style.background = '#000 url("' + url + '") no-repeat center center fixed';
+                    el.style.backgroundSize = 'cover';
+                }
+                function next() {
+                    if (i >= EXTS.length) {
+                        apply(null);
+                        return;
+                    }
+                    var url = dir + stem + '.' + EXTS[i++];
+                    var img = new Image();
+                    img.onload = function () { apply(url); };
+                    img.onerror = next;
+                    img.src = url;
+                }
+                next();
+            })();
         </script>
     </body>
 </html>
