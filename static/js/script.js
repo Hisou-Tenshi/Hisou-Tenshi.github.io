@@ -165,11 +165,20 @@
 	})();
 
 	/* --------------------------------------------------------------- footer */
+	/* Year is computed at runtime: “© 2022–<current year>”. The markup keeps a
+	   static fallback so the page still reads correctly without JS. */
 	(function footer() {
 		var meta = $('.foot__meta');
 		if (!meta) return;
+		var cfg = (window.SITE_CONTENT && window.SITE_CONTENT.footer) || {};
 		var year = new Date().getFullYear();
-		meta.textContent = meta.textContent.replace(/©\s*(\d{4})\s*[–-]\s*\d{4}/, '© $1–' + year);
+		var start = parseInt(cfg.startYear, 10);
+		if (!start) {
+			var m = /©\s*(\d{4})/.exec(meta.textContent || '');
+			start = m ? parseInt(m[1], 10) : year;
+		}
+		var label = start && start < year ? start + '–' + year : String(year);
+		meta.textContent = '© ' + label + ' ' + (cfg.author || 'GitHub@Hisou-Tenshi');
 	})();
 
 	/* ------------------------------------------------- document title kaomoji */
