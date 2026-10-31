@@ -1,0 +1,329 @@
+<!--
+Author：ZYYO (zyyo.net) 基于Github大佬xhofe的主页写的
+Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
+-->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>緋想天Tools - Concentration Calculator</title>
+	<meta name="description" content="浓度与体积计算器 — 面积密度、离心重悬体积、稀释与补加体积。">
+	<meta name="keywords" content="HisouTenshi,hisoutenshi,比那名居天子,ヒソウテンシ,cellCalculator,浓度计算器">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:title" content="緋想天Tools — 浓度与体积计算器">
+	<meta property="og:type" content="website">
+	<meta property="og:locale" content="ja_JP">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295?s=400&u=8416298bf97a731c13897661c76b6a3674045440&v=4">
+	<meta property="og:image:alt" content="緋想天Tools">
+	<meta property="og:url" content="https://tenshi.qzz.io/tools/cellCalculator/">
+	<meta property="og:description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta property="og:site_name" content="緋想天Tools">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/tools/cellCalculator/">
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+	<style>
+		.calc {
+			max-width: 760px;
+		}
+
+		.calc-card {
+			position: relative;
+			padding: clamp(20px, 3vw, 28px);
+			margin-bottom: 16px;
+			border: 1px solid var(--line);
+			border-radius: var(--r-lg);
+			background: var(--card);
+			box-shadow: var(--sh-1);
+		}
+
+		.calc-card h2 {
+			margin: 0 0 6px;
+			font-size: 16.5px;
+			font-weight: 700;
+			letter-spacing: -0.015em;
+			color: var(--ink);
+		}
+
+		.calc-card h2::before {
+			content: "";
+			display: inline-block;
+			width: 3px;
+			height: 0.86em;
+			margin-right: 9px;
+			border-radius: 2px;
+			background: var(--accent);
+			vertical-align: -0.06em;
+		}
+
+		.form-row {
+			display: grid;
+			grid-template-columns: 8.5em minmax(0, 1fr) 4.6em;
+			align-items: center;
+			gap: 10px;
+			margin-top: 10px;
+		}
+
+		.form-row label {
+			font-size: 13.5px;
+			color: var(--ink-3);
+		}
+
+		.form-row input,
+		.form-row select {
+			width: 100%;
+			min-width: 0;
+			padding: 9px 11px;
+			border: 1px solid var(--line);
+			border-radius: 10px;
+			background: var(--bg);
+			color: var(--ink);
+			font-family: var(--font-sans);
+			font-size: 14px;
+			transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+		}
+
+		.form-row input:focus,
+		.form-row select:focus {
+			outline: none;
+			border-color: var(--arc);
+			box-shadow: 0 0 0 3px var(--arc-soft);
+		}
+
+		.form-row input::placeholder {
+			color: var(--ink-4);
+		}
+
+		.form-row span {
+			font-family: var(--font-mono);
+			font-size: 12px;
+			color: var(--ink-4);
+		}
+
+		.calc-card .btn {
+			margin-top: 16px;
+		}
+
+		.calc-out {
+			margin-top: 14px;
+			padding: 12px 14px;
+			border: 1px solid var(--line-2);
+			border-radius: 10px;
+			background: var(--bg-band);
+			font-family: var(--font-mono);
+			font-size: 12.5px;
+			line-height: 1.7;
+			color: var(--ink-2);
+			white-space: pre-line;
+		}
+
+		.calc-out:empty {
+			display: none;
+		}
+
+		@media (max-width: 620px) {
+			.form-row {
+				grid-template-columns: minmax(0, 1fr) auto;
+				gap: 6px 8px;
+			}
+
+			.form-row label {
+				grid-column: 1 / -1;
+				font-size: 12.5px;
+			}
+
+			.form-row span {
+				text-align: right;
+			}
+		}
+	</style>
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/">About</a>
+				<a class="nav__link" href="/contact-us/">Contact</a>
+				<a class="nav__link" href="/tools/" aria-current="page">Tools</a>
+				<a class="nav__link" href="/download/">Download</a>
+				<a class="nav__link" href="/privacy-policy/">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">TL</span>
+					<span>TOOLS / CELL CALCULATOR</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>浓度与体积计算器</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Concentration &amp; Volume Calculator</div>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">细胞实验里最常算的四件事，面积密度换体积浓度、离心后的重悬体积、稀释配方，还有二次利用时的补加体积。输入数值，点「计算」。</p>
+			</div>
+		</section>
+
+		<section class="doc" aria-label="计算器">
+			<div class="wrap">
+				<div class="calc">
+					<div class="calc-card" id="sec1" data-rv>
+						<h2>1. 面积密度 → 体积密度计算</h2>
+						<div class="form-row"><label for="pConc">目标面积密度：</label><input id="pConc" placeholder="如 1.5E6"><span>个/cm²</span></div>
+						<div class="form-row"><label for="pArea">平面面积：</label><input id="pArea" placeholder="如 2.5"><select id="pAreaUnit"><option value="cm2">cm²</option><option value="mm2">mm²</option></select></div>
+						<div class="form-row"><label for="pVol">目标加入体积：</label><input id="pVol" placeholder="如 1"><select id="pVolUnit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+						<button class="btn btn--primary" type="button" onclick="calc1()">计算</button>
+						<div class="calc-out" id="out1"></div>
+					</div>
+
+					<div class="calc-card" id="sec2" data-rv>
+						<h2>2. 离心重悬建议体积计算</h2>
+						<div class="form-row"><label for="cNum">管体标记细胞数：</label><input id="cNum" placeholder="如 2.0E6"><span>个</span></div>
+						<div class="form-row"><label for="tConc2">目标浓度：</label><input id="tConc2" placeholder="自动填充或手动输入"><span>个/mL</span></div>
+						<button class="btn btn--primary" type="button" onclick="calc2()">计算</button>
+						<div class="calc-out" id="out2"></div>
+					</div>
+
+					<div class="calc-card" id="sec3" data-rv>
+						<h2>3. 稀释及辅料计算</h2>
+						<div class="form-row"><label for="cConc3">当前浓度：</label><input id="cConc3" placeholder="如 1E6"><span>个/mL</span></div>
+						<div class="form-row"><label for="cVol3">当前体积：</label><input id="cVol3" placeholder="如 2"><select id="cVol3Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+						<div class="form-row"><label for="tConc3">目标浓度：</label><input id="tConc3" placeholder="自动填充或手动输入"><span>个/mL</span></div>
+						<button class="btn btn--primary" type="button" onclick="calc3()">计算</button>
+						<div class="calc-out" id="out3"></div>
+					</div>
+
+					<div class="calc-card" id="sec4" data-rv>
+						<h2>4. 二次利用补加体积计算</h2>
+						<div class="form-row"><label for="cConc4">当前浓度：</label><input id="cConc4" placeholder="自动填充或手动输入"><span>个/mL</span></div>
+						<div class="form-row"><label for="preVol4">之前体积：</label><input id="preVol4" placeholder="自动填充或手动输入"><select id="preVol4Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+						<div class="form-row"><label for="usedVol4">已用体积：</label><input id="usedVol4" placeholder="如 0.5"><select id="usedVol4Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+						<div class="form-row"><label for="tConc4">目标浓度：</label><input id="tConc4" placeholder="如 5E5"><span>个/mL</span></div>
+						<button class="btn btn--primary" type="button" onclick="calc4()">计算</button>
+						<div class="calc-out" id="out4"></div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+	<script>
+		function getVal(id, unitId) {
+			let v = parseFloat(document.getElementById(id).value);
+			if (isNaN(v)) return NaN;
+			if (unitId) {
+				let u = document.getElementById(unitId).value;
+				if (u === 'mm2') v = v / 100; // 转换为cm²
+				if (u === 'uL') v = v / 1000; // 转换为mL
+			}
+			return v;
+		}
+
+		function formatVal(v) {
+			if (!isFinite(v)) return "NaN";
+			let abs = Math.abs(v);
+			if (abs === 0) return "0";
+			if (abs >= 1e-2 && abs < 1e2) {
+				return v.toFixed(3).replace(/\.0+$/, '').replace(/(\.\d*?)0+$/, '$1');
+			}
+			let exp = v.toExponential(2).split("e");
+			let m = parseFloat(exp[0]);
+			let n = parseInt(exp[1]);
+			return m + '×10<sup>' + n + '</sup>';
+		}
+
+		function calc1() {
+			let conc = getVal('pConc');
+			let area = getVal('pArea', 'pAreaUnit');
+			let vol = getVal('pVol', 'pVolUnit');
+			let total = conc * area;
+			let tConc = total / vol;
+			document.getElementById('out1').innerHTML = '目标浓度:\n' + formatVal(tConc) + ' 个/mL';
+			document.getElementById('tConc2').value = tConc;
+			document.getElementById('tConc3').value = tConc;
+			document.getElementById('cConc4').value = tConc;
+		}
+
+		function calc2() {
+			let cnum = getVal('cNum');
+			let tconc = getVal('tConc2');
+			let vol = cnum / tconc;
+			document.getElementById('out2').innerHTML = '建议最大重悬体积:\n' + formatVal(vol) + ' mL';
+		}
+
+		function calc3() {
+			let cconc = getVal('cConc3');
+			let cvol = getVal('cVol3', 'cVol3Unit');
+			let tconc = getVal('tConc3');
+			let totalNum = cconc * cvol;
+			let tvol = totalNum / tconc;
+			let L = tvol * 0.01;
+			let Y = tvol * (3e-6 / 0.01);
+			document.getElementById('out3').innerHTML = '目标稀释体积:\n' + formatVal(tvol) + ' mL\nLaminin:\n' + formatVal(L) + ' mL (' + formatVal(L * 1000) + ' uL)\nY:\n' + formatVal(Y) + ' mL (' + formatVal(Y * 1000) + ' uL)';
+			document.getElementById('preVol4').value = tvol;
+		}
+
+		function calc4() {
+			let cconc = getVal('cConc4');
+			let prev = getVal('preVol4', 'preVol4Unit');
+			let used = getVal('usedVol4', 'usedVol4Unit');
+			let tconc = getVal('tConc4');
+			let totalNum = cconc * (prev - used);
+			let tvol = totalNum / tconc;
+			let addVol = tvol - (prev - used);
+			document.getElementById('out4').innerHTML = '目标稀释体积:\n' + formatVal(tvol) + ' mL (' + formatVal(tvol * 1000) + ' uL)\n需要增加体积:\n' + formatVal(addVol) + ' mL (' + formatVal(addVol * 1000) + ' uL)';
+		}
+	</script>
+</body>
+</html>

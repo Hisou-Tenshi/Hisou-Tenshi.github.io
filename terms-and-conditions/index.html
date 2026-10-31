@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>Terms and Conditions - 夢と現と交えては、幻想郷に、遊ぶがいい</title>
+	<meta name="description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="Terms and Conditions">
+	<meta property="og:description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/terms-and-conditions/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/terms-and-conditions/">
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/">About</a>
+				<a class="nav__link" href="/contact-us/">Contact</a>
+				<a class="nav__link" href="/tools/">Tools</a>
+				<a class="nav__link" href="/download/">Download</a>
+				<a class="nav__link" href="/privacy-policy/">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/" aria-current="page">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<!-- Page head -->
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">TC</span>
+					<span>TERMS / 條款</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>Terms and Conditions</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Terms of use — conditions</div>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">Last Updated: 31 October 2026<br>Effective Date: 31 October 2026</p>
+				<div class="doc__actions" data-rv style="--rv-d:.18s">
+					<button type="button" onclick="window.print()" class="print-button">
+						<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M11 3h2v9.4l3.2-3.2 1.4 1.4L12 17.4l-5.6-6.8 1.4-1.4L11 12.4zM5 19.2h14V21H5z"/></svg>Get PDF
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Document -->
+		<div class="doc">
+			<div class="wrap">
+				<div class="doc__grid">
+					<nav class="doc__toc" aria-label="本页目录">
+						<a href="#readme">Readme</a>
+						<a href="#amendments">Amendments</a>
+						<a href="#membership">Membership System</a>
+						<a href="#information">Information</a>
+						<a href="#disclaimer">Disclaimer</a>
+						<a href="#warnings">Special Warnings</a>
+						<a href="#submitted">Submitted Information</a>
+						<a href="#copyright">Copyright</a>
+						<a href="#trademarks">Trademarks</a>
+						<a href="#restrictions">Usage Restrictions</a>
+						<a href="#links">Links</a>
+						<a href="#email">Email Handling</a>
+						<a href="#security">Information Security</a>
+						<a href="#termination">Termination of Access</a>
+						<a href="#feedback">Feedback / Complaints</a>
+						<a href="#registration">Registration Policy</a>
+						<a href="#sales">Sales Policy</a>
+						<a href="#vaults">Encrypted Vaults and Downloads</a>
+						<a href="#third-party">Third-Party Services and Content</a>
+						<a href="#music">Music and Media</a>
+						<a href="#minors">Age and Minors</a>
+						<a href="#governing">Governing Law and Jurisdiction</a>
+						<a href="#changelog">Change Log</a>
+					</nav>
+					<div class="doc__body">
+						<h2 id="readme">Readme</h2>
+						<p>These Terms and Conditions govern the use of <a href="https://tenshi.qzz.io/">https://tenshi.qzz.io/</a> (hereinafter referred to as <strong>"this Website"</strong>), including access to the information and files provided on it. By using this Website you agree to be bound by these Terms and Conditions. If you do not accept these Terms and Conditions, you must not use this Website. When reading these Terms and Conditions, please also review any other applicable terms related to the use of this Website, in particular our <a href="/privacy-policy/">Privacy Policy</a>.</p>
+						<p>In these Terms and Conditions, "we", "us" and "our" refer to:</p>
+						<p><strong><a href="https://github.com/Hisou-Tenshi">GitHub@緋想天子</a> 様</strong></p>
+						<p>This Website is a personal, non-commercial static fan site. It has no backend, no accounts, no online shop and no services that could be purchased.</p>
+
+						<h2 id="amendments">Amendments to Terms and Conditions</h2>
+						<p>We reserve the right to amend these Terms and Conditions at any time. Changes will be published on this page with an updated "Last Updated" date and an entry in the <a href="#changelog">Change Log</a>, and take effect when published. Continued use of the Website after publication of a change constitutes your acceptance of the revised Terms and Conditions. Please check the date at the top of this page from time to time.</p>
+
+						<h2 id="membership">Membership System</h2>
+						<p>This Website does <strong>not</strong> operate a membership system. There is no registration, no login, no member-only area and no user profile. You do not need an account to read any public page, to use the music player or to contact us.</p>
+						<p>The password used to unlock the encrypted content vaults on the About and Download pages is not an account credential: it is a shared secret that protects hidden page content and files, it is checked only inside your browser, and it is not stored by us or linked to any identity. See sections "Encrypted Vaults and Downloads" and "Information Security" below, and section&nbsp;10 of the Privacy Policy.</p>
+
+						<h2 id="information">Information</h2>
+						<p>All information provided on this Website is offered in good faith. It is intended for general reference and entertainment only and does not constitute professional, legal, medical or financial advice. We obtain information from internal and external sources and may update it at our discretion. We do not guarantee the timeliness, reliability, accuracy or completeness of any information displayed, including public data snapshots (such as Bangumi collection counters and GitHub repository metadata) that are refreshed periodically by automated processes and may lag behind the source.</p>
+						<p><strong>All views and opinions expressed on this Website are the operator's own personal views.</strong> They do not represent, and are not endorsed by, any employer, organisation, institution or other entity; nothing on this Website should be read as a statement by, or on behalf of, such a body.</p>
+						<p>You should conduct independent research or consult a professional before making decisions based on this Website's content. As we cannot control the internet, we do not warrant uninterrupted, timely or secure access to the Website.</p>
+
+						<h2 id="disclaimer">Disclaimer</h2>
+						<p>To the fullest extent permitted by law, we shall not be liable for any loss or damage (direct or indirect) arising from your use of this Website or any linked sites, regardless of cause (including negligence). We disclaim all liability for losses incurred due to reliance on information contained on or accessed via this Website. This Website is provided "as is" and "as available", without warranties of any kind beyond those that cannot be excluded by law.</p>
+						<p>Where legally prohibited from excluding or modifying implied warranties, such warranties shall be deemed included, but our liability for breaches thereof is limited to resupplying the relevant service.</p>
+						<p>Under no circumstances shall we be liable for loss of profits or any indirect, consequential or incidental damages. Nothing in these Terms and Conditions excludes or limits liability where doing so would be unlawful, including any mandatory rights you have as a consumer under your local law.</p>
+
+						<h2 id="warnings">Special Warnings</h2>
+						<p>You must take precautions to ensure that accessing this Website does not expose your computer system to viruses, malicious code or other harmful interference. This is especially important for files you choose to decrypt and download: they are decrypted locally by your browser, and you should scan them with your own security software before opening them.</p>
+						<p>We expressly disclaim liability for any interference or damage to your computer system arising from your use of this Website or linked sites.</p>
+						<p>We do not warrant that services provided via this Website will meet your requirements.</p>
+						<p>The vault passwords are your responsibility: we do not store them, cannot recover them, and cannot recover content locked behind a lost password. Despite reasonable precautions, unauthorised access to or alteration of your data may occur; we shall not be liable for any losses resulting from such events.</p>
+
+						<h2 id="submitted">Information Submitted by You</h2>
+						<p>This Website does not operate public comments, forums, uploads or user-submitted content. The only way to submit information to us is to send an email to the address published on the <a href="/contact-us/">Contact</a> page.</p>
+						<ul>
+							<li>Emails are handled in accordance with our <a href="/privacy-policy/">Privacy Policy</a>. You retain ownership of what you write; you give us only the permission needed to read and respond to your message.</li>
+							<li>Please do not send confidential information, passwords, identity documents or other sensitive material by email.</li>
+							<li>We assume no responsibility for the legality of unsolicited material you send. You acknowledge that we may comply with lawful requests from authorities concerning such material.</li>
+							<li>Prohibited content in emails includes, but is not limited to: pornography, obscenity or discriminatory material; defamatory, harassing, abusive or threatening language; malware, phishing links or falsified information; unsolicited promotional email ("spam"); and any material that violates applicable law. We may ignore, filter or delete such messages and may report abuse where appropriate.</li>
+							<li>We are not responsible for unsolicited ideas or submissions and acquire no obligation to use, keep confidential or pay for them.</li>
+						</ul>
+
+						<h2 id="copyright">Copyright</h2>
+						<p>The design, layout, original text and original code of this Website are © GitHub@緋想天子 unless otherwise noted. Third-party assets included on this Website remain the property of their respective rights holders. Unless permitted by law or expressly authorised by us or the relevant rights holder, you must not:</p>
+						<ul>
+							<li>adapt, copy, store, distribute, display, perform, publish or create derivative works from any part of this Website; or</li>
+							<li>use any information, products or services offered here for commercial purposes.</li>
+						</ul>
+						<p>In particular: <strong>東方Project and its characters are © 上海アリス幻樂団 / ZUN</strong>; character illustrations and thumbnails belong to their original artists and publishers and are included for identification, commentary and fan purposes; the technology-stack icons identify products whose names and logos are trademarks of their respective owners; audio recordings and album covers belong to their performers, labels and designers. If you are a rights holder and believe material on this Website should be removed or credited differently, contact us and we will act promptly.</p>
+
+						<h2 id="trademarks">Trademarks</h2>
+						<p>The site name and wordmark 「全人類の緋想天」 and the site's own graphic marks belong to us. Any use of our marks must not be misleading and must include a declaration of our ownership. You must not use our marks:</p>
+						<ul>
+							<li>as part of your own trademarks;</li>
+							<li>for commercial activities, products or services;</li>
+							<li>in a manner that causes confusion, deception or disparagement.</li>
+						</ul>
+						<p>All other trademarks, product names, company names, character names and logos on this Website — including 東方Project, its characters, and the products named in the technology stack — belong to their respective owners. Their appearance here is descriptive and does not imply endorsement, sponsorship or partnership. This is an unofficial fan site, not affiliated with or endorsed by any rights holder.</p>
+
+						<h2 id="restrictions">Usage Restrictions</h2>
+						<p>Unless otherwise agreed in writing, access to this Website is for personal, non-commercial use only. You may print one copy of information for personal use, unless explicitly prohibited. Resale of information obtained from this Website is strictly forbidden without our written consent.</p>
+						<p>You must not: scrape or harvest the site at a volume that interferes with its delivery; hotlink media files from other sites; redistribute content unlocked from the encrypted vaults; remove copyright or attribution notices; or attempt to probe, overload, break or gain unauthorised access to the site or its hosting infrastructure.</p>
+
+						<h2 id="links">Links</h2>
+						<p>This Website may contain links to external sites ("Sites"). These are provided for convenience only and may not be up-to-date or maintained.</p>
+						<p>We are not responsible for the content or privacy practices of external sites. Providing such links does not imply endorsement of the linked sites or their content; when you follow a link, that site's terms and privacy policy apply.</p>
+						<p>Unauthorised framing, mirroring or systematic linking to this Website is prohibited. Any permitted links must open in a separate window and clearly attribute the source. We are not liable for broken links and reserve the right to modify the Website without notice.</p>
+
+						<h2 id="email">Email Handling</h2>
+						<p>We reserve the right to retain and review emails sent to us for legal compliance, troubleshooting or abuse prevention. Emails are used to respond to you and to handle your request; they are not sold or shared with third parties, except where required by law. We may keep a copy as long as necessary for those purposes and will delete it on request, as described in section&nbsp;16 of the <a href="/privacy-policy/">Privacy Policy</a>.</p>
+
+						<h2 id="security">Information Security</h2>
+						<p>The site is served over HTTPS. The encrypted vaults and encrypted downloads use modern cryptography performed entirely in your browser, and the download page verifies file integrity before offering a file. Your password, keys and decrypted content are never transmitted to us.</p>
+						<p>While we strive to protect your information, no internet transmission is entirely secure, and the security of your own device, browser and network is your responsibility. You transmit and download at your own risk. If you discover a security problem, please report it to <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a>.</p>
+
+						<h2 id="termination">Termination of Access</h2>
+						<p>We reserve the right to suspend, terminate, change or remove access to this Website or any part of it — including individual pages, files or the music player — without notice and without liability. Our disclaimers and limitations of liability shall survive termination.</p>
+
+						<h2 id="feedback">Feedback / Complaints</h2>
+						<p>For queries or complaints regarding these Terms and Conditions, removal requests, or infringement matters, contact us at <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a>. We will try to respond within a reasonable time.</p>
+
+						<h2 id="registration">Registration Policy</h2>
+						<p>This Website does not offer registration. No account, profile or registration information is collected, so the questions of accuracy of registration data and impersonation through an account do not arise. If you contact us by email, please do not impersonate another person; we may ignore messages that do.</p>
+
+						<h2 id="sales">Sales Policy</h2>
+						<p>This Website does <strong>not</strong> sell products or services. It does not accept orders, payments or bookings, and no price, catalogue or description on this Website constitutes an offer for sale. Nothing on this Website creates a buyer–seller relationship.</p>
+						<p>Some pages link to third-party websites or tools operated by others; any transaction you enter into there is solely between you and that third party and is governed by that third party's terms.</p>
+
+						<h2 id="vaults">Encrypted Vaults and Downloads</h2>
+						<p>The About and Download pages contain content locked behind a password that the site owner shares privately. The Download page additionally offers encrypted files that are decrypted locally after unlocking.</p>
+						<ul>
+							<li><strong>Personal use only.</strong> Content unlocked from the vaults and files decrypted from the Download page are for your personal, non-commercial use. You must not redistribute, publish or sell them, and you must respect any third-party rights in them.</li>
+							<li><strong>Keep the password private.</strong> Do not post the password publicly or share the unlocked content. We may change or remove the password and the locked content at any time.</li>
+							<li><strong>No recovery, no warranty.</strong> We cannot recover a lost password or locked content, and the vaults and downloads are provided without any warranty of availability, completeness or fitness for a particular purpose.</li>
+							<li><strong>Your device, your risk.</strong> Decryption happens locally in your browser; downloaded files are your responsibility, as set out under "Special Warnings" above.</li>
+						</ul>
+
+						<h2 id="third-party">Third-Party Services and Content</h2>
+						<p>The site embeds no third-party scripts, trackers or players. The third parties relevant to how it is delivered or what it displays are described in section&nbsp;13 of the <a href="/privacy-policy/">Privacy Policy</a>. In summary:</p>
+						<ul>
+							<li><strong>GitHub Pages</strong> hosts the site and processes technical request data under its own privacy statement;</li>
+							<li><strong>GitHub</strong> provides linked repositories and the social-preview avatar image;</li>
+							<li><strong>Bangumi</strong> provides the public collection figures, which are read periodically by the owner's automation and stored as a static file — your browser does not contact Bangumi to display them;</li>
+							<li>public repository metadata is captured in the same way into static files;</li>
+							<li>external sites linked from this Website have their own terms and policies.</li>
+						</ul>
+						<p>We do not control those services, do not receive visitor data from them and are not responsible for their content, availability or practices.</p>
+
+						<h2 id="music">Music and Media</h2>
+						<p>The background music player is self-hosted: the playlist and audio files are served as static files from this Website, and playback begins only when you press play (there is no autoplay).</p>
+						<p>Recordings, compositions and cover art remain the property of their performers, composers, labels and designers. They are provided here for personal, non-commercial listening. No licence is granted to download, copy, redistribute or use them commercially, and rights holders may request their removal at any time.</p>
+
+						<h2 id="minors">Age and Minors</h2>
+						<p>This Website is a general-audience fan site about a video-game series and contains no age-restricted material. It collects no personal information and offers no accounts or purchases. If you are a minor, please use the Website with the knowledge or permission of a parent or guardian. If a parent or guardian has concerns about material on the site, contact us at <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a>.</p>
+
+						<h2 id="governing">Governing Law and Jurisdiction</h2>
+						<p>These Terms and Conditions are governed by the laws of Japan, without regard to conflict-of-law rules, and disputes shall be subject to the jurisdiction of the competent courts at the operator's place of residence, unless mandatory consumer-protection rules of your country of residence provide otherwise. Nothing in this section deprives you of the protection of mandatory provisions of the law of your habitual residence.</p>
+						<p>The English version of these Terms and Conditions is the authoritative version. If any provision is found unenforceable, the remaining provisions remain in full force, and the unenforceable provision is replaced by a valid provision that comes closest to its purpose.</p>
+
+						<h2 id="changelog">Change Log</h2>
+						<ul>
+							<li><strong>31 October 2026 — full rewrite.</strong> Updated these Terms to match the current static site: changed the site address to <code>https://tenshi.qzz.io/</code>; removed the membership, registration, account-password and commercial-sales sections (the site has no accounts and sells nothing) and replaced them with accurate statements; rewrote the submitted-information, copyright, trademark and email sections around the site's actual behaviour (email-only contact, third-party assets and licences, self-hosted music); documented the client-side encrypted vaults and downloads; added third-party services, music, minors and governing-law sections, plus a personal-views disclaimer; and added this Change Log.</li>
+							<li><strong>18 July 2025 — previous version.</strong> The version this one replaces.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+</body>
+</html>

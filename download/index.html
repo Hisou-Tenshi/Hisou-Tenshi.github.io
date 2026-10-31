@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>Download 資源 - 夢と現と交えては、幻想郷に、遊ぶがいい</title>
+	<meta name="description" content="壁纸、素材，还有加密区的文件。">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,壁纸,下载">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="Download 資源">
+	<meta property="og:description" content="壁纸、素材，还有加密区的文件。">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/download/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/download/">
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/">About</a>
+				<a class="nav__link" href="/contact-us/">Contact</a>
+				<a class="nav__link" href="/tools/">Tools</a>
+				<a class="nav__link" href="/download/" aria-current="page">Download</a>
+				<a class="nav__link" href="/privacy-policy/">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">DL</span>
+					<span>DOWNLOAD / 資源</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>資源</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Resources · Wallpapers &amp; Files</div>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">壁纸和素材，公开的可以直接下载。加密区需要密码。</p>
+			</div>
+		</section>
+
+		<section class="doc" aria-labelledby="wallpapers">
+			<div class="wrap">
+				<div class="doc__body">
+					<h2 id="wallpapers">Wallpapers</h2>
+					<p>本站正在用的两张背景图，原图在这里。</p>
+				</div>
+				<div class="tiles" style="margin-top:26px">
+					<a class="tile" href="/static/img/background.PNG" download="background.PNG" data-rv>
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm1 2v10.5l4.6-4.6 3.4 3.4 3.2-3.2L21 16.5V6H4zm4 1.8a2 2 0 1 1 0 4 2 2 0 0 1 0-4z"/></svg></span>
+							<span class="tile__title">PC 背景</span>
+						</div>
+						<p class="tile__desc">background.PNG · 1536×864 · 原图</p>
+						<span class="tile__go">PNG <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+					<a class="tile" href="/static/img/mobile-bg.jpg" download="mobile-bg.jpg" data-rv style="--rv-d:.06s">
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 2h8a1 1 0 0 1 1 1v18a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1zm1 2v16h6V4H9zm2 15.2h2v.9h-2z"/></svg></span>
+							<span class="tile__title">手机背景</span>
+						</div>
+						<p class="tile__desc">mobile-bg.jpg · 竖屏 · 原图</p>
+						<span class="tile__go">JPG <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+				</div>
+				<p class="file__msg" style="margin-top:16px">轻量版是 WebP，本站实际加载的就是它们。<a href="/static/img/opt/bg-photo.webp">bg-photo.webp</a> · <a href="/static/img/opt/bg-mobile.webp">bg-mobile.webp</a></p>
+			</div>
+		</section>
+
+		<section class="doc" aria-labelledby="secure">
+			<div class="wrap">
+				<div class="doc__body">
+					<h2 id="secure">Secure zone</h2>
+					<p>十个加密文件，都需要密码。</p>
+				</div>
+				<div class="vault" data-vault data-vault-src="/download/vault.json" style="margin-top:26px" data-rv>
+					<div class="vault__gate">
+						<span class="vault__lock" aria-hidden="true"><span class="arc"></span></span>
+						<div class="vault__label">Encrypted / 加密区</div>
+						<h3 class="vault__title">输密码解锁</h3>
+						<p class="vault__hint">那句招呼语挂在我另一处「主页」上，不在这里。</p>
+						<form class="vault__form">
+							<input class="vault__input" type="password" placeholder="输入密码" autocomplete="current-password" data-vault-input aria-label="密码">
+							<button class="btn btn--primary" type="submit" data-vault-submit>解锁</button>
+						</form>
+						<div class="vault__msg" data-vault-msg role="status" aria-live="polite"></div>
+					</div>
+					<div class="vault__body" data-vault-out></div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+	<script src="/static/js/vault.js"></script>
+</body>
+</html>

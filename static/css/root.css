@@ -1,0 +1,189 @@
+/* ═══════════════════════════════════════════════════════════════════
+   全人類の緋想天 — Design tokens
+   Direction: Apple product-page clarity (bright, airy, hairline-precise)
+   + 《明日方舟：终末地》 thunder display typography (heavy ink, hollow
+   counterpoint, electric arc accents, technical micro-labels).
+
+   Theme model  : html[data-theme="Light"|"Dark"]
+   Legacy hooks : --main_text_color / --purple_text_color / --glass-* etc.
+                  are re-mapped at the bottom so pre-redesign markup
+                  (encrypted staticrypt pages) keeps rendering correctly.
+   ═══════════════════════════════════════════════════════════════════ */
+
+:root {
+	/* ── Surfaces ─────────────────────────────────────────────── */
+	--bg: #fbfbfd;
+	--bg-band: #f5f5f7;
+	--bg-deep: #eeeef1;
+	--card: #ffffff;
+	--card-hover: #ffffff;
+	--card-tint: rgba(255, 255, 255, 0.72);
+
+	/* ── Ink ──────────────────────────────────────────────────── */
+	--ink: #16161a;
+	--ink-2: #45454d;
+	--ink-3: #75757e;
+	--ink-4: #a0a0a8;
+	--ink-inv: #ffffff;
+
+	/* ── Lines ────────────────────────────────────────────────── */
+	--line: rgba(20, 20, 26, 0.11);
+	--line-2: rgba(20, 20, 26, 0.06);
+	--line-3: rgba(20, 20, 26, 0.035);
+
+	/* ── Accents ──────────────────────────────────────────────── */
+	--accent: #d81f26;          /* 緋 — scarlet */
+	--accent-ink: #ffffff;
+	--accent-soft: rgba(216, 31, 38, 0.09);
+	--arc: #0a6cff;             /* 雷 — electric arc blue */
+	--arc-2: #7fb2ff;
+	--arc-soft: rgba(10, 108, 255, 0.12);
+	--arc-glow: rgba(10, 108, 255, 0.32);
+
+	/* ── Display gradients ────────────────────────────────────── */
+	--grad-title: linear-gradient(178deg, #1b1b20 6%, #4c4c55 62%, #7d7d88 100%);
+	--grad-rule: linear-gradient(90deg, var(--line) 0%, transparent 100%);
+	--grad-arc: linear-gradient(120deg, #0a6cff 0%, #7fb2ff 45%, #d81f26 100%);
+	--grad-plate: linear-gradient(160deg, #101014 0%, #1c1c22 55%, #0c0c10 100%);
+
+	/* ── Type ─────────────────────────────────────────────────── */
+	--font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text",
+		"Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei",
+		"Helvetica Neue", Arial, sans-serif;
+	--font-display: "HST Display", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display",
+		"Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Microsoft YaHei",
+		"Helvetica Neue", Arial, sans-serif;
+	--font-mono: ui-monospace, SFMono-Regular, "SF Mono", "JetBrains Mono", "Cascadia Mono",
+		Consolas, "Liberation Mono", monospace;
+
+	--fs-mega: clamp(84px, 14.2vw, 216px);
+	--fs-display: clamp(40px, 6vw, 76px);
+	--fs-h2: clamp(30px, 3.8vw, 50px);
+	--fs-h3: clamp(19px, 2vw, 23px);
+	--fs-lede: clamp(18px, 2.1vw, 25px);
+	--fs-body: 16.5px;
+	--fs-small: 14px;
+	--fs-micro: 11.5px;
+
+	/* ── Geometry ─────────────────────────────────────────────── */
+	--nav-h: 52px;
+	--maxw: 1180px;
+	--maxw-wide: 1440px;
+	--gutter: clamp(20px, 5.2vw, 72px);
+	--r-xl: 30px;
+	--r-lg: 22px;
+	--r-md: 15px;
+	--r-sm: 10px;
+	--r-xs: 6px;
+
+	/* ── Motion ───────────────────────────────────────────────── */
+	--ease: cubic-bezier(0.22, 1, 0.36, 1);
+	--ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+	--ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
+	--t-fast: 0.18s;
+	--t-med: 0.42s;
+	--t-slow: 0.9s;
+	--t-mega: 1.15s;
+
+	/* ── Elevation ────────────────────────────────────────────── */
+	--sh-1: 0 1px 2px rgba(16, 16, 22, 0.04), 0 10px 26px -16px rgba(16, 16, 22, 0.14);
+	--sh-2: 0 2px 6px rgba(16, 16, 22, 0.05), 0 26px 56px -28px rgba(16, 16, 22, 0.26);
+	--sh-3: 0 30px 80px -34px rgba(16, 16, 22, 0.34);
+	--sh-inset: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+
+	/* ── Chrome ───────────────────────────────────────────────── */
+	--nav-bg: rgba(251, 251, 253, 0.72);
+	--nav-bg-solid: rgba(251, 251, 253, 0.94);
+	--selection: rgba(216, 31, 38, 0.16);
+	--scrollbar: rgba(20, 20, 26, 0.18);
+	--noise-opacity: 0.028;
+
+	color-scheme: light;
+}
+
+html[data-theme="Dark"] {
+	--bg: #08080a;
+	--bg-band: #0e0e11;
+	--bg-deep: #131317;
+	--card: #141418;
+	--card-hover: #191920;
+	--card-tint: rgba(22, 22, 27, 0.7);
+
+	--ink: #f4f4f6;
+	--ink-2: #c2c2cb;
+	--ink-3: #9898a2;
+	--ink-4: #77777f;
+	--ink-inv: #08080a;
+
+	--line: rgba(255, 255, 255, 0.14);
+	--line-2: rgba(255, 255, 255, 0.075);
+	--line-3: rgba(255, 255, 255, 0.045);
+
+	--accent: #ff4b4f;
+	--accent-ink: #14060a;
+	--accent-soft: rgba(255, 75, 79, 0.14);
+	--arc: #62a8ff;
+	--arc-2: #a8ccff;
+	--arc-soft: rgba(98, 168, 255, 0.16);
+	--arc-glow: rgba(98, 168, 255, 0.34);
+
+	--grad-title: linear-gradient(178deg, #ffffff 8%, #c9c9d3 58%, #7d7d8a 100%);
+	--grad-rule: linear-gradient(90deg, var(--line) 0%, transparent 100%);
+	--grad-arc: linear-gradient(120deg, #62a8ff 0%, #b8d6ff 45%, #ff4b4f 100%);
+	--grad-plate: linear-gradient(160deg, #17171c 0%, #0d0d11 60%, #050507 100%);
+
+	--sh-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 26px -16px rgba(0, 0, 0, 0.7);
+	--sh-2: 0 2px 8px rgba(0, 0, 0, 0.55), 0 26px 56px -28px rgba(0, 0, 0, 0.8);
+	--sh-3: 0 30px 90px -34px rgba(0, 0, 0, 0.85);
+	--sh-inset: inset 0 1px 0 rgba(255, 255, 255, 0.07);
+
+	--nav-bg: rgba(10, 10, 13, 0.68);
+	--nav-bg-solid: rgba(10, 10, 13, 0.94);
+	--selection: rgba(255, 75, 79, 0.24);
+	--scrollbar: rgba(255, 255, 255, 0.2);
+	--noise-opacity: 0.035;
+
+	color-scheme: dark;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Legacy compatibility — the staticrypt-encrypted pages (about-us,
+   download) ship their own captured markup and cannot be recompiled
+   here, so the old token names must keep resolving to sane values.
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+	--main_text_color: var(--ink);
+	--main_bg_color: none;
+	--footer_text_color: var(--ink-3);
+	--item_left_title_color: var(--ink);
+	--purple_text_color: var(--accent);
+	--fill: currentColor;
+	--shadow-sm: var(--sh-1);
+	--gradient: var(--grad-arc);
+	--gradient-stroke-1: var(--arc);
+	--gradient-stroke-2: var(--arc-2);
+	--gradient-stroke-3: var(--accent);
+	--gradient-stroke-4: var(--ink);
+	--back_filter: 16px;
+	--glass-radius: var(--r-lg);
+	--glass-radius-sm: var(--r-md);
+	--glass-ease: var(--ease);
+	--glass-duration: var(--t-med);
+	--glass-blur: 16px;
+	--glass-level: 0;
+
+	/* 雷 — arc geometry reused by the thunder display components */
+	--bolt: polygon(52% 0%, 30% 46%, 52% 46%, 34% 100%, 84% 52%, 58% 52%, 78% 0%);
+}
+
+/* Bundled ultra-black CJK display face (subset: display headings only).
+   Without it, CJK headings fall back to Microsoft YaHei Bold on Windows and
+   the "thunder big text" look collapses. See static/fonts/README.txt. */
+@font-face {
+	font-family: "HST Display";
+	src: url("../fonts/display-900.woff2") format("woff2");
+	font-weight: 900;
+	font-style: normal;
+	font-display: swap;
+}
+

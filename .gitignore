@@ -1,0 +1,21 @@
+download/download.html
+about-us/about-us.html
+encrypt-tool.py
+
+# Password-gated fragments: plaintext sources are NEVER committed.
+# Rebuild a payload with:
+#   VAULT_PASSWORD=... node vault_build.mjs --src about-us/vault-src.html --out about-us/vault.json
+about-us/vault-src.html
+download/vault-src.html
+
+.DS_Store
+Thumbs.db
+.vscode/
+.DS_Store
+static/.DS_Store
+static/.DS_Store
+.DS_Store
+static/.DS_Store
+
+# Local-only secrets (Bangumi API token lives here; set the secret in CI)
+.env

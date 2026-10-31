@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>Contact 比那名居天子 - 夢と現と交えては、幻想郷に、遊ぶがいい</title>
+	<meta name="description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="Contact 比那名居天子">
+	<meta property="og:description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/contact-us/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/contact-us/">
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/">About</a>
+				<a class="nav__link" href="/contact-us/" aria-current="page">Contact</a>
+				<a class="nav__link" href="/tools/">Tools</a>
+				<a class="nav__link" href="/download/">Download</a>
+				<a class="nav__link" href="/privacy-policy/">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<!-- Page head -->
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">CT</span>
+					<span>CONTACT / 連絡</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>比那名居天子</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Mail and phone · 連絡先</div>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」</p>
+				<div class="doc__actions" data-rv style="--rv-d:.18s">
+					<button type="button" onclick="window.print()" class="print-button">
+						<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M11 3h2v9.4l3.2-3.2 1.4 1.4L12 17.4l-5.6-6.8 1.4-1.4L11 12.4zM5 19.2h14V21H5z"/></svg>导出PDF
+					</button>
+					<a class="btn btn--primary" href="mailto:shameimaru.ayaaya@gmail.com">写邮件<svg viewBox="0 0 24 24"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></a>
+				</div>
+			</div>
+		</section>
+
+		<!-- Message us -->
+		<section class="doc" aria-labelledby="message-us">
+			<div class="wrap">
+				<div class="doc__body">
+					<h2 id="message-us">Message us</h2>
+					<div class="fields">
+						<div class="field">
+							<span class="field__k">Name / 名前</span>
+							<span class="field__v"><b>比那名居天子</b></span>
+						</div>
+						<div class="field">
+							<span class="field__k">Origin / 所在地</span>
+							<span class="field__v">非想非非想天の娘<br>有頂天<br>幻想郷</span>
+						</div>
+						<div class="field">
+							<span class="field__k">Addressee / 宛先</span>
+							<span class="field__v"><b>博麗神社　博麗霊夢へ</b></span>
+						</div>
+						<div class="field">
+							<span class="field__k">Postal code / 〒</span>
+							<span class="field__v">〒399-9211</span>
+						</div>
+						<div class="field">
+							<span class="field__k">Postal address</span>
+							<span class="field__v">白馬村神城１５１５２−イ　北安曇郡　長野県　日本</span>
+						</div>
+					</div>
+				</div>
+				<div class="tiles" style="margin-top:26px;max-width:76ch">
+					<a class="tile" href="tel:0081-090-11451400">
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.4 2.1 3.1 3.3c-1 .4-1.7 1.4-1.5 2.5.9 8.5 7.6 15.2 16.1 16.1 1.1.1 2.1-.5 2.5-1.5l1.2-3.3c.3-.8 0-1.7-.7-2.1l-3.4-1.9c-.7-.4-1.6-.3-2.2.3l-1.5 1.5a14.7 14.7 0 0 1-6.5-6.5l1.5-1.5c.6-.6.7-1.5.3-2.2L7.9 3c-.4-.7-1.3-1-2.1-.7z"/></svg></span>
+							<span class="tile__title">Tel:</span>
+						</div>
+						<p class="tile__desc">0081-090-11451400</p>
+						<span class="tile__go">Call <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+					<a class="tile" href="mailto:shameimaru.ayaaya@gmail.com">
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.8 5.4h18.4c1 0 1.8.8 1.8 1.8v.9l-10.4 6a1.7 1.7 0 0 1-1.8 0L1 8.1v-.9c0-1 .8-1.8 1.8-1.8zM1 10.5l9.5 5.5c.9.5 2.1.5 3 0l9.5-5.5v8.7c0 1-.8 1.8-1.8 1.8H2.8c-1 0-1.8-.8-1.8-1.8z"/></svg></span>
+							<span class="tile__title">Email:</span>
+						</div>
+						<p class="tile__desc">shameimaru.ayaaya@gmail.com</p>
+						<span class="tile__go">Write <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+</body>
+</html>

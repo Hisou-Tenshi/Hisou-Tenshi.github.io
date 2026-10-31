@@ -1,0 +1,50 @@
+name: refresh site data
+
+# Keeps static/data/{bangumi,repos}.json in sync with live sources.
+# Both scripts are no-write-on-failure, so a bad night never blanks the site.
+
+on:
+  schedule:
+    # hourly, at :17 to stay off the top-of-hour runner stampede (UTC)
+    - cron: '17 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/data.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-site-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    env:
+      BANGUMI_API: ${{ secrets.BANGUMI_API }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Refresh Bangumi collection counts
+        run: node scripts/fetch-bangumi.mjs
+
+      - name: Refresh curated repo metadata
+        run: node scripts/fetch-repos.mjs
+
+      - name: Commit data changes
+        run: |
+          git add static/data
+          git diff --staged --quiet || (git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats' && git push)
