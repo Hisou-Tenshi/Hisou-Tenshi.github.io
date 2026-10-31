@@ -1,5 +1,5 @@
 {
-  "updated": "2026-10-31T15:22:19Z",
+  "updated": "2026-10-31T20:00:44Z",
   "items": [
     {
       "repo": "SenrenBanka-CN-Text-Extractor",
@@ -40,7 +40,7 @@
     {
       "repo": "Calling",
       "name": "Calling",
-      "lang": "Python",
+      "lang": "HTML",
       "stars": 1,
       "icon": "chat",
       "desc": "本地就能跑的 LLM 对话框，带工具 Agent 和文档翻译。",
