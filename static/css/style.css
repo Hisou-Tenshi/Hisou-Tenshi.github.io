@@ -2216,18 +2216,17 @@ body.has-player-open .secnav {
 
 /* ── 13b · Epigraph, inline star, field row ── */
 
-/* Pull-quote: full-bleed italic serif, the attribution riding the last line */
+/* Pull-quote: full-bleed italic serif; the credit rides the right end of the
+   quote's last line and drops to its own right-aligned line only when there is
+   no room left. Drop this block anywhere a quotation should take the full width. */
 .epigraph,
 .doc__body .epigraph {
 	position: relative;
-	display: flex;
-	flex-wrap: nowrap;
-	align-items: flex-end;
-	gap: 6px 30px;
+	display: flow-root;
 	width: 100%;
 	max-width: none;
-	margin: 26px 0 10px;
-	padding: 0 0 0 42px;
+	margin: 30px 0 26px;
+	padding: 0 0 0 44px;
 	border-left: 0;
 	font-family: Georgia, "Times New Roman", "Songti SC", "Noto Serif CJK SC",
 		"Source Han Serif SC", "SimSun", serif;
@@ -2251,18 +2250,15 @@ body.has-player-open .secnav {
 
 .epigraph__text,
 .doc__body .epigraph__text {
-	flex: 1 1 auto;
-	min-width: 0;
 	margin: 0;
 	font-style: italic;
 }
 
-/* The credit sits at the right end of the quote's last line; if it does not
-   fit there it drops to its own line and stays right-aligned. */
+/* floated, so it sits at the end of the last line when it fits there */
 .epigraph__cite,
 .doc__body .epigraph__cite {
-	flex: 0 0 auto;
-	margin: 0 0 0 auto;
+	float: right;
+	margin: 0.15em 44px 0 2.4em;
 	padding: 0;
 	font-family: var(--font-sans);
 	font-style: italic;
@@ -2273,16 +2269,23 @@ body.has-player-open .secnav {
 	white-space: nowrap;
 }
 
-/* Narrow screens: the credit drops to its own line instead of squeezing the quote */
+.epigraph__cite + * {
+	clear: right;
+}
+
 @media (max-width: 720px) {
 	.epigraph {
-		flex-wrap: wrap;
+		margin: 22px 0 10px;
+		padding-left: 34px;
 	}
 
-	.epigraph__cite {
+	.epigraph__cite,
+	.doc__body .epigraph__cite {
+		float: none;
+		display: block;
+		margin: 0.7em 0 0;
+		text-align: right;
 		white-space: normal;
-		margin-left: 0;
-		flex-basis: 100%;
 	}
 }
 

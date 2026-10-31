@@ -136,6 +136,21 @@ python3 -m http.server 8080
   - 页脚年份、标签页标题彩蛋、角色立绘图灯箱。
   - 自绘 BGM 播放器（歌单首次交互才 `fetch`，音频 `preload="none"`）。
 
+#### 引文块 `.epigraph`（全宽、作品名随行）
+
+页面里要放一句引文时，直接套这个结构即可，样式全站统一（`style.css` 第 13 节）：
+
+```html
+<blockquote class="epigraph">
+  <p class="epigraph__text">Lo! men have become the tools of their tools. <cite class="epigraph__cite">Henry David Thoreau, <i>Walden</i> (1854)</cite></p>
+</blockquote>
+```
+
+- 引文左侧留 44px 给悬挂的红色引号（`::before`），正文用 Georgia 系斜体，宽度吃满容器。
+- `<cite>` 必须写在 `epigraph__text` 段落**内部且位于末尾**：它 `float: right`，最后一行的右侧还有位置时就贴在那一行，位置不够才落到下一行右对齐（距右边缘 16px）。
+- 想让它全宽，所在 `section` 要带 `doc--wide`（否则 `.doc__body` 的 76ch 会限制宽度）。
+- 720px 以下 `<cite>` 自动改为块级右对齐。
+
 导航项包括：Home、About us、Contact us、Tools、Download、Privacy Policy、Terms and Conditions。  
 新页面统一在 `</body>` 前引入 `/static/js/site-content.js` 与 `/static/js/script.js`，并在 `<head>` 里引入 `/static/css/root.css` + `/static/css/style.css`，即可获得同一套导航栏、页脚、主题与动效。
 
