@@ -2314,6 +2314,75 @@ body.has-player-open .secnav {
 	}
 }
 
+/* Translation line (used with .epigraph--stack) */
+.epigraph__tr {
+	margin: 8px 0 0;
+	clear: right;
+	font-family: var(--font-sans);
+	font-style: normal;
+	font-size: 15.5px;
+	line-height: 1.78;
+	color: var(--ink-2);
+	letter-spacing: 0;
+}
+
+/* Stacked variant: quote → translation → credit, each on its own line */
+.epigraph--stack .epigraph__cite {
+	float: none;
+	display: block;
+	margin: 12px 0 0;
+	text-align: right;
+	white-space: normal;
+}
+
+/* Section variant: same component, tighter rhythm, used under home section titles */
+.epigraph--section {
+	margin: 18px 0 2px;
+	padding-left: 36px;
+	font-size: clamp(16px, 1.3vw, 19px);
+	line-height: 1.62;
+}
+.epigraph--section::before {
+	font-size: 36px;
+	top: -0.06em;
+}
+.epigraph--section .epigraph__cite {
+	margin: 4px 0 0 2em;
+	font-size: 12px;
+}
+.epigraph--section .epigraph__tr {
+	font-size: 14.5px;
+	line-height: 1.72;
+}
+
+/* Page-head variant: sits between the Latin subtitle and the dates */
+.pagehead .epigraph {
+	margin: 26px 0 22px;
+	font-size: clamp(16px, 1.3vw, 19px);
+}
+
+/* About page: the visit-level map in the right column */
+.aboutmap {
+	margin: 0;
+	padding: 0;
+}
+.aboutmap img {
+	display: block;
+	width: 100%;
+	height: auto;
+	border-radius: var(--r-md);
+	box-shadow: var(--sh-2);
+}
+.aboutmap figcaption {
+	margin-top: 10px;
+	font-family: var(--font-mono);
+	font-size: 10px;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--ink-4);
+	text-align: right;
+}
+
 /* ── 13c · Two-column doc split ── */
 
 /* The vault pages breathe out of the prose measure: prose on the left,
