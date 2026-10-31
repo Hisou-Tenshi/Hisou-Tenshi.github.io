@@ -2216,18 +2216,24 @@ body.has-player-open .secnav {
 
 /* ── 13b · Epigraph, inline star, field row ── */
 
-/* Pull-quote for the vault pages: italic serif with a hanging accent quote mark */
+/* Pull-quote: full-bleed italic serif, the attribution riding the last line */
 .epigraph,
 .doc__body .epigraph {
 	position: relative;
-	max-width: 58ch;
-	margin: 24px 0 6px;
-	padding-left: 34px;
+	display: flex;
+	flex-wrap: nowrap;
+	align-items: flex-end;
+	gap: 6px 30px;
+	width: 100%;
+	max-width: none;
+	margin: 26px 0 10px;
+	padding: 0 0 0 42px;
+	border-left: 0;
 	font-family: Georgia, "Times New Roman", "Songti SC", "Noto Serif CJK SC",
 		"Source Han Serif SC", "SimSun", serif;
 	font-style: italic;
-	font-size: clamp(17px, 1.5vw, 21px);
-	line-height: 1.62;
+	font-size: clamp(17px, 1.42vw, 20px);
+	line-height: 1.66;
 	letter-spacing: 0.005em;
 	color: var(--ink-2);
 	text-wrap: pretty;
@@ -2237,33 +2243,47 @@ body.has-player-open .secnav {
 	content: "“";
 	position: absolute;
 	left: 0;
-	top: -0.18em;
-	font: italic 700 42px/1 Georgia, "Times New Roman", serif;
+	top: -0.16em;
+	font: italic 700 44px/1 Georgia, "Times New Roman", serif;
 	color: var(--accent);
 	opacity: 0.85;
 }
 
+.epigraph__text,
+.doc__body .epigraph__text {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
+	font-style: italic;
+}
+
+/* The credit sits at the right end of the quote's last line; if it does not
+   fit there it drops to its own line and stays right-aligned. */
 .epigraph__cite,
 .doc__body .epigraph__cite {
-	display: block;
-	margin-top: 12px;
-	padding-left: 34px;
+	flex: 0 0 auto;
+	margin: 0 0 0 auto;
+	padding: 0;
 	font-family: var(--font-sans);
 	font-style: italic;
 	font-size: 12.5px;
+	line-height: 1.5;
 	letter-spacing: 0.01em;
 	color: var(--ink-3);
+	white-space: nowrap;
 }
 
-.doc__body .epigraph,
-.doc__body .epigraph p {
-	font-style: italic;
-}
+/* Narrow screens: the credit drops to its own line instead of squeezing the quote */
+@media (max-width: 720px) {
+	.epigraph {
+		flex-wrap: wrap;
+	}
 
-.doc__body .epigraph {
-	padding: 0 0 0 34px;
-	border-left: 0;
-	color: var(--ink-2);
+	.epigraph__cite {
+		white-space: normal;
+		margin-left: 0;
+		flex-basis: 100%;
+	}
 }
 
 .epigraph__cite i {
@@ -2335,11 +2355,6 @@ body.has-player-open .secnav {
 
 .split__side .field__v {
 	font-size: 14.5px;
-}
-
-.split__side .epigraph {
-	margin: 0;
-	max-width: none;
 }
 
 @media (max-width: 900px) {
@@ -2420,12 +2435,31 @@ body.has-player-open .secnav {
 	top: calc(var(--nav-h) + 34px);
 	display: flex;
 	flex-direction: column;
-	gap: 3px;
-	font-size: 12.5px;
+	gap: 0;
+	max-height: calc(100vh - var(--nav-h) - 64px);
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	font-size: 11.5px;
+	line-height: 1.35;
+	scrollbar-width: thin;
+	padding-right: 4px;
+}
+
+.doc__toc::-webkit-scrollbar {
+	width: 3px;
+}
+
+.doc__toc::-webkit-scrollbar-thumb {
+	background: var(--line);
+	border-radius: 3px;
+}
+
+.doc__toc::-webkit-scrollbar-track {
+	background: transparent;
 }
 
 .doc__toc a {
-	padding: 5px 0 5px 11px;
+	padding: 3.5px 0 3.5px 11px;
 	border-left: 1px solid var(--line-2);
 	color: var(--ink-4);
 	transition: color var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease);
