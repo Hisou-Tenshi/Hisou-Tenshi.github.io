@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>About 比那名居天子 - 夢と現と交えては、幻想郷に、遊ぶがいい</title>
+	<meta name="description" content="非想非非想天の娘。研究分野は二次元、趣味は幻想郷。">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="About 比那名居天子">
+	<meta property="og:description" content="非想非非想天の娘。研究分野は二次元、趣味は幻想郷。">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/about-us/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/about-us/">
+	<link rel="preload" href="/static/fonts/display-900.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/" aria-current="page">About</a>
+				<a class="nav__link" href="/contact-us/">Contact</a>
+				<a class="nav__link" href="/tools/">Tools</a>
+				<a class="nav__link" href="/download/">Download</a>
+				<a class="nav__link" href="/privacy-policy/">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">AB</span>
+					<span>ABOUT / 履歴</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>比那名居天子</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">About · Curriculum Vitae</div>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">「夢と現と交えては、幻想郷に、遊ぶがいい。」</p>
+			</div>
+		</section>
+
+		<section class="doc doc--wide" aria-labelledby="whoami">
+			<div class="wrap">
+				<div class="split">
+					<div class="doc__body split__main">
+						<h2 id="whoami">何者か</h2>
+						<p>学过几年生物，不过比起做实验，还是更喜欢折腾点有的没的。</p>
+						<p>车万众，也打旮旯给木和看番。好球区大概是巫女、白毛和黑长直，干脆全都要。补番常年在废萌和纯爱里打转，偶尔自找不痛快看点致郁片；常听交响乐和术曲。周末有空会跑去圣地巡礼，或者蹲在跑道边拍飞机。</p>
+						<p>主页的样式是压榨大肥鱼照着Apple官网纯鳍搓的，笨鱼审美拉跨，只能硬摁着字距行高一个像素一个像素抠。大抵是对排版有点顽疾级别的强迫症，调不顺眼浑身难受；又碍于审美一坨，于是拉倒开摆。</p>
+					</div>
+					<aside class="split__side">
+						<figure class="aboutmap" data-rv>
+							<img src="/static/img/opt/about-map.webp" width="880" height="880" alt="制県等級 88 的日本都道府县到访等级图" loading="lazy" decoding="async">
+						</figure>
+					</aside>
+				</div>
+				<div class="fields fields--row" style="margin-top:42px">
+					<div class="field">
+						<span class="field__k">Position / 身分</span>
+						<span class="field__v"><b>大大滴咸鱼</b><br>主业是二次元</span>
+					</div>
+					<div class="field">
+						<span class="field__k">Field / 専攻</span>
+						<span class="field__v">生物科学</span>
+					</div>
+					<div class="field">
+						<span class="field__k">Base / 所在地</span>
+						<span class="field__v">有頂天<br>幻想郷</span>
+					</div>
+					<div class="field">
+						<span class="field__k">Special Thanks / 協力</span>
+						<span class="field__v">DeepSeek 大肥鱼<br>梁文谷</span>
+					</div>
+				</div>
+				<div style="margin-top:40px">
+							<div class="tag-group">
+								<div class="tag-group__head">Research</div>
+								<div class="chips">
+									<span class="chip">生物科学</span>
+									<span class="chip">面向模型编程</span>
+									<span class="chip">提示词工程</span>
+									<span class="chip">去AI味儿</span>
+								</div>
+							</div>
+							<div class="tag-group" style="margin-top:26px">
+								<div class="tag-group__head">Curiosities / 奇妙的好奇心</div>
+								<div class="chips">
+									<span class="chip">心灵哲学</span>
+									<span class="chip">意识</span>
+									<span class="chip">认知</span>
+									<span class="chip">涌现</span>
+									<span class="chip">思想实验</span>
+									<span class="chip">人工智能</span>
+									<span class="chip">宇宙学</span>
+									<span class="chip">社会学</span>
+									<span class="chip">人类学</span>
+								</div>
+							</div>
+				</div>
+			</div>
+		</section>
+
+
+		<section class="doc doc--wide" aria-labelledby="cv">
+			<div class="wrap">
+				<div class="doc__body">
+					<h2 id="cv">About the Author</h2>
+					<blockquote class="epigraph">
+						<p class="epigraph__text">We are such stuff as dreams are made on, and our little life is rounded with a sleep. <cite class="epigraph__cite">William Shakespeare, <i>The Tempest</i>, Act IV, Scene i</cite></p>
+					</blockquote>
+				</div>
+				<div class="vault" data-vault data-vault-src="/about-us/vault.json" style="margin-top:34px" data-rv>
+					<div class="vault__gate">
+						<span class="vault__lock" aria-hidden="true"><span class="arc"></span></span>
+						<div class="vault__label">Locked / 要パスワード</div>
+						<h3 class="vault__title">CV · 非公開</h3>
+						<p class="vault__hint">Continue? Submit the email you know.</p>
+						<form class="vault__form">
+							<input class="vault__input" type="password" placeholder="holy-shit@what.the.fuck" autocomplete="current-password" data-vault-input aria-label="密码">
+							<button class="btn btn--primary" type="submit" data-vault-submit>UNLOCK</button>
+						</form>
+						<div class="vault__msg" data-vault-msg role="status" aria-live="polite"></div>
+					</div>
+					<div class="vault__body" data-vault-out></div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+	<script src="/static/js/vault.js"></script>
+</body>
+</html>

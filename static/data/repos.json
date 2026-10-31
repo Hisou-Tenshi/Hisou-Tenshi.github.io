@@ -1,0 +1,77 @@
+{
+  "updated": "2026-10-31T15:22:19Z",
+  "items": [
+    {
+      "repo": "SenrenBanka-CN-Text-Extractor",
+      "name": "SenrenBanka-CN-Text-Extractor",
+      "lang": "Python",
+      "stars": 1,
+      "icon": "text",
+      "desc": "千恋＊万花 Steam 版的文本提取与简体排版，顺带把 KiriKiri 的 XP3 解包流程跑通了。",
+      "url": "https://github.com/Hisou-Tenshi/SenrenBanka-CN-Text-Extractor"
+    },
+    {
+      "repo": "bangumi-sync",
+      "name": "bangumi-sync",
+      "lang": "JavaScript",
+      "stars": 1,
+      "icon": "sync",
+      "desc": "用 GitHub Actions 把追番进度同步回 Bangumi，每次运行顺手存一份在看清单。",
+      "url": "https://github.com/Hisou-Tenshi/bangumi-sync"
+    },
+    {
+      "repo": "weekly-info",
+      "name": "weekly-info",
+      "lang": "HTML",
+      "stars": 1,
+      "icon": "mail",
+      "desc": "Journal Club 的周报邮件系统，跑在 Actions 和 Vercel 上，配置加密之后才进仓库。",
+      "url": "https://github.com/Hisou-Tenshi/weekly-info"
+    },
+    {
+      "repo": "ipsc-video-analysis",
+      "name": "ipsc-video-analysis",
+      "lang": "Python",
+      "stars": 3,
+      "icon": "video",
+      "desc": "从 iPSC 实验视频里提取机械信号的一套分析方法。",
+      "url": "https://github.com/Hisou-Tenshi/ipsc-video-analysis"
+    },
+    {
+      "repo": "Calling",
+      "name": "Calling",
+      "lang": "Python",
+      "stars": 1,
+      "icon": "chat",
+      "desc": "本地就能跑的 LLM 对话框，带工具 Agent 和文档翻译。",
+      "url": "https://github.com/Hisou-Tenshi/Calling"
+    },
+    {
+      "repo": "ACGMN-Grid",
+      "name": "ACGMN-Grid",
+      "lang": "TypeScript",
+      "stars": 6,
+      "icon": "grid",
+      "desc": "在 game-grid 基础上改出来的 ACGMN+ 生涯喜好表生成器。",
+      "url": "https://github.com/Hisou-Tenshi/ACGMN-Grid"
+    },
+    {
+      "repo": "dsh-whale-desktop-launcher",
+      "name": "dsh-whale-desktop-launcher",
+      "lang": "JavaScript",
+      "stars": 1,
+      "icon": "whale",
+      "desc": "给 DeepSeek Harness 做的 Windows 桌面启动器插件，带一个鲸鱼图标。",
+      "url": "https://github.com/Hisou-Tenshi/dsh-whale-desktop-launcher"
+    },
+    {
+      "repo": "Hisou-Tenshi.github.io",
+      "name": "本站",
+      "lang": "HTML",
+      "stars": 0,
+      "icon": "star",
+      "desc": "你现在看的这个站。纯静态，推上 GitHub Pages 就上线。",
+      "url": "https://github.com/Hisou-Tenshi/Hisou-Tenshi.github.io"
+    }
+  ]
+}

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>Privacy Policy - 夢と現と交えては、幻想郷に、遊ぶがいい</title>
+	<meta name="description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="Privacy Policy">
+	<meta property="og:description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/privacy-policy/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/privacy-policy/">
+	<link rel="preload" href="/static/fonts/display-900.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/">About</a>
+				<a class="nav__link" href="/contact-us/">Contact</a>
+				<a class="nav__link" href="/tools/">Tools</a>
+				<a class="nav__link" href="/download/">Download</a>
+				<a class="nav__link" href="/privacy-policy/" aria-current="page">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<!-- Page head -->
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">PP</span>
+					<span>PRIVACY / 隱私</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>Privacy Policy</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Personal information — policy</div>
+				<blockquote class="epigraph" data-rv style="--rv-d:.09s">
+				  <p class="epigraph__text">The secret things belong unto the LORD our God. <cite class="epigraph__cite"><i>Deuteronomy</i> 29:29, King James Version (1611)</cite></p>
+				</blockquote>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">Last Updated: 31 October 2026<br>Effective Date: 31 October 2026</p>
+				<div class="doc__actions" data-rv style="--rv-d:.18s">
+					<button type="button" onclick="window.print()" class="print-button">
+						<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M11 3h2v9.4l3.2-3.2 1.4 1.4L12 17.4l-5.6-6.8 1.4-1.4L11 12.4zM5 19.2h14V21H5z"/></svg>Get PDF
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Document -->
+		<div class="doc">
+			<div class="wrap">
+				<div class="doc__grid">
+					<nav class="doc__toc" aria-label="本页目录">
+						<a href="#readme">Readme</a>
+						<a href="#respect">Respect for Your Privacy</a>
+						<a href="#scope">1. Scope of Application</a>
+						<a href="#use">2. Use of Information</a>
+						<a href="#disclosure">3. Disclosure of Information</a>
+						<a href="#storage">4. Information Storage and Transfer</a>
+						<a href="#cookies">5. Use of Cookies</a>
+						<a href="#security">6. Information Security</a>
+						<a href="#amendments">7. Amendments to This Policy</a>
+						<a href="#protect">Protecting Your Personal Information</a>
+						<a href="#no-accounts">8. No Accounts and No Analytics</a>
+						<a href="#theme-cookie">9. The Theme Preference Cookie</a>
+						<a href="#vaults">10. Encrypted Content Vaults</a>
+						<a href="#downloads">11. Encrypted File Downloads</a>
+						<a href="#bgm">12. Background Music Player</a>
+						<a href="#third-party">13. Third-Party Services and Hosting</a>
+						<a href="#external-links">14. External Links</a>
+						<a href="#copyright">15. Copyright and Third-Party Assets</a>
+						<a href="#retention">16. Retention and Deletion</a>
+						<a href="#children">17. Children and Minors</a>
+						<a href="#contact">18. Your Rights and Contact</a>
+						<a href="#changelog">Change Log</a>
+					</nav>
+					<div class="doc__body">
+						<h2 id="readme">Readme</h2>
+						<p>This Privacy Policy applies to the personal website available at <a href="https://tenshi.qzz.io/">https://tenshi.qzz.io/</a> (hereinafter referred to as <strong>"this Website"</strong>), operated by <a href="https://github.com/Hisou-Tenshi">GitHub@緋想天子</a>.</p>
+						<p>This Website is a purely static fan site published through GitHub Pages. It has <strong>no backend, no database, no user accounts, no comment system, no analytics and no advertising</strong>. Almost everything described below follows from that single fact: there is no server of ours that could store your data, and there is no third-party tracking script embedded in any page.</p>
+						<p><strong>All opinions expressed on this Website are the operator's own personal views.</strong> They do not represent, and are not endorsed by, any employer, organisation, institution or other entity, and nothing on this Website creates any relationship with such a body.</p>
+						<p>This Website fully recognises the importance of your personal information and is committed to safeguarding its security and reliability. We strive to maintain your trust by adhering to the following principles in protecting your personal information: accountability, purpose specification, consent, data minimisation, security safeguards, individual participation, and transparency. Furthermore, we pledge to implement appropriate security measures in line with industry standards to protect your data.</p>
+						<p>To ensure optimal protection of your personal information, we recommend that you carefully review this updated Privacy Policy. Should you have any questions or objections regarding its terms, please contact us using the details provided in section&nbsp;18.</p>
+
+						<h2 id="respect">Respect for Your Privacy</h2>
+						<p>This Website respects and protects the privacy of all users. We collect as little information as technically possible, and we do not build profiles, we do not sell data, and we do not share data with advertisers. This Privacy Policy may be updated periodically; the current version and the date of the last change are always shown at the top and at the end of this page. By agreeing to our Terms and Conditions, you are deemed to have accepted all terms of this Privacy Policy, which forms an integral part of those Terms.</p>
+
+						<h2 id="scope">1. Scope of Application</h2>
+						<p>This Privacy Policy applies to all pages of this Website, including its home page, the Contact, Tools, Download and About pages, the password-protected content vaults described in section&nbsp;10, the encrypted downloads described in section&nbsp;11, and the background music player described in section&nbsp;12.</p>
+						<p><strong>This Privacy Policy does not apply to:</strong></p>
+						<ul>
+							<li>third-party websites reached through links on this Website — their own privacy policies apply (see sections&nbsp;13 and 14);</li>
+							<li>the hosting infrastructure operated by GitHub Pages — no visitor data is stored by us there, but GitHub processes technical request data under its own privacy statement (see section&nbsp;13);</li>
+							<li>your browser, operating system, extensions or network provider — these are outside our control.</li>
+						</ul>
+
+						<h2 id="use">2. Use of Information</h2>
+						<p>Browsing this Website does not require an account and does not require you to provide any personal information. We do not create user profiles and we do not track you across pages or across visits. The only situations in which any information reaches us at all are:</p>
+						<ul>
+							<li><strong>When you send us an email</strong>, we receive your email address and the content of your message. We use them solely to answer your enquiry or to process your request (for example a correction or removal request), and for nothing else.</li>
+							<li><strong>When you use the password-protected vaults or the download page</strong>, the password you type and the content it unlocks stay inside your browser (see sections&nbsp;10 and 11). They are never transmitted to us or to anyone else.</li>
+							<li><strong>When you interact with the background music player</strong>, your browser loads audio files from this Website; there is no "listening activity" reporting and nothing is uploaded (see section&nbsp;12).</li>
+						</ul>
+						<p>We do not sell, rent, trade or share personal information. We do not use personal information for advertising, retargeting, profiling, automated decision-making or marketing communications.</p>
+
+						<h2 id="disclosure">3. Disclosure of Information</h2>
+						<p>Because this Website does not collect or store personal information, there is in practice no personal information to disclose. We will nevertheless disclose information only in the following limited cases, and only to the extent required:</p>
+						<ul>
+							<li>with your prior consent, when you ask us to do so;</li>
+							<li>when required by applicable law, a court order, or a lawful request from a competent authority;</li>
+							<li>when necessary to investigate abuse, to protect the security of this Website, or to defend our legal rights;</li>
+							<li>to our hosting provider GitHub Pages strictly as part of delivering the requested web pages (see section&nbsp;13).</li>
+						</ul>
+						<p>We do not sell personal information to data brokers or to any other third party.</p>
+
+						<h2 id="storage">4. Information Storage and Transfer</h2>
+						<p><strong>Nothing is stored server-side by us.</strong> This Website consists of static files (HTML, CSS, JavaScript, images, fonts, audio) that are delivered to your browser by GitHub Pages. There is no database, no application server and no account system in which information about visitors could be retained.</p>
+						<ul>
+							<li>Encrypted vaults and encrypted downloads are static files; the decrypted plaintext exists only in the memory of your own browser tab (section&nbsp;10 and section&nbsp;11).</li>
+							<li>Emails you send us are kept in our ordinary email mailbox only for as long as needed to deal with your request, and are deleted on request (section&nbsp;16).</li>
+							<li>We do not transfer visitor data across borders, because we do not collect visitor data. The static files are served from GitHub's globally distributed infrastructure, which may be located outside your country; that is a property of the host, not a transfer of any data about you by us.</li>
+						</ul>
+
+						<h2 id="cookies">5. Use of Cookies</h2>
+						<ul>
+							<li>This Website uses <strong>exactly one</strong> kind of cookie: the theme-preference cookie written when you use the light/dark theme switch (see section&nbsp;9 for its exact name, value, lifetime and attributes).</li>
+							<li>We do not use analytics cookies, advertising cookies, tracking pixels, fingerprinting scripts, or third-party cookies of any kind. No consent banner is shown because no consent-gated cookie is set.</li>
+							<li>You may accept, refuse or delete cookies through your browser settings at any time. If you block or delete the theme cookies, the Website still works; it simply follows your operating-system colour-scheme preference again.</li>
+							<li>Information obtained via cookies is subject to this Policy.</li>
+						</ul>
+
+						<h2 id="security">6. Information Security</h2>
+						<ul>
+							<li>This Website is served over HTTPS by GitHub Pages. There is no login, no password database and no server-side storage to breach.</li>
+							<li>The password-protected vaults and encrypted downloads use modern cryptography performed locally in your browser (PBKDF2-SHA256 with 210,000 iterations and AES-256-GCM for page vaults; AES-256-CBC with per-file integrity verification for downloads). Your password, the derived keys and the decrypted content never leave your browser and are never written to cookies or to browser storage (sections&nbsp;10 and 11).</li>
+							<li>However, no internet system is entirely infallible, and we cannot guarantee absolute security. You are responsible for the password you use for the vaults and for keeping your own device and browser up to date.</li>
+							<li>If you discover a security problem, please report it to <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a> instead of exploiting it.</li>
+						</ul>
+
+						<h2 id="amendments">7. Amendments to This Policy</h2>
+						<ul>
+							<li>Changes to this Policy will be published on this page with an updated "Last Updated" date and an entry in the <a href="#changelog">Change Log</a> at the end of the page.</li>
+							<li>We reserve the right to modify this Policy at any time. Because there are no accounts, there is no separate notification channel; please check the date at the top of this page when you care about the current version. Continued use of this Website after a change means you accept the revised Policy.</li>
+						</ul>
+
+						<h2 id="protect">Protecting Your Personal Information</h2>
+						<p>To prevent unauthorised disclosure, we urge you to safeguard any personal details you choose to share (for example in an email) and to share them only when necessary. In particular, do not reuse an important password for the vaults described in section&nbsp;10; those passwords protect hidden page content and files, not identity, and they cannot be recovered if lost. If you suspect a breach involving a password you have used here, change that password wherever else you have used it and notify us at <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a> for prompt action.</p>
+
+						<h2 id="no-accounts">8. No Accounts and No Analytics</h2>
+						<p>This Website has <strong>no registration, no login, no member area and no user profiles</strong>. You never create an account here, and we never ask for a name, address, phone number or password to be submitted to us.</p>
+						<p>This Website also contains <strong>no analytics or tracking of any kind</strong>: no Google Analytics, no Plausible, no Umami, no server-side tracker, no advertising network, no social-media embed that reports back to its platform, no CDN or font service that receives your IP address. All CSS, JavaScript, images, fonts and audio are served from this Website's own origin. The only remote URLs in the page source are ordinary hyperlinks and the social-share preview image, which is fetched by link-preview crawlers, not by your browser.</p>
+						<p>The counters shown on the home page (anime/game/book statistics and repository information) are static copies of public data. They are refreshed periodically by the site operator's own automation and stored as ordinary files on this Website; your browser loads only that static copy and never contacts the data sources directly (section&nbsp;13).</p>
+
+						<h2 id="theme-cookie">9. The Theme Preference Cookie</h2>
+						<p>This Website writes two small first-party cookies, and only when you click the light/dark theme button in the navigation bar:</p>
+						<ul>
+							<li><strong><code>themeState</code></strong> — the theme you selected (<code>Light</code> or <code>Dark</code>);</li>
+							<li><strong><code>themeMode</code></strong> — whether that choice is manual (<code>manual</code>) or should follow your system preference (<code>auto</code>).</li>
+						</ul>
+						<p>Attributes: both are first-party cookies for this domain, with <code>Path=/</code>, <code>SameSite=Lax</code>, a lifetime of 365&nbsp;days, and they are served only over HTTPS. They contain no identifier, no timestamp, no personal data and no analytics value. They are written by page JavaScript (so they are not <code>HttpOnly</code>), and they are read before first paint only to avoid a flash of the wrong theme. Clearing your browser's cookies for this site removes them; the Website then returns to following <code>prefers-color-scheme</code>.</p>
+						<p>No other cookies are set, and the pages do not use <code>localStorage</code>, <code>sessionStorage</code> or IndexedDB to store information about you. The BGM player's temporary state (current track, playback position, volume) exists only in the memory of the open page.</p>
+
+						<h2 id="vaults">10. Encrypted Content Vaults</h2>
+						<p>Some pages — currently <a href="/about-us/">About</a> and <a href="/download/">Download</a> — contain a "vault": part of the page is encrypted and is shown only after you type the password that the site owner shared with you out of band.</p>
+						<ul>
+							<li><strong>Everything happens in your browser.</strong> The encrypted payload is a static file (<code>vault.json</code>); the page fetches it only after you submit a password, not while you are just reading the page.</li>
+							<li><strong>Key derivation and decryption are local.</strong> The page derives a key from your password with PBKDF2-SHA256 (210,000 iterations, random salt stored in the payload) and decrypts with AES-256-GCM using the Web Crypto API built into your browser.</li>
+							<li><strong>Nothing is sent to a server.</strong> The password, the derived key and the decrypted plaintext are never transmitted, logged, or written to cookies, <code>localStorage</code>, <code>sessionStorage</code> or IndexedDB. The plaintext is inserted into the page's DOM in memory so that you can read it; it disappears when you click "重新锁定" (re-lock) or close/reload the tab.</li>
+							<li><strong>Wrong passwords fail locally.</strong> AES-GCM authentication makes a wrong password produce a local "密码不正确" message; no verification request is sent anywhere.</li>
+							<li><strong>No recovery.</strong> We do not know your password and cannot recover it or the content for you.</li>
+							<li><strong>Use a unique password.</strong> The vault password is a shared secret for hidden content, not an account credential; do not reuse an important password for it.</li>
+						</ul>
+
+						<h2 id="downloads">11. Encrypted File Downloads</h2>
+						<p>The <a href="/download/">Download</a> page offers files that are stored encrypted and are decrypted locally after you unlock the page vault and enter the file password:</p>
+						<ul>
+							<li>Each encrypted file is a static file served from this Website (under <code>/static/resources/</code>), encrypted with <strong>AES-256-CBC</strong>. Its IV and a SHA-256 integrity value are served as small sibling static files (<code>keys/…iv</code> and <code>hash/…hash</code>).</li>
+							<li>The key is derived in your browser from the password you type (SHA-256 of the password combined with a site constant) using the Web Crypto API. The file is decrypted in memory, its integrity is checked against the SHA-256 value, and the result is offered to you as a normal download link created with a temporary browser object URL.</li>
+							<li>Nothing you type and nothing that is decrypted is uploaded. The Website operator cannot see your password or which files you unlock.</li>
+							<li>Downloaded content may be protected by third-party copyright or other rights (section&nbsp;15). You may use it for personal purposes only and must not redistribute it.</li>
+							<li>Because the files are decrypted on your own device, you download and use them at your own risk; we cannot guarantee that they will suit any particular purpose.</li>
+						</ul>
+
+						<h2 id="bgm">12. Background Music Player</h2>
+						<p>The site includes a small music player for background listening. It is entirely self-hosted:</p>
+						<ul>
+							<li>The playlist (<code>/static/bgm/playlist.json</code>) and the audio files and cover images it references are ordinary static files served from this Website. They are fetched only after you interact with the player — the page does not preload any audio for you.</li>
+							<li>Playback starts only when you press play; there is no autoplay, no audio recording and no upload of any kind. The player does not report listening activity anywhere.</li>
+							<li>No third-party music service is involved at runtime, and no account or login is needed.</li>
+							<li>The recordings and cover art are the property of their respective performers, labels and artists. They are provided for personal, non-commercial listening only; no licence is granted to redistribute them, and rights holders may request removal (section&nbsp;15).</li>
+						</ul>
+
+						<h2 id="third-party">13. Third-Party Services and Hosting</h2>
+						<p>The site itself embeds no third-party scripts, fonts, players or trackers. The following third parties are nevertheless relevant to how the site is delivered or what it displays:</p>
+						<ul>
+							<li><strong>GitHub Pages (hosting).</strong> This Website is hosted on GitHub Pages, a service of GitHub, Inc. When you request a page, GitHub's infrastructure necessarily processes technical request data (such as your IP address, user agent and requested URL) in order to serve the files and to protect the service. We, the site operator, do not receive a visitor log from GitHub Pages and do not process that data. GitHub's own <a href="https://docs.github.com/site-policy/privacy-policies/github-privacy-statement" target="_blank" rel="noopener noreferrer">Privacy Statement</a> applies to that processing.</li>
+							<li><strong>GitHub (links and previews).</strong> Links to <a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener noreferrer">github.com/Hisou-Tenshi</a> are ordinary hyperlinks. The social-share preview image declared in the page metadata is hosted on <code>avatars.githubusercontent.com</code>; it is fetched only by link-preview crawlers when the page is shared, not by your browser while reading the page.</li>
+							<li><strong>Bangumi (public collection counters).</strong> The statistics shown on the home page are copied from the site owner's public <a href="https://bgm.tv/user/1009342" target="_blank" rel="noopener noreferrer">Bangumi</a> collection. The refresh is performed by the site owner's scheduled automation and the resulting numbers are stored as a static file (<code>static/data/bangumi.json</code>); your browser does not contact bgm.tv to display them. Bangumi's own policies apply to that server-side request.</li>
+							<li><strong>GitHub repository metadata.</strong> In the same way, public repository information is captured periodically into static files (for example <code>static/data/repos.json</code>); no request is made from your browser to GitHub's API to display it.</li>
+							<li><strong>Linked communities.</strong> Links to x.com, facebook.com, instagram.com, thwiki.cc, bgm.tv and the other sites listed in the "Sites" section are ordinary hyperlinks. If you follow them, those sites apply their own policies and may set their own cookies.</li>
+						</ul>
+						<p>We do not use advertising networks, payment processors, analytics providers, social embeds or any other service that would receive data about your visit.</p>
+
+						<h2 id="external-links">14. External Links</h2>
+						<p>This Website contains links to external websites. They are provided for convenience only and may be changed or removed by their operators at any time. We do not control and are not responsible for the content, availability or privacy practices of those sites, and a link does not imply endorsement. When you leave this Website, the privacy policy of the destination site applies; please read it before providing any personal information there.</p>
+
+						<h2 id="copyright">15. Copyright and Third-Party Assets</h2>
+						<p>The design, layout, text and original code of this Website are © GitHub@緋想天子 unless otherwise noted. You may read and link to the site freely, but you may not republish its original content commercially without permission.</p>
+						<ul>
+							<li><strong>Touhou Project.</strong> 東方Project and its characters are © 上海アリス幻樂団 / ZUN. This is an unofficial fan site; it is not affiliated with, sponsored by or endorsed by 上海アリス幻樂団, ZUN or any other rights holder.</li>
+							<li><strong>Character illustrations and thumbnails.</strong> Images from official publications and derivative works are included for identification, commentary and fan purposes. Copyright remains with the original artists and publishers; if you are a rights holder and want an image removed, contact us and we will remove it promptly.</li>
+							<li><strong>Software and brand icons.</strong> The technology-stack artwork identifies products whose names and logos are trademarks of their respective owners; they are used descriptively and do not imply endorsement or partnership.</li>
+							<li><strong>Fonts.</strong> The display typeface "HST Display" is a locally served subset of Noto Sans SC Black, © the Noto Project authors, licensed under the SIL Open Font License 1.1. The Ubuntu and Pacifico typefaces are used under their respective licences (Ubuntu Font Licence; SIL Open Font License 1.1).</li>
+							<li><strong>Music and cover art.</strong> Audio recordings and album covers belong to their performers, labels and designers. They are provided for personal, non-commercial listening only; no redistribution licence is granted. Rights holders may request removal.</li>
+							<li><strong>Public data snapshots.</strong> Bangumi collection figures and GitHub repository metadata remain subject to their respective services' terms and are used with attribution.</li>
+						</ul>
+						<p>Removal and licensing requests: <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a>.</p>
+
+						<h2 id="retention">16. Retention and Deletion</h2>
+						<ul>
+							<li>We keep no server-side data about visitors, so there is no visitor database that could be retained or deleted.</li>
+							<li>Emails you send us are retained only as long as necessary to answer you or to complete the request you made; they are deleted on request. You can ask for deletion at any time at <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a>.</li>
+							<li>Decrypted vault content and decrypted downloads exist only in your browser's memory and disappear when you re-lock the vault or close the tab.</li>
+							<li>The two theme cookies remain in your browser until they expire (365&nbsp;days) or until you delete them; GitHub Pages' infrastructure logs, if any, are retained by GitHub under its own policies and are not available to us.</li>
+							<li>This Website keeps no backups containing visitor information, because it holds no visitor information.</li>
+						</ul>
+
+						<h2 id="children">17. Children and Minors</h2>
+						<p>This Website is a personal, non-commercial fan site about a video-game series. It is not directed at children under 13 (or under 16 where your local law sets that age), and it does not knowingly collect information from children. Because there are no accounts, forms or analytics, no personal information is collected from any visitor, including minors.</p>
+						<p>If you are a minor, please use the site with the knowledge or permission of a parent or guardian, and do not send personal information in an email without their agreement. If a parent or guardian believes that a minor has sent us personal information by email, contact us at <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a> and we will delete it.</p>
+
+						<h2 id="contact">18. Your Rights and Contact</h2>
+						<p>Depending on where you live, applicable data-protection law may give you rights to access, correct, delete, restrict or object to the processing of personal data, and to lodge a complaint with a supervisory authority. Because this Website collects and stores no personal data, in practice there is usually nothing to access, correct or delete; where you have sent us an email, you may ask us to correct or delete it.</p>
+						<p>To exercise any of these rights, or if you have any privacy question or complaint, contact the site operator:</p>
+						<ul>
+							<li><strong>Operator:</strong> GitHub@緋想天子</li>
+							<li><strong>Email:</strong> <a href="mailto:shameimaru.ayaaya@gmail.com">shameimaru.ayaaya@gmail.com</a></li>
+							<li><strong>Postal address:</strong> 〒399-9211 白馬村神城１５１５２−イ　北安曇郡　長野県　日本</li>
+							<li><strong>Telephone:</strong> 0081-090-11451400</li>
+						</ul>
+						<p>We will respond within a reasonable time and may ask you to clarify your request. We normally answer within 30&nbsp;days.</p>
+
+						<h2 id="changelog">Change Log</h2>
+						<ul>
+							<li><strong>31 October 2026 — full rewrite.</strong> Updated this Policy to match the current static site: changed the site address to <code>https://tenshi.qzz.io/</code>; removed statements about membership, account passwords, server-side storage, overseas data transfer, IP/browser collection and commercial partners, none of which apply; documented that there are no accounts or analytics and that the only cookies are the theme preference; documented the client-side encrypted vaults and encrypted downloads, the self-hosted BGM player, and the actual third-party touchpoints (GitHub Pages hosting, GitHub previews, Bangumi and GitHub data snapshots, external links); added the copyright/licence, retention, minors and data-rights sections, plus a personal-views disclaimer; added this Change Log.</li>
+							<li><strong>18 July 2025 — previous version.</strong> The version this one replaces.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+</body>
+</html>

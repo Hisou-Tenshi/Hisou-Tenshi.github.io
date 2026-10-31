@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>緋想天Tools - 夢と現と交えては、幻想郷に、遊ぶがいい</title>
+	<meta name="description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="緋想天Tools">
+	<meta property="og:description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/tools/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png">
+	<link rel="canonical" href="https://tenshi.qzz.io/tools/">
+	<link rel="preload" href="/static/fonts/display-900.woff2" as="font" type="font/woff2" crossorigin>
+	<link rel="stylesheet" href="/static/css/root.css">
+	<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+	<a class="skip-link" href="#main">跳到主要内容</a>
+
+	<header class="nav" id="nav">
+		<div class="nav__in">
+			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
+				<span class="nav__mark" aria-hidden="true"></span>
+				<span class="nav__wordmark">全人類の緋想天</span>
+			</a>
+			<nav class="nav__links" id="navLinks" aria-label="主导航">
+				<a class="nav__link" href="/">Home</a>
+				<a class="nav__link" href="/about-us/">About</a>
+				<a class="nav__link" href="/contact-us/">Contact</a>
+				<a class="nav__link" href="/tools/" aria-current="page">Tools</a>
+				<a class="nav__link" href="/download/">Download</a>
+				<a class="nav__link" href="/privacy-policy/">Privacy</a>
+				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="nav__tools">
+				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
+					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
+				</button>
+				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+					<span></span><span></span><span></span>
+				</button>
+			</div>
+		</div>
+	</header>
+
+	<main id="main">
+		<!-- Page head -->
+		<section class="pagehead" aria-labelledby="pageTitle">
+			<div class="wrap">
+				<div class="pagehead__kicker kicker" data-rv="fade">
+					<span class="kicker__num">TL</span>
+					<span>TOOLS / 道具</span>
+				</div>
+				<h1 class="pagehead__title" id="pageTitle" data-rv>緋想天Tools</h1>
+				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Tools · Last Updated: 01 Oct 2025</div>
+				<p class="pagehead__intro" data-rv style="--rv-d:.12s">重复造轮子中</p>
+				<div class="doc__actions" data-rv style="--rv-d:.18s">
+					<button type="button" onclick="window.print()" class="print-button">
+						<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="currentColor"><path d="M11 3h2v9.4l3.2-3.2 1.4 1.4L12 17.4l-5.6-6.8 1.4-1.4L11 12.4zM5 19.2h14V21H5z"/></svg>Get PDF
+					</button>
+				</div>
+			</div>
+		</section>
+
+		<!-- Tools -->
+		<section class="doc doc--wide" aria-labelledby="tools-title">
+			<div class="wrap">
+				<div class="doc__body">
+					<h2 id="tools-title">Tools</h2>
+					<blockquote class="epigraph">
+						<p class="epigraph__text">Lo! men have become the tools of their tools. <cite class="epigraph__cite">Henry David Thoreau, <i>Walden</i> (1854)</cite></p>
+					</blockquote>
+				</div>
+				<div class="tiles" style="margin-top:26px">
+					<a class="tile" href="/tools/cellCalculator/">
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.6 2.4h12.8c1.2 0 2.2 1 2.2 2.2v14.8c0 1.2-1 2.2-2.2 2.2H5.6c-1.2 0-2.2-1-2.2-2.2V4.6c0-1.2 1-2.2 2.2-2.2zM7 5.6v3.2h10V5.6H7zm0 6.2v2.8h2.8v-2.8H7zm4.6 0v2.8h2.8v-2.8h-2.8zm4.6 0v2.8H19v-2.8h-2.8zM7 16.6v2.8h2.8v-2.8H7zm4.6 0v2.8h2.8v-2.8h-2.8zm4.6 0v2.8H19v-2.8h-2.8z" fill-rule="evenodd"/></svg></span>
+							<span class="tile__title">cellCalculator</span>
+						</div>
+						<p class="tile__desc">本站 · /tools/cellCalculator</p>
+						<span class="tile__go">Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+					<a class="tile" href="https://acgmn-grid.vercel.app/">
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 1.8 4 14.2h5.6L8.2 22.2 19 9.4h-5.9z"/></svg></span>
+							<span class="tile__title">ACGMN-Grid</span>
+						</div>
+						<p class="tile__desc">acgmn-grid.vercel.app</p>
+						<span class="tile__go">Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+					<a class="tile" href="https://calling-llms.vercel.app/">
+						<div class="tile__top">
+							<span class="tile__icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M4 3.6h16c1 0 1.8.8 1.8 1.8v9.2c0 1-.8 1.8-1.8 1.8h-7.1l-4.3 3.6v-3.6H4c-1 0-1.8-.8-1.8-1.8V5.4c0-1 .8-1.8 1.8-1.8zM8.2 8.4a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6zM12 8.4a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6zM15.8 8.4a1.3 1.3 0 1 0 0 2.6 1.3 1.3 0 0 0 0-2.6z"/></svg></span>
+							<span class="tile__title">Calling</span>
+						</div>
+						<p class="tile__desc">calling-llms.vercel.app</p>
+						<span class="tile__go">Open <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M12.5 5.5 19 12l-6.5 6.5"/></svg></span>
+					</a>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
+
+	<footer class="foot">
+		<div class="wrap foot__in">
+			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
+			<nav class="foot__links" aria-label="页脚导航">
+				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
+				<a href="/about-us/">About</a>
+				<a href="/contact-us/">Contact</a>
+				<a href="/privacy-policy/">Privacy</a>
+				<a href="/terms-and-conditions/">Terms</a>
+			</nav>
+			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
+		</div>
+	</footer>
+
+	<script src="/static/js/site-content.js"></script>
+	<script src="/static/js/script.js"></script>
+</body>
+</html>
