@@ -2291,6 +2291,72 @@ body.has-player-open .secnav {
 	}
 }
 
+/* ── 13c · Two-column doc split ── */
+
+/* The vault pages breathe out of the prose measure: prose on the left,
+   spec lists / tag walls / quotations fill the right column. */
+.doc--wide .doc__body {
+	max-width: none;
+}
+
+.split {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(300px, 0.72fr);
+	gap: clamp(28px, 4.6vw, 76px);
+	align-items: start;
+}
+
+.split__main {
+	min-width: 0;
+}
+
+/* keep the prose at a comfortable measure even though the column is wider */
+.split__main > p {
+	max-width: 56ch;
+}
+
+.split__side {
+	display: grid;
+	gap: 30px;
+	min-width: 0;
+	align-content: start;
+}
+
+.split__side .fields {
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 22px 18px;
+}
+
+.split__side .field__k {
+	font-size: 10px;
+	letter-spacing: 0.05em;
+	white-space: nowrap;
+}
+
+.split__side .field__v {
+	font-size: 14.5px;
+}
+
+.split__side .epigraph {
+	margin: 0;
+	max-width: none;
+}
+
+@media (max-width: 900px) {
+	.split {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 26px;
+	}
+
+	.split__side {
+		gap: 24px;
+	}
+
+	.split__side .fields {
+		grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	}
+}
+
 /* ── 14 · Document pages ─────────────────────────────────────────── */
 .pagehead {
 	position: relative;
