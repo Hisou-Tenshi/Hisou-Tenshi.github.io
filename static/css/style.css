@@ -2214,6 +2214,83 @@ body.has-player-open .secnav {
 	content: " · ";
 }
 
+/* ── 13b · Epigraph, inline star, field row ── */
+
+/* Pull-quote for the vault pages: italic serif with a hanging accent quote mark */
+.epigraph,
+.doc__body .epigraph {
+	position: relative;
+	max-width: 58ch;
+	margin: 24px 0 6px;
+	padding-left: 34px;
+	font-family: Georgia, "Times New Roman", "Songti SC", "Noto Serif CJK SC",
+		"Source Han Serif SC", "SimSun", serif;
+	font-style: italic;
+	font-size: clamp(17px, 1.5vw, 21px);
+	line-height: 1.62;
+	letter-spacing: 0.005em;
+	color: var(--ink-2);
+	text-wrap: pretty;
+}
+
+.epigraph::before {
+	content: "“";
+	position: absolute;
+	left: 0;
+	top: -0.18em;
+	font: italic 700 42px/1 Georgia, "Times New Roman", serif;
+	color: var(--accent);
+	opacity: 0.85;
+}
+
+.epigraph__cite,
+.doc__body .epigraph__cite {
+	display: block;
+	margin-top: 12px;
+	padding-left: 34px;
+	font-family: var(--font-sans);
+	font-style: italic;
+	font-size: 12.5px;
+	letter-spacing: 0.01em;
+	color: var(--ink-3);
+}
+
+.doc__body .epigraph,
+.doc__body .epigraph p {
+	font-style: italic;
+}
+
+.doc__body .epigraph {
+	padding: 0 0 0 34px;
+	border-left: 0;
+	color: var(--ink-2);
+}
+
+.epigraph__cite i {
+	font-style: italic;
+}
+
+/* Fullwidth asterisk that would otherwise ride high in Latin fonts */
+.star {
+	display: inline-block;
+	font-size: 1.12em;
+	transform: translateY(0.26em);
+}
+
+/* Four fields on one line once there is room */
+@media (min-width: 900px) {
+	.fields--row {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 20px 22px;
+	}
+
+	.fields--row .field__k {
+		font-size: 10px;
+		letter-spacing: 0.05em;
+		white-space: nowrap;
+	}
+}
+
 /* ── 14 · Document pages ─────────────────────────────────────────── */
 .pagehead {
 	position: relative;
