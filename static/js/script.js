@@ -817,6 +817,7 @@
 	var input = term.querySelector('[data-term-input]');
 	var log = term.querySelector('[data-term-log]');
 	var title = term.querySelector('[data-term-title]');
+	var pathEl = term.querySelector('.specimen__line--prompt .specimen__path');
 	var shell = term.closest('[data-term-shell]');
 	var shim = shell ? shell.querySelector('[data-term-shim]') : null;
 	var veil = shell ? shell.querySelector('[data-term-veil]') : null;
@@ -824,6 +825,10 @@
 	var zoomLight = term.querySelector('[data-light="zoom"]');
 	var view = 'normal';
 	var userMode = false;
+	var cwd = '/Users/visitor';
+	var commandHistory = [];
+	var historyPos = null;
+	var historyDraft = '';
 	var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 	var timer = null;
 	var token = 0;
@@ -931,7 +936,7 @@
 	}
 
 	function stamp(text) {
-		addLine('dsh ~ % ' + text, 'is-cmd');
+		addLine(promptPrefix() + text, 'is-cmd');
 		resetLine();
 	}
 
@@ -1342,16 +1347,606 @@
 		setTitle('dsh');
 	}
 
+	function setPromptValue(value) {
+		input.value = value;
+		out.textContent = value;
+		try {
+			var end = input.value.length;
+			input.setSelectionRange(end, end);
+		} catch (e) {
+			/* some mobile keyboards do not expose selection */
+		}
+	}
+
+	/* ── A small, honest virtual shell ───────────────────────────────────
+	   This is not an emulator. It is a deterministic little filesystem with
+	   enough of zsh's surface to make ordinary commands feel real, while the
+	   red light stays the only exit from the theatre. */
+	var HOME = '/Users/visitor';
+	var DIRS = {
+		'/': ['Applications', 'Library', 'System', 'Users', 'bin', 'dev', 'etc', 'opt', 'private', 'tmp', 'usr', 'var'],
+		'/Users': ['Shared', 'visitor'],
+		'/Users/visitor': ['Desktop', 'Documents', 'Downloads', 'Library', 'Movies', 'Music', 'Pictures', 'Public', 'README.md', '.zshrc', '.zprofile', '.zsh_history'],
+		'/Users/visitor/Desktop': ['screenshot.png', 'notes.txt'],
+		'/Users/visitor/Documents': ['ideas.md', 'resume.pdf'],
+		'/Users/visitor/Downloads': ['bgm.mp3', 'Monika_bg.webp', 'ref.jpg'],
+		'/Users/visitor/Library': ['Caches', 'Preferences', 'Application Support'],
+		'/Users/visitor/Movies': [],
+		'/Users/visitor/Music': [],
+		'/Users/visitor/Pictures': ['avatar.png'],
+		'/Users/visitor/Public': ['Drop Box'],
+		'/tmp': [],
+		'/etc': ['hosts', 'passwd', 'shells', 'zshrc'],
+		'/usr': ['bin', 'lib', 'local', 'sbin', 'share'],
+		'/usr/bin': ['bash', 'cat', 'curl', 'date', 'git', 'ls', 'node', 'python3', 'sed', 'ssh', 'vim', 'zsh'],
+		'/usr/local': ['bin', 'lib', 'share'],
+		'/opt': ['homebrew'],
+		'/dev': ['console', 'null', 'random', 'zero']
+	};
+	var FILES = {
+		'/Users/visitor/README.md': '# Hisou Tenshi\n\nA small personal site, built by hand.\n',
+		'/Users/visitor/.zshrc': 'export PATH="/usr/local/bin:$PATH"\nexport EDITOR=vim\nalias ll="ls -la"\n',
+		'/Users/visitor/.zprofile': 'eval "$(/opt/homebrew/bin/brew shellenv)"\n',
+		'/Users/visitor/.zsh_history': ': 1750000000:0;ls -la\n: 1750000012:0;git status\n: 1750000020:0;pwd\n',
+		'/Users/visitor/Desktop/notes.txt': 'Do not open the last window.\n',
+		'/Users/visitor/Documents/ideas.md': '# Ideas\n\n- a terminal that remembers\n- a room behind the glass\n',
+		'/Users/visitor/Downloads/ref.jpg': '<binary image data>\n',
+		'/etc/hosts': '127.0.0.1\tlocalhost\n255.255.255.255\tbroadcasthost\n::1\tlocalhost\n',
+		'/etc/shells': '/bin/bash\n/bin/zsh\n/usr/local/bin/fish\n'
+	};
+
+	function shortCwd() {
+		if (cwd === HOME) return '~';
+		if (cwd.indexOf(HOME + '/') === 0) return '~' + cwd.slice(HOME.length);
+		return cwd;
+	}
+
+	function promptPrefix() {
+		return 'dsh ' + shortCwd() + ' % ';
+	}
+
+	function updatePromptPath() {
+		if (pathEl) pathEl.textContent = shortCwd();
+	}
+
+	function setCwd(next) {
+		cwd = next;
+		updatePromptPath();
+	}
+
+	function resetUserShell() {
+		setCwd(HOME);
+		commandHistory = [];
+		historyPos = null;
+		historyDraft = '';
+	}
+
+	function splitArgs(text) {
+		var args = [];
+		var cur = '';
+		var quote = null;
+		for (var i = 0; i < text.length; i++) {
+			var ch = text.charAt(i);
+			if (quote) {
+				if (ch === quote) quote = null;
+				else cur += ch;
+				continue;
+			}
+			if (ch === '"' || ch === "'") {
+				quote = ch;
+				continue;
+			}
+			if (/\s/.test(ch)) {
+				if (cur) {
+					args.push(cur);
+					cur = '';
+				}
+				continue;
+			}
+			cur += ch;
+		}
+		if (cur) args.push(cur);
+		return args;
+	}
+
+	function quoteError(cmd) {
+		var dq = (cmd.match(/"/g) || []).length;
+		var sq = (cmd.match(/'/g) || []).length;
+		if (dq % 2) return 'zsh: unmatched "';
+		if (sq % 2) return "zsh: unmatched '";
+		return '';
+	}
+
+	function resolvePath(target) {
+		var p = target == null || target === '' ? '~' : String(target);
+		if (p === '~') p = HOME;
+		else if (p.indexOf('~/') === 0) p = HOME + p.slice(1);
+		if (p.charAt(0) !== '/') p = cwd + '/' + p;
+		var bits = p.split('/');
+		var out = [];
+		for (var i = 0; i < bits.length; i++) {
+			var b = bits[i];
+			if (!b || b === '.') continue;
+			if (b === '..') {
+				if (out.length) out.pop();
+				continue;
+			}
+			out.push(b);
+		}
+		return '/' + out.join('/');
+	}
+
+	function isDir(path) {
+		return Object.prototype.hasOwnProperty.call(DIRS, path);
+	}
+
+	function isFile(path) {
+		return Object.prototype.hasOwnProperty.call(FILES, path);
+	}
+
+	function entriesOf(path) {
+		return (DIRS[path] || []).slice();
+	}
+
+	function fmtEntry(path, name) {
+		var full = path === '/' ? '/' + name : path + '/' + name;
+		var dir = isDir(full);
+		var size = dir ? 160 : (FILES[full] ? FILES[full].length : 128);
+		return (dir ? 'drwxr-xr-x' : '-rw-r--r--') + '  5 visitor staff ' +
+			String(size).padStart(6, ' ') + ' Nov  1 19:24 ' + name;
+	}
+
+	function macDate() {
+		var d = new Date();
+		var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		var p = function (n) { return (n < 10 ? '0' : '') + n; };
+		return days[d.getDay()] + ' ' + months[d.getMonth()] + ' ' + p(d.getDate()) + ' ' +
+			p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds()) + ' CST ' + d.getFullYear();
+	}
+
+	function ok(lines) {
+		return { lines: [].concat(lines || []), error: false, clear: false };
+	}
+
+	function fail(lines) {
+		return { lines: [].concat(lines || []), error: true, clear: false };
+	}
+
+	function expandVars(text) {
+		return text.replace(/\$(\?|[A-Za-z_][A-Za-z0-9_]*)/g, function (all, key) {
+			if (key === '?') return '0';
+			if (key === 'HOME') return HOME;
+			if (key === 'USER' || key === 'LOGNAME') return 'visitor';
+			if (key === 'SHELL') return '/bin/zsh';
+			if (key === 'PWD') return cwd;
+			if (key === 'TERM') return 'xterm-256color';
+			if (key === 'LANG') return 'en_US.UTF-8';
+			return all;
+		});
+	}
+
+	function runCommand(raw) {
+		var args = splitArgs(raw);
+		var name = (args[0] || '').toLowerCase();
+		var rest = args.slice(1);
+
+		if (name === 'pwd') return ok(cwd);
+		if (name === 'whoami') return ok('visitor');
+		if (name === 'hostname') return ok('dsh-mac');
+		if (name === 'id') return ok('uid=501(visitor) gid=20(staff) groups=20(staff),12(everyone),61(localaccounts)');
+
+		if (name === 'cd') {
+			var target = rest[0] || '~';
+			var resolved = resolvePath(target);
+			if (isDir(resolved)) {
+				setCwd(resolved);
+				return ok([]);
+			}
+			if (isFile(resolved)) return fail('cd: not a directory: ' + target);
+			return fail('cd: no such file or directory: ' + target);
+		}
+
+		if (name === 'ls' || name === 'dir') {
+			var all = false;
+			var long = false;
+			var targets = [];
+			rest.forEach(function (arg) {
+				if (/^-[a-zA-Z]+$/.test(arg)) {
+					if (arg.indexOf('a') >= 0) all = true;
+					if (arg.indexOf('l') >= 0) long = true;
+					return;
+				}
+				targets.push(arg);
+			});
+			var where = targets.length ? resolvePath(targets[0]) : cwd;
+			if (isFile(where)) return ok(where);
+			if (!isDir(where)) return fail('ls: ' + (targets[0] || where) + ': No such file or directory');
+			var names = entriesOf(where).filter(function (n) {
+				return all || n.charAt(0) !== '.';
+			}).sort();
+			if (long) {
+				var outLines = [all ? 'total 24' : 'total 16'];
+				if (all) {
+					outLines.push('drwxr-xr-x  5 visitor staff  160 Nov  1 19:24 .');
+					outLines.push('drwxr-xr-x  5 visitor staff  160 Nov  1 19:24 ..');
+				}
+				names.forEach(function (n) { outLines.push(fmtEntry(where, n)); });
+				return ok(outLines);
+			}
+			return ok(names.length ? names.join('  ') : '');
+		}
+
+		if (name === 'cat' || name === 'type') {
+			if (!rest.length) return fail('cat: missing file operand');
+			var catLines = [];
+			for (var ci = 0; ci < rest.length; ci++) {
+				var catPath = resolvePath(rest[ci]);
+				if (isDir(catPath)) {
+					catLines.push('cat: ' + rest[ci] + ': Is a directory');
+					continue;
+				}
+				if (!isFile(catPath)) {
+					catLines.push('cat: ' + rest[ci] + ': No such file or directory');
+					continue;
+				}
+				catLines = catLines.concat(FILES[catPath].replace(/\n$/, '').split('\n'));
+			}
+			return catLines.some(function (line) { return /^cat:/.test(line); }) ? fail(catLines) : ok(catLines);
+		}
+
+		if (name === 'echo') {
+			var echoArgs = rest.slice();
+			var noNewline = false;
+			if (echoArgs[0] === '-n') {
+				noNewline = true;
+				echoArgs.shift();
+			}
+			var text = expandVars(echoArgs.join(' '));
+			return ok(text || (noNewline ? [] : ''));
+		}
+
+		if (name === 'printf') {
+			if (!rest.length) return fail('printf: usage: printf format [arguments]');
+			var fmtText = rest[0].replace(/\\n/g, '\n').replace(/\\t/g, '\t');
+			if (rest.length > 1) {
+				var extra = rest.slice(1);
+				var n = 0;
+				fmtText = fmtText.replace(/%[sd]/g, function () {
+					return extra[n++] != null ? extra[n - 1] : '';
+				});
+			}
+			fmtText = expandVars(fmtText);
+			return ok(fmtText.split('\n'));
+		}
+
+		if (name === 'date') {
+			var fmt = rest.join(' ');
+			if (fmt === '+%Y-%m-%d') {
+				var d = new Date();
+				return ok(d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'));
+			}
+			return ok(macDate());
+		}
+
+		if (name === 'uname') {
+			if (rest.indexOf('-a') >= 0) return ok('Darwin dsh-mac 24.6.0 Darwin Kernel Version 24.6.0: Thu Sep 18 20:41:03 PDT 2025; root:xnu-11417.140.69~1/RELEASE_ARM64_T8103 arm64');
+			if (rest.indexOf('-m') >= 0) return ok('arm64');
+			if (rest.indexOf('-r') >= 0) return ok('24.6.0');
+			if (rest.indexOf('-s') >= 0) return ok('Darwin');
+			return ok('Darwin');
+		}
+
+		if (name === 'uptime') {
+			var ut = new Date();
+			var hh = String(ut.getHours()).padStart(2, '0');
+			var mm = String(ut.getMinutes()).padStart(2, '0');
+			return ok(hh + ':' + mm + '  up 12 days,  4:21, 2 users, load averages: 2.31 2.18 1.97');
+		}
+
+		if (name === 'which') {
+			var probe = (rest[0] || '').toLowerCase();
+			if (!probe) return fail('usage: which command');
+			if (probe === 'cd' || probe === 'echo' || probe === 'pwd' || probe === 'exit') return ok(probe + ': shell built-in command');
+			if (probe === 'git') return ok('/usr/bin/git');
+			if (DIRS['/usr/bin'].indexOf(probe) >= 0) return ok('/usr/bin/' + probe);
+			return fail('which: no ' + probe + ' in (/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin)');
+		}
+
+		if (name === 'history') {
+			if (!commandHistory.length) return ok([]);
+			var from = Math.max(0, commandHistory.length - 20);
+			var hlines = [];
+			for (var hi = from; hi < commandHistory.length; hi++) {
+				hlines.push(String(hi + 1).padStart(4, ' ') + '  ' + commandHistory[hi]);
+			}
+			return ok(hlines);
+		}
+
+		if (name === 'clear') return { lines: [], error: false, clear: true };
+
+		if (name === 'help' || name === '?') {
+			return ok([
+				'These shell commands are defined internally:',
+				'  help  clear  pwd  ls  dir  cd  cat  type  echo  printf',
+				'  whoami  id  date  uname  history  neofetch  env  man',
+				'  git  node  npm  python3  pip3  cowsay  fortune  sl  matrix  exit'
+			]);
+		}
+
+		if (name === 'man') {
+			if (!rest[0]) return fail('What manual page do you want?');
+			var page = rest[0].toLowerCase();
+			var about = {
+				cd: 'cd - change the working directory',
+				ls: 'ls - list directory contents',
+				cat: 'cat - concatenate and print files',
+				echo: 'echo - write arguments to the standard output',
+				pwd: 'pwd - return working directory name',
+				exit: 'exit - exit the shell'
+			};
+			return about[page] ? ok([about[page]]) : fail('No manual entry for ' + page);
+		}
+
+		if (name === 'printenv' || name === 'env') {
+			return ok([
+				'HOME=' + HOME,
+				'USER=visitor',
+				'SHELL=/bin/zsh',
+				'PWD=' + cwd,
+				'TERM=xterm-256color',
+				'LANG=en_US.UTF-8',
+				'EDITOR=vim'
+			]);
+		}
+
+		if (name === 'git') {
+			var sub = (rest[0] || '').toLowerCase();
+			if (sub === 'status') return ok([
+				"On branch main",
+				"Your branch is up to date with 'origin/main'.",
+				"",
+				"nothing to commit, working tree clean"
+			]);
+			if (sub === 'branch') return ok('* main');
+			if (sub === 'log') return ok([
+				'8f2a1c4 (HEAD -> main, origin/main) Update homepage',
+				'7c31e2a Add terminal easter egg',
+				'4b4483f Add minimize and fullscreen'
+			]);
+			if (sub === 'remote') return ok('origin  https://github.com/Hisou-Tenshi/Hisou-Tenshi.github.io.git (fetch)\norigin  https://github.com/Hisou-Tenshi/Hisou-Tenshi.github.io.git (push)');
+			if (sub === 'diff') return ok([]);
+			if (sub === 'push') return ok(['Everything up-to-date']);
+			if (!sub) return fail('usage: git <command> [<args>]');
+			return fail("git: '" + rest[0] + "' is not a git command. See 'git --help'.");
+		}
+
+		if (name === 'neofetch') {
+			return ok([
+				'                    \'c.          visitor@dsh-mac',
+				'                 ,xNMM.          ----------------',
+				'               .OMMMMo           OS: macOS Sequoia 15.6 arm64',
+				'               OMMM0,            Host: MacBook Air (M3, 2024)',
+				'     .;loddo:\' loolloddol;.      Kernel: Darwin 24.6.0',
+				'   cKMMMMMMMMMMNWMMMMMMMMMM0:    Uptime: 12 days, 4 hours, 21 mins',
+				' .KMMMMMMMMMMMMMMMMMMMMMMMWd.    Shell: zsh 5.9',
+				' XMMMMMMMMMMMMMMMMMMMMMMMX.      Terminal: dsh-term',
+				';MMMMMMMMMMMMMMMMMMMMMMMM:       CPU: Apple M3 (8) @ 4.05GHz',
+				':MMMMMMMMMMMMMMMMMMMMMMMM:       Memory: 4096MiB / 16384MiB',
+				'.MMMMMMMMMMMMMMMMMMMMMMMMX.',
+				' kMMMMMMMMMMMMMMMMMMMMMMMMWd.',
+				' .XMMMMMMMMMMMMMMMMMMMMMMMMMMk',
+				'  .XMMMMMMMMMMMMMMMMMMMMMMMMK.',
+				'    kMMMMMMMMMMMMMMMMMMMMMMd',
+				'     ;KMMMMMMMWXXWMMMMMMMk.',
+				'       "cooc*"    "*coo\'"'
+			]);
+		}
+
+		if (name === 'cowsay') {
+			var cowText = rest.join(' ') || 'moo';
+			var width = 34;
+			var words = cowText.split(/\s+/);
+			var rows = [];
+			var row = '';
+			words.forEach(function (word) {
+				if ((row + ' ' + word).trim().length > width) {
+					if (row) rows.push(row);
+					row = word;
+				} else {
+					row = (row ? row + ' ' : '') + word;
+				}
+			});
+			if (row) rows.push(row);
+			if (!rows.length) rows.push('');
+			var top = ' ' + '_'.repeat(Math.max.apply(null, rows.map(function (r) { return r.length; })) + 2);
+			var bottom = ' ' + '-'.repeat(top.length - 1);
+			var box = [top];
+			rows.forEach(function (r, i) {
+				var pad = top.length - 2 - r.length;
+				var left = i === 0 ? '< ' : i === rows.length - 1 ? '\\ ' : '| ';
+				box.push(left + r + ' '.repeat(pad) + (i === 0 ? '>' : i === rows.length - 1 ? '/' : '|'));
+			});
+			box.push(bottom);
+			box.push('        \\   ^__^');
+			box.push('         \\  (oo)\\_______');
+			box.push('            (__)\\       )\\/\\');
+			box.push('                ||----w |');
+			box.push('                ||     ||');
+			return ok(box);
+		}
+
+		if (name === 'fortune') {
+			var fortunes = [
+				'A window is only a promise that the outside exists.',
+				'You are not the first visitor. You will not be the last.',
+				'Every exit is a door someone else has to close.',
+				'The terminal remembers what the visitor forgets.',
+				'There is a room behind the glass. It is smaller than this one.'
+			];
+			return ok(fortunes[Math.floor(Math.random() * fortunes.length)]);
+		}
+
+		if (name === 'sl') {
+			return ok([
+				'      ====        ________                ___________',
+				'  _D _|  |_______/        \\__I_I_____===__|_________|',
+				'   |(_)---  |   H\\________/ |   |        =|___ ___|',
+				'   /     |  |   H  |  |     |   |         ||_| |_||',
+				'  |      |  |   H  |__--------------------| [___] |',
+				'  | ________|___H__/__|_____/[][]~\\_______|       |',
+				'  |/ |   |-----------I_____I [][] []  D   |=======|__',
+				'__/ =| o |=-~~\\  /~~\\  /~~\\  /~~\\ ____Y___________|__',
+				' |/-=|___|=    ||    ||    ||    |_____/~\\___/',
+				'  \\_/      \\O=====O=====O=====O_/      \\_/'
+			]);
+		}
+
+		if (name === 'matrix') {
+			return ok([
+				'01001000 01100101 01101100 01101100 01101111',
+				'10110100 00101101 11010010 01001011 10010110',
+				'01110100 01101000 01100101 00100000 01110010',
+				'01100101 01100101 01101100 00100000 01110111',
+				'01101111 01110010 01101100 01100100 00101110',
+				'follow the white rabbit.'
+			]);
+		}
+
+		if (name === 'node' && rest[0] === '--version') return ok('v22.11.0');
+
+		if (name === 'npm' && rest[0] === '--version') return ok('10.9.0');
+		if (name === 'python3' && rest[0] === '--version') return ok('Python 3.13.2');
+		if (name === 'python' && rest[0] === '--version') return ok('Python 3.13.2');
+		if (name === 'pip3' && rest[0] === '--version') return ok('pip 25.0.1 from /opt/homebrew/lib/python3.13/site-packages/pip (python 3.13)');
+		if (name === 'pip' && rest[0] === '--version') return ok('pip 25.0.1 from /opt/homebrew/lib/python3.13/site-packages/pip (python 3.13)');
+		if (name === 'java' && rest[0] === '-version') return ok(['openjdk version "21.0.6" 2025-01-21 LTS', 'OpenJDK Runtime Environment Homebrew (build 21.0.6+0)']);
+		if (name === 'go' && rest[0] === 'version') return ok('go version go1.24.1 darwin/arm64');
+		if (name === 'rustc' && rest[0] === '--version') return ok('rustc 1.85.1 (4eb161250 2025-03-15)');
+		if (name === 'php' && rest[0] === '-v') return ok('PHP 8.4.5 (cli) (built: Mar 13 2025 10:18:20) (NTS)');
+		if (name === 'ruby' && rest[0] === '-v') return ok('ruby 3.4.2 (2025-02-15 revision 5b1a6cd) [arm64-darwin24]');
+
+		if (name === 'curl') return fail('curl: (6) Could not resolve host: ' + (rest[rest.length - 1] || 'example.com'));
+		if (name === 'ping') return fail('ping: cannot resolve ' + (rest[rest.length - 1] || 'example.com') + ': Unknown host');
+		if (name === 'open') return fail("Unable to find application named '" + (rest[0] || '') + "'");
+		if (name === 'sudo') return fail('sudo: a terminal is required to read the password; either use the -S option to read from standard input or configure an askpass helper');
+		if (name === 'ps') return ok([
+			'USER       PID  %CPU %MEM      VSZ    RSS TTY      STAT START   TIME COMMAND',
+			'visitor    501   0.1  0.3  4123456  23456 s000     S+   19:20   0:01 zsh',
+			'visitor    502   0.0  0.1  4087654  12345 s000     S+   19:20   0:00 node'
+		]);
+		if (name === 'df') return ok([
+			'Filesystem      Size   Used  Avail Capacity  Mounted on',
+			'/dev/disk3s1   460Gi  198Gi  244Gi    45%    /'
+		]);
+		if (name === 'true') return ok([]);
+		if (name === 'false') return ok([]);
+
+		if (name.charAt(0) === '/') return fail('zsh: no such file or directory: ' + (args[0] || ''));
+		return fail('zsh: command not found: ' + (args[0] || ''));
+	}
+
+	var EXIT_FORMS = [
+		/^(?:exit|logout|quit|bye|stop|q)!?(?=$|[\s;()])/i,
+		/^:(?:q|qa|wq|x|cq)!?$/i,
+		/^(?:zz|zq)$/i,
+		/^\.(?:exit|quit)$/i,
+		/^\\q(?:uit)?$/i,
+		/^(?:exit|quit|abort)(?:\s*\(.*\))?\s*;?$/i,
+		/^(?:sys|os|process|system|environment|application|exitprocess)\.(?:exit|_exit|quit|abort)(?:\s*\(.*\))?\s*;?$/i,
+		/^exitprocess(?:\s*\(.*\))?\s*;?$/i,
+		/^std::(?:process::)?exit(?:\s*\(.*\))?\s*;?$/i,
+		/^return\s+(?:0|1)\s*;?$/i,
+		/^raise\s+systemexit.*$/i,
+		/^die(?:\s*\(.*\))?\s*;?$/i,
+		/^q\(\s*\)$/i
+	];
+
 	function isExitCommand(cmd) {
-		return /^(?:exit(?=$|[\s;()])|logout(?=$|[\s;])|quit(?=$|[\s;])|:q!?$)/i.test(cmd);
+		return EXIT_FORMS.some(function (re) { return re.test(cmd); });
+	}
+
+	function normalizePhrase(text) {
+		return String(text || '')
+			.toLowerCase()
+			.normalize('NFD')
+			.replace(/[\u0300-\u036f]/g, '')
+			.replace(/[^\p{L}\p{N}]+/gu, '');
+	}
+
+	var GREETINGS = new Set([
+		'hello', 'hi', 'hey', 'heya', 'hiya', 'howdy', 'yo', 'sup', 'greetings', 'hellothere',
+		'goodmorning', 'goodafternoon', 'goodevening', 'whatsup', 'helloworld', 'hiworld',
+		'你好', '您好', '哈喽', '嗨', '早上好', '下午好', '晚上好', '你好世界', '世界你好', '大家好',
+		'こんにちは', 'こんばんは', 'おはよう', 'おはようございます', 'やあ', 'ハロー', 'もしもし', 'こんにちは世界',
+		'안녕하세요', '안녕', '하이', '안녕하세요세계',
+		'hola', 'holamundo', 'buenosdias', 'buenastardes', 'buenasnoches', 'quetal',
+		'bonjour', 'salut', 'bonsoir', 'coucou', 'bonjourlemonde',
+		'hallo', 'hallowelt', 'gutentag', 'gutenmorgen', 'servus', 'moin',
+		'ciao', 'buongiorno', 'buonasera', 'ciaomondo',
+		'ola', 'oi', 'bomdia', 'boatarde', 'olamundo',
+		'привет', 'здравствуйте', 'приветмир',
+		'مرحبا', 'السلامعليكم',
+		'नमस्ते', 'नमस्कार',
+		'สวัสดี', 'สวัสดีชาวโลก',
+		'xinchao', 'chaò', 'chaomung', 'xinchàothếgiới',
+		'merhaba', 'selam', 'merhabadunya',
+		'hoi', 'hallo', 'hej', 'hejmeddig',
+		'cześć', 'czesc', 'witaj',
+		'γειά', 'γεια', 'καλημέρα',
+		'שלום',
+		'halo', 'hai', 'halodunia',
+		'kumusta', 'kamusta',
+		'jambo', 'habari',
+		'привіт',
+		'ahoj',
+		'hei', 'moi',
+		'szia',
+		'salut',
+		'নমস্কার',
+		'வணக்கம்',
+		'سلام',
+		'xin chào', 'chào',
+		'hejsan', 'terve', 'morjens', 'labas', 'sveiki', 'zdravo', 'dobar dan',
+		'dobrý den', 'dobry den', 'szia', 'buna', 'noroc', 'здравей', 'здраво',
+		'прывітанне', 'салам', 'નમસ્તે', 'నమస్తే', 'ನಮಸ್ಕಾರ', 'സുഖമാണോ',
+		'ជំរាបសួរ', 'ສະບາຍດີ', 'မင်္ဂလာပါ', 'selamat pagi', 'selamat siang',
+		'selamat malam', 'apa kabar', 'hay', 'sawubona', 'mholweni', 'sannu',
+		'bonjou', 'aloha', 'kia ora', 'talofa', 'bula', 'malo', 'ni hao',
+		'nǐ hǎo', 'nei hou', 'joi gin', 'mingalaba', 'shalom', 'salaam', 'salam',
+		'assalamualaikum', 'namaskar', 'namaste', 'namaskaram', 'vanakkam',
+		'sawasdee', 'sawasdeekrap', 'sawasdeeka'
+	].map(normalizePhrase));
+
+	function isGreeting(cmd) {
+		return GREETINGS.has(normalizePhrase(cmd));
+	}
+
+	/* `echo hello` is a normal command; `echo "Hello, World!"` is a greeting.
+	   The difference is semantic: we look at the text the command would print. */
+	function isCodeHelloWorld(cmd) {
+		var m = cmd.match(
+			/^(?:print|console\.log|printf|puts|system\.out\.println)\s*\(\s*(['"])([\s\S]*?)\1\s*\)\s*;?$/i
+		);
+		if (!m) return false;
+		var inner = m[2].replace(/\\[nrt]/g, ' ');
+		return normalizePhrase(inner) === 'helloworld';
+	}
+
+	function isHelloWorldCommand(cmd) {
+		if (isCodeHelloWorld(cmd)) return true;
+		var args = splitArgs(cmd);
+		var name = (args[0] || '').toLowerCase();
+		if (name !== 'echo' && name !== 'printf') return false;
+		var rest = args.slice(1);
+		if (rest[0] === '-n') rest.shift();
+		return normalizePhrase(rest.join(' ')) === 'helloworld';
 	}
 
 	function macError(cmd) {
 		var first = cmd.split(/\s+/)[0];
-		var doubleQuotes = (cmd.match(/"/g) || []).length;
-		var singleQuotes = (cmd.match(/'/g) || []).length;
-		if (doubleQuotes % 2) return 'zsh: unmatched "';
-		if (singleQuotes % 2) return "zsh: unmatched '";
+		var q = quoteError(cmd);
+		if (q) return q;
 		if (/^cd(?:\s|$)/.test(cmd)) {
 			var target = cmd.replace(/^cd\s*/, '').replace(/^['"]|['"]$/g, '');
 			return 'cd: no such file or directory: ' + (target || '~');
@@ -1364,19 +1959,37 @@
 		if (!input) return;
 		var raw = input.value;
 		var cmd = raw.trim();
-		addLine('dsh ~ % ' + raw, 'is-cmd');
+		historyPos = null;
+		historyDraft = '';
+		var prefix = promptPrefix();
+		addLine(prefix + raw, 'is-cmd');
 		input.value = '';
 		out.textContent = '';
 		if (!cmd) {
 			input.focus({ preventScroll: true });
 			return;
 		}
-		if (isExitCommand(cmd)) {
-			/* Enter on an exit form is exactly the red traffic light. */
+		commandHistory.push(cmd);
+		var q = quoteError(cmd);
+		if (q) {
+			addLine(q, 'is-err');
+			input.focus({ preventScroll: true });
+			return;
+		}
+		/* Greetings and exit forms are the two ways into the red light. */
+		if (isGreeting(cmd) || isHelloWorldCommand(cmd) || isExitCommand(cmd)) {
 			onLight('close');
 			return;
 		}
-		addLine(macError(cmd), 'is-err');
+		var result = runCommand(cmd);
+		if (result.clear) {
+			clearLog();
+			input.focus({ preventScroll: true });
+			return;
+		}
+		result.lines.forEach(function (line) {
+			addLine(line, result.error ? 'is-err' : '');
+		});
 		input.focus({ preventScroll: true });
 	}
 
@@ -1513,6 +2126,48 @@
 				input.blur();
 				return;
 			}
+			if ((event.ctrlKey || event.metaKey) && !event.altKey) {
+				var shortcut = String(event.key || '').toLowerCase();
+				if (shortcut === 'a') {
+					event.preventDefault();
+					input.setSelectionRange(0, 0);
+					return;
+				}
+				if (shortcut === 'e') {
+					event.preventDefault();
+					var end = input.value.length;
+					input.setSelectionRange(end, end);
+					return;
+				}
+				if (shortcut === 'l') {
+					event.preventDefault();
+					clearLog();
+					input.focus({ preventScroll: true });
+					return;
+				}
+			}
+			if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+				if (!commandHistory.length) return;
+				event.preventDefault();
+				if (event.key === 'ArrowUp') {
+					if (historyPos === null) {
+						historyDraft = input.value;
+						historyPos = commandHistory.length - 1;
+					} else {
+						historyPos = Math.max(0, historyPos - 1);
+					}
+					setPromptValue(commandHistory[historyPos]);
+				} else if (historyPos !== null) {
+					if (historyPos < commandHistory.length - 1) {
+						historyPos += 1;
+						setPromptValue(commandHistory[historyPos]);
+					} else {
+						historyPos = null;
+						setPromptValue(historyDraft);
+					}
+				}
+				return;
+			}
 			if (event.key !== 'Enter' || event.isComposing) return;
 			event.preventDefault();
 			submitCommand();
@@ -1571,6 +2226,7 @@
 			resetView();
 			userMode = false;
 			term.classList.remove('is-user');
+			resetUserShell();
 			resetLine();
 			clearLog();
 			setTitle('dsh');
@@ -1607,6 +2263,7 @@
 		stopped = false;
 		userMode = false;
 		term.classList.remove('is-user');
+		resetUserShell();
 		resetView();
 		token += 1;
 		var mine = token;

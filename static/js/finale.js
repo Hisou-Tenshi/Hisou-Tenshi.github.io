@@ -51,6 +51,7 @@
 	var LAYERS = [
 		{
 			state: "layer-1",
+			takeover: "plain",
 			title: "Terminal — zsh",
 			bar: true,
 			prompt: "$",
@@ -81,6 +82,7 @@
 		},
 		{
 			state: "layer-2",
+			takeover: "pause",
 			title: "Terminal — zsh",
 			bar: true,
 			prompt: "$",
@@ -115,6 +117,7 @@
 		},
 		{
 			state: "layer-3",
+			takeover: "interject",
 			title: "Terminal — guest",
 			bar: true,
 			prompt: "$",
@@ -151,6 +154,7 @@
 		},
 		{
 			state: "layer-4",
+			takeover: "replace",
 			title: "I was here first",
 			bar: true,
 			prompt: "$",
@@ -182,6 +186,7 @@
 		},
 		{
 			state: "layer-5",
+			takeover: "warn",
 			title: "please stay",
 			bar: true,
 			prompt: "$",
@@ -219,6 +224,7 @@
 		},
 		{
 			state: "layer-6",
+			takeover: "locked",
 			title: "",
 			bar: false,
 			prompt: "",
@@ -309,6 +315,17 @@
 				i === 5
 					? '<button class="egg__ghost" type="button" data-egg-light="close" aria-label="关闭终端，进入最终场景"><span></span></button>'
 					: "";
+			var inputLine =
+				'<div class="egg__input-line" data-egg-input-line' +
+				(i === 5 ? " hidden" : "") +
+				">" +
+				(cfg.prompt
+					? '<span class="egg__prompt egg__input-prompt">' + cfg.prompt + "</span>"
+					: "") +
+				'<span class="egg__txt egg__input-text" data-egg-input-text></span>' +
+				'<span class="egg__caret" data-egg-input-caret></span>' +
+				'<input class="egg__input" data-egg-input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="输入任意内容并按回车" />' +
+				"</div>";
 			html +=
 				'<div class="egg__win specimen egg__win--' +
 				(i + 1) +
@@ -320,6 +337,7 @@
 				bar +
 				'<div class="specimen__body egg__body">' +
 				'<div class="egg__log" data-egg-log role="log" aria-label="终端输出"></div>' +
+				inputLine +
 				"</div>" +
 				ghost +
 				"</div>";
@@ -332,9 +350,15 @@
 				el: el,
 				log: el.querySelector("[data-egg-log]"),
 				title: el.querySelector("[data-egg-title]"),
+				input: el.querySelector("[data-egg-input]"),
+				inputText: el.querySelector("[data-egg-input-text]"),
+				inputLine: el.querySelector("[data-egg-input-line]"),
 				cfg: LAYERS[i]
 			};
 			el.__log = windows[i].log;
+		if (windows[i].inputLine && LAYERS[i].takeover !== "locked") {
+			windows[i].inputLine.hidden = true;
+		}
 
 			var cfg = LAYERS[i];
 			el.style.setProperty("--egg-bg", cfg.bg);
@@ -366,6 +390,46 @@
 					}
 				});
 			});
+
+			if (windows[i].input) {
+				var eggInput = windows[i].input;
+				eggInput.addEventListener("input", function () {
+					if (inputBusy) {
+						eggInput.value = "";
+						return;
+					}
+					if (windows[i].inputText) windows[i].inputText.textContent = eggInput.value;
+				});
+				eggInput.addEventListener("keydown", function (ev) {
+					if (inputBusy) {
+						ev.preventDefault();
+						return;
+					}
+					if (ev.key === "Escape") {
+						eggInput.blur();
+						return;
+					}
+					if (ev.key !== "Enter" || ev.isComposing) return;
+					ev.preventDefault();
+					submitEggInput(windows[i]);
+				});
+				eggInput.addEventListener("focus", function () {
+					if (inputBusy) {
+						eggInput.blur();
+						return;
+					}
+					el.classList.add("is-typing");
+				});
+				eggInput.addEventListener("blur", function () {
+					el.classList.remove("is-typing");
+				});
+				el.addEventListener("click", function (ev) {
+					if (cfg.takeover === "locked" || inputBusy) return;
+					if (windows[i].inputLine && windows[i].inputLine.hidden) return;
+					if (ev.target.closest("[data-egg-light]")) return;
+					eggInput.focus({ preventScroll: true });
+				});
+			}
 		});
 	}
 
@@ -456,7 +520,7 @@
 	}
 
 	function removeCarets(win) {
-		Array.prototype.forEach.call(win.el.querySelectorAll(".egg__caret"), function (c) {
+		Array.prototype.forEach.call(win.log.querySelectorAll(".egg__caret"), function (c) {
 			c.remove();
 		});
 	}
@@ -535,6 +599,173 @@
 		return token === runToken;
 	}
 
+	/* In the red-light story the terminal does not execute what you type.
+	   Enter always plays the same little ceremony: delete the visitor's line,
+	   type the macOS shell's `exit`, press Return, show the logout feedback,
+	   hold for 1.5s, then reveal the next layer. */
+	var inputBusy = false;
+
+	function takeoverStale(token) {
+		if (token === runToken) return false;
+		inputBusy = false;
+		return true;
+	}
+
+	function resetInputState(win) {
+		if (!win) return;
+		if (win.input) {
+			win.input.value = "";
+			win.input.readOnly = false;
+		}
+		if (win.inputText) win.inputText.textContent = "";
+		if (win.inputLine) win.inputLine.classList.remove("is-cmd", "is-busy");
+		if (win.el) win.el.classList.remove("is-typing", "is-taking-over");
+	}
+
+	async function eraseInputCount(win, count, token) {
+		var chars = Array.from(win.inputText ? win.inputText.textContent : "");
+		for (var i = 0; i < count && chars.length; i++) {
+			if (token !== runToken) return false;
+			chars.pop();
+			win.inputText.textContent = chars.join("");
+			await wait(reduced() ? 20 : rnd(28, 46));
+		}
+		return token === runToken;
+	}
+
+	async function eraseInputLine(win, token) {
+		return eraseInputCount(win, 1e9, token);
+	}
+
+	async function typeExitCommand(win, token) {
+		var chars = Array.from("exit");
+		for (var i = 0; i < chars.length; i++) {
+			if (token !== runToken) return false;
+			win.inputText.textContent += chars[i];
+			await wait(reduced() ? 24 : typeDelay(chars[i]));
+		}
+		return token === runToken;
+	}
+
+	/* Layer 04 does not erase: it overwrites the visitor's word with `exit`. */
+	async function replaceWithExit(win, token) {
+		var target = Array.from("exit");
+		var chars = Array.from(win.inputText ? win.inputText.textContent : "");
+		var steps = Math.max(chars.length, target.length);
+		for (var i = 0; i < steps; i++) {
+			if (token !== runToken) return false;
+			if (i < target.length && chars[i] !== target[i]) {
+				chars[i] = target[i];
+			} else if (i >= target.length && chars.length > target.length) {
+				chars.pop();
+			}
+			win.inputText.textContent = chars.join("");
+			await wait(reduced() ? 20 : rnd(90, 150));
+		}
+		win.inputText.textContent = "exit";
+		return token === runToken;
+	}
+
+	async function takeoverLine(win, text, token) {
+		var line = createLine(win, { out: true });
+		await typeInto(line.txt, text, 0, token);
+		finishLine(line);
+		return token === runToken;
+	}
+
+	/* If the layer's scripted farewell already printed `$ exit` / `logout`,
+   drop it so the visitor's takeover does not leave a duplicate pair. */
+function pruneScriptedExit(win) {
+	if (!win || !win.log) return;
+	var kids = win.log.children;
+	if (kids.length < 2) return;
+	var last = kids[kids.length - 1];
+	var prev = kids[kids.length - 2];
+	if (!last || !prev) return;
+	if (last.textContent.trim() !== "logout") return;
+	if (!/^\$\s*exit$/.test(prev.textContent.trim())) return;
+	last.remove();
+	prev.remove();
+}
+
+async function submitEggInput(win) {
+		if (!win || inputBusy || closing || exiting) return;
+		if (win !== windows[activeIndex] || !win.inputLine) return;
+		if (win.cfg.takeover === "locked") return;
+		inputBusy = true;
+		win.inputLine.classList.add("is-busy");
+		win.el.classList.add("is-taking-over");
+
+		/* Stop whatever the layer was still typing; the visitor has taken over. */
+		runToken += 1;
+		var token = runToken;
+		removeCarets(win);
+		pruneScriptedExit(win);
+		if (win.input) {
+			win.input.value = "";
+			win.input.readOnly = true;
+		}
+		win.el.classList.remove("is-gone");
+		win.el.classList.add("is-active");
+
+		await wait(reduced() ? 30 : 180);
+		if (takeoverStale(token)) return;
+
+		var mode = win.cfg.takeover || "plain";
+
+		/* Layer 05 says it out loud before it takes the line away. */
+		if (mode === "warn") {
+			await takeoverLine(win, "please don't.", token);
+			if (takeoverStale(token)) return;
+			await wait(reduced() ? 30 : 560);
+			if (takeoverStale(token)) return;
+		}
+
+		if (mode === "interject") {
+			/* Layer 03 stops halfway through the deletion and speaks. */
+			var typed = Array.from(win.inputText ? win.inputText.textContent : "").length;
+			if (typed > 0) {
+				await eraseInputCount(win, Math.ceil(typed / 2), token);
+				if (takeoverStale(token)) return;
+			}
+			await takeoverLine(win, "I know what you want.", token);
+			if (takeoverStale(token)) return;
+			await wait(reduced() ? 40 : 520);
+			if (takeoverStale(token)) return;
+			await eraseInputLine(win, token);
+			if (takeoverStale(token)) return;
+			await wait(reduced() ? 20 : 220);
+			if (takeoverStale(token)) return;
+			await typeExitCommand(win, token);
+		} else if (mode === "replace") {
+			await replaceWithExit(win, token);
+		} else {
+			await eraseInputLine(win, token);
+			if (takeoverStale(token)) return;
+			if (mode === "pause") {
+				await wait(reduced() ? 40 : 720);
+				if (takeoverStale(token)) return;
+			}
+			await wait(reduced() ? 20 : 220);
+			if (takeoverStale(token)) return;
+			await typeExitCommand(win, token);
+		}
+
+		if (takeoverStale(token)) return;
+		win.inputLine.classList.add("is-cmd");
+		await wait(reduced() ? 40 : 300);
+		if (takeoverStale(token)) return;
+
+		var feedback = createLine(win, { out: true });
+		await typeInto(feedback.txt, "logout", 0, token);
+		finishLine(feedback);
+		win.inputLine.classList.remove("is-cmd");
+		await wait(1500);
+		if (takeoverStale(token)) return;
+		inputBusy = false;
+		closeCurrent();
+	}
+
 	function bindLog(win) {
 		win.el.__log = win.log;
 	}
@@ -596,12 +827,7 @@
 		}
 
 		if (token !== runToken) return;
-		/* Leave one quiet prompt waiting, like a real shell. */
-		if (cfg.prompt) {
-			var ready = createLine(win, { prompt: cfg.prompt });
-			ready.txt.textContent = "";
-			win.log.appendChild(ready.el);
-		}
+		/* The blinking input line below the log is the live prompt. */
 	}
 
 	async function playLayer(index, token) {
@@ -610,24 +836,32 @@
 		activeIndex = index;
 		state = LAYERS[index].state;
 		closing = false;
+		inputBusy = false;
 		egg.style.setProperty("--egg-dim", LAYERS[index].dimBg);
 		win.el.classList.remove("is-gone", "is-min", "is-max", "is-nocaret");
 		win.el.classList.add("is-active");
+		if (win.inputLine && LAYERS[index].takeover !== "locked") {
+			win.inputLine.hidden = true;
+		}
+		resetInputState(win);
 		win.log.textContent = "";
 		shim.classList.remove("is-on");
-
-		var closeBtn = win.el.querySelector('[data-egg-light="close"]');
-		if (closeBtn) {
-			try {
-				closeBtn.focus({ preventScroll: true });
-			} catch (e) {
-				/* older browsers */
-			}
-		}
 
 		await wait(reduced() ? 20 : 200);
 		if (token !== runToken) return;
 		await playScript(win, LAYERS[index], token);
+		if (token !== runToken) return;
+
+		/* The live input line is the point of the red-light layers. Layer 06
+		   has no keyboard of its own; its ghost button is the only way on. */
+		if (LAYERS[index].takeover !== "locked" && win.input) {
+			if (win.inputLine) win.inputLine.hidden = false;
+			try {
+				win.input.focus({ preventScroll: true });
+			} catch (e) {
+				/* older browsers */
+			}
+		}
 	}
 
 	function closeCurrent() {
@@ -878,8 +1112,10 @@
 	}
 
 	function resetWindows() {
+		inputBusy = false;
 		windows.forEach(function (w) {
 			w.el.classList.remove("is-active", "is-gone", "is-min", "is-max", "is-nocaret");
+			resetInputState(w);
 			w.log.textContent = "";
 			var minBtn = w.el.querySelector('[data-egg-light="min"]');
 			var zoomBtn = w.el.querySelector('[data-egg-light="zoom"]');

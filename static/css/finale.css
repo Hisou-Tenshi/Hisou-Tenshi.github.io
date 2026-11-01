@@ -153,7 +153,7 @@ body.egg-open {
 .egg__win .egg__log {
 	position: relative;
 	display: flex;
-	flex: 1 1 auto;
+	flex: 0 1 auto;
 	flex-direction: column;
 	min-height: 0;
 	overflow-x: hidden;
@@ -223,6 +223,62 @@ body.egg-open {
 }
 
 .egg__win.is-nocaret .egg__caret {
+	display: none;
+}
+
+/* The live prompt inside the red-light windows: the visitor can type, but
+   Enter always reroutes through the terminal's own little ceremony. */
+.egg__input-line {
+	position: relative;
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	flex: 0 0 auto;
+	min-height: 1.55em;
+	margin-top: 0;
+	white-space: pre-wrap;
+	font-family: var(--egg-font, var(--font-mono));
+	font-size: var(--egg-fs, 13px);
+	line-height: 1.55;
+	color: var(--egg-fg, rgba(255, 255, 255, 0.84));
+	letter-spacing: var(--egg-ls, 0);
+}
+.egg__input-line[hidden] {
+	display: none;
+}
+.egg__input-prompt {
+	flex: 0 0 auto;
+}
+.egg__input-text {
+	min-width: 1px;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+.egg__input {
+	position: absolute;
+	inset: 0;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	outline: none;
+	background: transparent;
+	color: transparent;
+	caret-color: transparent;
+	font: inherit;
+	letter-spacing: inherit;
+	opacity: 0;
+}
+.egg__input-line > .egg__caret {
+	pointer-events: none;
+}
+.egg__input-line.is-busy > .egg__caret,
+.egg__input-line.is-busy .egg__caret {
+	display: none;
+}
+.egg__win--6 .egg__input-line {
 	display: none;
 }
 
@@ -314,14 +370,14 @@ body.egg-open {
 }
 
 .egg__win--6 .specimen__body {
-	padding: clamp(34px, 6.4vw, 66px);
+	padding: clamp(22px, 3.6vw, 42px);
 	justify-content: center;
 }
 
 .egg__win--6 .egg__log {
 	flex: 0 1 auto;
 	justify-content: center;
-	gap: clamp(4px, 1.15vh, 12px);
+	gap: clamp(2px, 0.7vh, 6px);
 	overflow: hidden;
 	font-weight: 600;
 	letter-spacing: 0.015em;
