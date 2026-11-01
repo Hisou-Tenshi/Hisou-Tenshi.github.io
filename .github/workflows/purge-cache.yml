@@ -27,26 +27,35 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Verify asset URLs are stamped
         run: node scripts/stamp-assets.mjs --check
 
-      - name: Wait for the GitHub Pages build of this commit
+      - name: Wait for a fresh GitHub Pages build
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          want="$GITHUB_SHA"
-          for i in $(seq 1 40); do
-            latest=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-              "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds/latest")
-            sha=$(printf '%s' "$latest" | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{console.log((JSON.parse(d).commit||"").slice(0,40))}catch{console.log("")}})')
-            st=$(printf '%s' "$latest" | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{console.log(JSON.parse(d).status||"")}catch{console.log("")}})')
-            echo "[$i] pages build ${st:-?} ${sha:0:7}"
-            if [ "$sha" = "$want" ] && [ "$st" = "built" ]; then exit 0; fi
+          # The data workflow commits every hour, so the latest build is often a
+          # commit other than the one that triggered this run.  Waiting for the
+          # exact SHA would always time out; instead wait until the latest build is
+          # "built" AND newer than this job's start, then purge.
+          started=$(date +%s)
+          for i in $(seq 1 30); do
+            latest=$(curl -s -H "Authorization: Bearer $GH_TOKEN" "https://api.github.com/repos/${GITHUB_REPOSITORY}/pages/builds/latest")
+            info=$(printf '%s' "$latest" | node -e 'let d="";process.stdin.on("data",c=>d+=c).on("end",()=>{try{const j=JSON.parse(d);console.log([j.status||"",j.commit||"",Date.parse(j.updated_at||0)/1000|0].join(" "))}catch{console.log("? - 0")}})')
+            st=$(echo "$info" | cut -d" " -f1)
+            sha=$(echo "$info" | cut -d" " -f2)
+            upd=$(echo "$info" | cut -d" " -f3)
+            echo "[$i] pages build ${st:-?} ${sha:0:7} updated=$upd"
+            if [ "$st" = "built" ] && [ "${upd:-0}" -ge "$started" ]; then
+              echo "pages build is fresh"
+              exit 0
+            fi
             sleep 10
           done
-          echo "::warning::Pages build not confirmed in time; purging anyway"
+          echo "::warning::No fresh Pages build within 300 s; purging anyway"
+
       - name: Purge changed URLs
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
