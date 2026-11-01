@@ -918,6 +918,7 @@
 		activeIndex = 0;
 
 		try {
+			if (window.HisouTerm && window.HisouTerm.resetView) window.HisouTerm.resetView();
 			if (window.HisouTerm && window.HisouTerm.stop) window.HisouTerm.stop();
 		} catch (e) {
 			/* ignore */

@@ -814,8 +814,16 @@
 	var out = term.querySelector('[data-term-text]');
 	if (!out) return;
 
+	var input = term.querySelector('[data-term-input]');
 	var log = term.querySelector('[data-term-log]');
 	var title = term.querySelector('[data-term-title]');
+	var shell = term.closest('[data-term-shell]');
+	var shim = shell ? shell.querySelector('[data-term-shim]') : null;
+	var veil = shell ? shell.querySelector('[data-term-veil]') : null;
+	var minLight = term.querySelector('[data-light="min"]');
+	var zoomLight = term.querySelector('[data-light="zoom"]');
+	var view = 'normal';
+	var userMode = false;
 	var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 	var timer = null;
 	var token = 0;
@@ -888,6 +896,7 @@
 	function resetLine() {
 		out.textContent = '';
 		out.classList.remove('is-odd');
+		if (input) input.value = '';
 	}
 
 	function type(text, speed, token0) {
@@ -1302,6 +1311,7 @@
 	}
 
 	function start() {
+		if (userMode) return;
 		if (!stopped) return;
 		stopped = false;
 		caretIdle(false);
@@ -1318,19 +1328,137 @@
 		}
 	}
 
+	/* ── Interactive prompt ─────────────────────────────────────────────
+	   The looping scenes are theatre. The first time a visitor clicks the
+	   prompt, the theatre stops and the same line becomes a real input:
+	   Enter commits a line, the red light stays the only way out. */
+	function enterUserMode() {
+		if (!input || userMode) return;
+		userMode = true;
+		stop();
+		term.classList.add('is-user');
+		clearLog();
+		resetLine();
+		setTitle('dsh');
+	}
+
+	function isExitCommand(cmd) {
+		return /^(?:exit(?=$|[\s;()])|logout(?=$|[\s;])|quit(?=$|[\s;])|:q!?$)/i.test(cmd);
+	}
+
+	function macError(cmd) {
+		var first = cmd.split(/\s+/)[0];
+		var doubleQuotes = (cmd.match(/"/g) || []).length;
+		var singleQuotes = (cmd.match(/'/g) || []).length;
+		if (doubleQuotes % 2) return 'zsh: unmatched "';
+		if (singleQuotes % 2) return "zsh: unmatched '";
+		if (/^cd(?:\s|$)/.test(cmd)) {
+			var target = cmd.replace(/^cd\s*/, '').replace(/^['"]|['"]$/g, '');
+			return 'cd: no such file or directory: ' + (target || '~');
+		}
+		if (first.charAt(0) === '/') return 'zsh: no such file or directory: ' + first;
+		return 'zsh: command not found: ' + first;
+	}
+
+	function submitCommand() {
+		if (!input) return;
+		var raw = input.value;
+		var cmd = raw.trim();
+		addLine('dsh ~ % ' + raw, 'is-cmd');
+		input.value = '';
+		out.textContent = '';
+		if (!cmd) {
+			input.focus({ preventScroll: true });
+			return;
+		}
+		if (isExitCommand(cmd)) {
+			/* Enter on an exit form is exactly the red traffic light. */
+			onLight('close');
+			return;
+		}
+		addLine(macError(cmd), 'is-err');
+		input.focus({ preventScroll: true });
+	}
+
+	/* ── View branches ──────────────────────────────────────────────────
+	   normal ──yellow──> minimized
+	          └─green───> fullscreen
+	   Both are reversible leaves; `resetView` is the single exit used by
+	   Escape, EXIT, and the hidden-story entry. */
+	function syncPressed() {
+		if (minLight) minLight.setAttribute('aria-pressed', view === 'minimized' ? 'true' : 'false');
+		if (zoomLight) zoomLight.setAttribute('aria-pressed', view === 'fullscreen' ? 'true' : 'false');
+	}
+
+	function emitView() {
+		if (!shell) return;
+		shell.setAttribute('data-term-view', view);
+		try {
+			window.dispatchEvent(new CustomEvent('hisou:termview', { detail: { mode: view } }));
+		} catch (e) {
+			/* CustomEvent is available in every supported browser; guard old ones. */
+		}
+	}
+
+	function rememberHeight() {
+		if (!shell || view !== 'normal') return;
+		var h = term.getBoundingClientRect().height;
+		if (h > 0) shell.style.setProperty('--term-h', Math.round(h) + 'px');
+	}
+
+	function setMinimized(on) {
+		if (!shell) return;
+		if (on && view === 'fullscreen') setFullscreen(false);
+		if (on) rememberHeight();
+		term.classList.toggle('is-min', on);
+		shell.classList.toggle('is-min', on);
+		view = on ? 'minimized' : 'normal';
+		syncPressed();
+		emitView();
+	}
+
+	function setFullscreen(on) {
+		if (!shell) return;
+		if (on && view === 'minimized') setMinimized(false);
+		if (on) rememberHeight();
+		term.classList.toggle('is-max', on);
+		shell.classList.toggle('is-max', on);
+		document.documentElement.classList.toggle('term-view-lock', on);
+		document.body.classList.toggle('term-view-lock', on);
+		view = on ? 'fullscreen' : 'normal';
+		syncPressed();
+		emitView();
+	}
+
+	function resetView() {
+		if (!shell) return;
+		term.classList.add('is-noanim');
+		shell.classList.add('is-noanim');
+		term.classList.remove('is-min', 'is-max');
+		shell.classList.remove('is-min', 'is-max');
+		document.documentElement.classList.remove('term-view-lock');
+		document.body.classList.remove('term-view-lock');
+		view = 'normal';
+		syncPressed();
+		emitView();
+		void term.offsetHeight;
+		window.requestAnimationFrame(function () {
+			term.classList.remove('is-noanim');
+			shell.classList.remove('is-noanim');
+		});
+	}
+
+	function syncTermHeight() {
+		if (view === 'normal') rememberHeight();
+	}
+
 	function onLight(kind) {
 		if (kind === 'min') {
-			term.classList.toggle('is-min');
+			setMinimized(view !== 'minimized');
 			return;
 		}
 		if (kind === 'zoom') {
-			if (reduced()) return;
-			term.classList.remove('is-pulse');
-			void term.offsetWidth;
-			term.classList.add('is-pulse');
-			window.setTimeout(function () {
-				term.classList.remove('is-pulse');
-			}, 560);
+			setFullscreen(view !== 'fullscreen');
 			return;
 		}
 		if (kind !== 'close') return;
@@ -1361,7 +1489,46 @@
 		light.addEventListener('click', function () {
 			onLight(light.getAttribute('data-light'));
 		});
+		light.addEventListener('keydown', function (event) {
+			if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return;
+			event.preventDefault();
+			onLight(light.getAttribute('data-light'));
+		});
 	});
+
+	term.addEventListener('click', function (event) {
+		if (!input) return;
+		if (event.target.closest('[data-light]') || event.target.closest('.specimen__bar')) return;
+		input.focus({ preventScroll: true });
+	});
+
+	if (input) {
+		input.addEventListener('focus', enterUserMode);
+		input.addEventListener('input', function () {
+			if (!userMode) enterUserMode();
+			out.textContent = input.value;
+		});
+		input.addEventListener('keydown', function (event) {
+			if (event.key === 'Escape') {
+				input.blur();
+				return;
+			}
+			if (event.key !== 'Enter' || event.isComposing) return;
+			event.preventDefault();
+			submitCommand();
+		});
+	}
+
+	document.addEventListener('keydown', function (event) {
+		if (event.key !== 'Escape' && event.key !== 'Esc') return;
+		if (view === 'normal') return;
+		event.preventDefault();
+		resetView();
+	});
+
+	window.addEventListener('resize', syncTermHeight);
+	window.addEventListener('load', syncTermHeight);
+	syncTermHeight();
 
 	document.addEventListener('visibilitychange', function () {
 		if (document.hidden) {
@@ -1384,6 +1551,16 @@
 	window.HisouTerm = {
 		stop: stop,
 		start: start,
+		mode: function () {
+			return view;
+		},
+		minimize: function () {
+			setMinimized(view !== 'minimized');
+		},
+		fullscreen: function () {
+			setFullscreen(view !== 'fullscreen');
+		},
+		resetView: resetView,
 		reset: function () {
 			resetLine();
 			clearLog();
@@ -1391,6 +1568,9 @@
 			term.classList.remove('is-closing', 'is-err-title');
 		},
 		restore: function () {
+			resetView();
+			userMode = false;
+			term.classList.remove('is-user');
 			resetLine();
 			clearLog();
 			setTitle('dsh');
@@ -1425,6 +1605,9 @@
 		stop();
 		forced = true;
 		stopped = false;
+		userMode = false;
+		term.classList.remove('is-user');
+		resetView();
 		token += 1;
 		var mine = token;
 		term.classList.remove('is-err-title', 'is-min', 'is-closing', 'is-nocaret');

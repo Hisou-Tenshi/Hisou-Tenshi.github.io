@@ -1632,8 +1632,38 @@ html[data-theme="Dark"] .specimen {
 }
 
 .specimen__cmd {
+	position: relative;
 	min-width: 0;
+	flex: 1 1 auto;
 	overflow: hidden;
+}
+
+.specimen__line--prompt {
+	cursor: text;
+}
+
+/* The real input is invisible: the visible line is still the terminal's own
+   span so the autoplay scenes and the caret keep their existing styling. */
+.specimen__input {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: transparent;
+	caret-color: transparent;
+	-webkit-text-fill-color: transparent;
+	font: inherit;
+	cursor: text;
+	outline: none;
+	z-index: 2;
+}
+
+.specimen.is-user .specimen__line--prompt .specimen__caret {
+	background: var(--accent);
 }
 
 .specimen__text.is-odd {
@@ -1764,6 +1794,135 @@ html[data-theme="Dark"] .specimen {
 	animation: termPulse 0.52s var(--ease);
 }
 
+/* ── Terminal view branches (normal / minimized / fullscreen) ─────────
+   The homepage terminal is the root of a tiny state machine. Minimize and
+   fullscreen are separate branches from the normal view; future hidden
+   scenes can hook `data-term-view` or the `hisou:termview` event without
+   changing the window component itself. */
+.specimen-shell {
+	position: relative;
+	min-height: clamp(400px, calc(100svh - 405px), 660px);
+	isolation: isolate;
+}
+
+.specimen-shell > .specimen {
+	position: relative;
+	z-index: 1;
+	transition: height 0.28s var(--ease);
+}
+
+.specimen-shell.is-noanim > .specimen {
+	transition: none !important;
+}
+
+/* The block that stays behind while the window folds to its title bar.
+   One flat colour on purpose: a placeholder for the page area, not chrome. */
+.specimen__shim {
+	position: absolute;
+	inset: 0;
+	z-index: 0;
+	border: 1px solid var(--line-2);
+	border-radius: 12px;
+	background: var(--card);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.2s var(--ease), visibility 0.2s var(--ease);
+	pointer-events: none;
+}
+
+html[data-theme="Dark"] .specimen__shim {
+	background: #14141a;
+}
+
+.specimen-shell.is-min {
+	min-height: var(--term-h, 32px);
+}
+
+.specimen-shell.is-min > .specimen {
+	height: 32px;
+}
+
+.specimen-shell.is-min .specimen__shim {
+	opacity: 1;
+	visibility: visible;
+}
+
+.specimen-shell.is-min .specimen__body {
+	display: none;
+}
+
+.specimen-shell.is-min .specimen__title {
+	color: rgba(255, 255, 255, 0.78);
+}
+
+/* Lift the whole branch above the page header so the fixed window and veil
+   cannot be covered by site chrome. */
+.specimen-shell.is-max {
+	z-index: 8900;
+	isolation: auto;
+}
+
+/* Fullscreen branch: the window leaves the flow, a dim veil covers the page,
+   and the document stops scrolling until the branch is exited. */
+.term-veil {
+	position: fixed;
+	inset: 0;
+	z-index: 8800;
+	background: rgba(6, 8, 13, 0.78);
+	-webkit-backdrop-filter: blur(4px);
+	backdrop-filter: blur(4px);
+	opacity: 0;
+	visibility: hidden;
+	transition: opacity 0.24s var(--ease), visibility 0.24s var(--ease);
+	pointer-events: none;
+}
+
+.specimen-shell.is-max .term-veil {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+}
+
+.specimen.is-max {
+	position: fixed;
+	inset: clamp(10px, 2.8vh, 34px) clamp(10px, 2.8vw, 48px);
+	z-index: 8900;
+	width: auto;
+	height: auto;
+	border-radius: 14px;
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.05) inset,
+		0 40px 110px -26px rgba(0, 0, 0, 0.82),
+		0 10px 28px rgba(0, 0, 0, 0.36);
+	animation: termMax 0.26s var(--ease-out) both;
+}
+
+html.term-view-lock,
+html.term-view-lock body {
+	overflow: hidden;
+}
+
+.specimen.is-max .specimen__title {
+	color: rgba(255, 255, 255, 0.74);
+}
+
+@keyframes termMax {
+	from {
+		opacity: 0;
+		transform: scale(0.985);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.specimen__light:focus-visible {
+	outline: 2px solid var(--accent);
+	outline-offset: 2px;
+}
+
 @keyframes termPulse {
 	50% {
 		transform: scale(1.011);
@@ -1785,6 +1944,16 @@ html[data-theme="Dark"] .specimen {
 	}
 
 	.specimen.is-pulse {
+		animation: none;
+	}
+
+	.specimen-shell > .specimen,
+	.specimen__shim,
+	.term-veil {
+		transition: none;
+	}
+
+	.specimen.is-max {
 		animation: none;
 	}
 
@@ -2730,6 +2899,10 @@ body.has-player-open .secnav {
 }
 
 @media (max-width: 900px) {
+	.specimen-shell {
+		min-height: 0;
+	}
+
 	.specimen {
 		height: auto;
 	}
