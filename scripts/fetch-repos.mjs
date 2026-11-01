@@ -72,7 +72,7 @@ const CURATED = [
 		repo: 'dsh-whale-desktop-launcher',
 		name: 'dsh-whale-desktop-launcher',
 		icon: 'whale',
-		desc: '给 DeepSeek Harness 做的 Windows 桌面启动器插件，带一个鲸鱼图标。'
+		desc: '给 DeepSeek Harness Web 做的 Windows 桌面启动器插件，带一个鲸鱼娘图标。'
 	},
 	{
 		repo: 'Hisou-Tenshi.github.io',

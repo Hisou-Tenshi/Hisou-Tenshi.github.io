@@ -62,3 +62,7 @@ jobs:
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
           BASE_URL: https://tenshi.qzz.io
         run: node scripts/purge-cloudflare.mjs
+
+      # Runs last so a drift report never blocks the purge itself.
+      - name: Verify Projects copy is in sync
+        run: node scripts/check-repos.mjs
