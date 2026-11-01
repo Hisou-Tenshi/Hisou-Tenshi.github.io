@@ -46,19 +46,30 @@ jobs:
 
       - name: Commit data changes
         run: |
-          git add static/data
-          if git diff --staged --quiet; then
-            echo "no data changes"
-            exit 0
-          fi
-          git -c user.name='「全人類の緋想天」' -c user.email='268836736+ZenjinruiNoHisouten@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats'
-          # The branch can move under us (a content push, or another run), so
-          # rebase and retry instead of failing the whole job on one rejection.
+          set -e
+          commit_data() {
+            git add static/data
+            if git diff --staged --quiet; then
+              echo "no data changes"
+              return 0
+            fi
+            git -c user.name='「全人類の緋想天」' -c user.email='268836736+ZenjinruiNoHisouten@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats'
+          }
+          commit_data
+          # main moves under us (hourly runs, content pushes) and both runs write
+          # the same two JSON files, so rebasing would conflict: reset onto the
+          # new tip and regenerate the snapshots instead.
           for i in 1 2 3; do
-            if git pull --rebase --autostash --quiet origin main && git push --quiet; then
+            if git push --quiet; then
               echo "pushed on attempt $i"
               exit 0
             fi
+            echo "push rejected, regenerating on top of origin/main (attempt $i)"
+            git fetch --quiet origin main
+            git reset --hard --quiet origin/main
+            node scripts/fetch-bangumi.mjs
+            node scripts/fetch-repos.mjs
+            commit_data
             sleep $((i * 3))
           done
           echo "::error::could not push the refreshed data files"
