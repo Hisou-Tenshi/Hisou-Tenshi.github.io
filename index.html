@@ -43,7 +43,7 @@
     <link rel="canonical" href="https://tenshi.qzz.io/" />
     <link rel="preload" href="/static/fonts/display-900.woff2?v=fd3ab177" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/static/css/root.css?v=9f79e097" />
-    <link rel="stylesheet" href="/static/css/style.css?v=b106e8b5" />
+    <link rel="stylesheet" href="/static/css/style.css?v=9f1ffaa3" />
     <link rel="preload" as="image" href="/static/img/opt/avatar-768.webp?v=738480a9" imagesrcset="/static/img/opt/avatar.webp?v=dfc2a054 320w, /static/img/opt/avatar-768.webp?v=738480a9 768w" imagesizes="(max-width: 900px) 86vw, 420px" fetchpriority="high" />
   </head>
   <body>
@@ -458,21 +458,30 @@
                 <p class="epigraph__cite">Robert Browning, <i>Andrea del Sarto</i> (1855)</p>
               </blockquote>
             </div>
-            <div class="specimen" data-rv style="--rv-d: 0.08s">
-              <div class="specimen__bar" aria-hidden="true">
-                <span class="specimen__lights"><i></i><i></i><i></i></span>
-                <span class="specimen__title">dsh</span>
+            <div class="specimen" data-term data-rv style="--rv-d: 0.08s">
+              <div class="specimen__bar">
+                <span class="specimen__lights" aria-hidden="true">
+                  <i class="specimen__light specimen__light--close" data-light="close" aria-hidden="true"></i>
+                  <i class="specimen__light specimen__light--min" data-light="min" aria-hidden="true"></i>
+                  <i class="specimen__light specimen__light--zoom" data-light="zoom" aria-hidden="true"></i>
+                </span>
+                <span class="specimen__title" data-term-title>dsh</span>
               </div>
               <div class="specimen__body">
-                <p class="specimen__line" aria-label="dsh 终端：循环敲入一条条命令，偶尔冒出一句不该出现的话">
-                  <span aria-hidden="true"><span class="specimen__user">dsh</span> <span class="specimen__path">~</span> <span class="specimen__pct">%</span></span>
-                  <span class="specimen__cmd" aria-hidden="true" data-term-script='["skills --matrix","cat ~/.skills","git status --short","ls ~/stack | wc -l"]' data-term-rare="are you still there?" data-term-rare-rate="0.22"><span class="specimen__text"></span><span class="specimen__caret"></span></span>
+                <p class="specimen__line specimen__line--intro">
+                  <span aria-hidden="true"><span class="specimen__user">dsh</span> <span class="specimen__path">~</span> <span class="specimen__pct">%</span> <span class="specimen__text">skills --matrix</span></span>
                 </p>
-                <picture>
+                <picture class="specimen__out">
                   <source media="(max-width: 900px)" srcset="/static/svg/skillWap.svg?v=889651b7" />
                   <img class="specimen__img" src="/static/svg/skillPc.svg?v=119bb234" alt="48 个技术栈图标：Python、C、C#、C++、CSS、HTML、PHP、Java、JavaScript、LaTeX、Markdown、R、MATLAB、Bash、PowerShell、Anaconda、PyCharm、VS Code、Node.js、Eclipse、Swift、Notion、WordPress、Apple、Linux、Windows、Ubuntu、Illustrator、Audition、After Effects、Premiere、Photoshop、AutoCAD、Unity、SVG、Git、GitHub、OpenCV、MySQL、.NET、Nginx、Redis、MongoDB、Cloudflare、GCP、Gmail、Discord、Instagram、Twitter" width="948" height="161" loading="lazy" decoding="async" />
                 </picture>
+                <div class="specimen__log" data-term-log aria-hidden="true"></div>
+                <p class="specimen__line" aria-label="dsh 终端：循环敲入命令，偶尔冒出一句不该出现的话">
+                  <span aria-hidden="true"><span class="specimen__user">dsh</span> <span class="specimen__path">~</span> <span class="specimen__pct">%</span></span>
+                  <span class="specimen__cmd" aria-hidden="true"><span class="specimen__text" data-term-text></span><span class="specimen__caret"></span></span>
+                </p>
               </div>
+            </div>
             </div>
           </div>
         </div>
@@ -1060,6 +1069,6 @@
     </div>
 
     <script src="/static/js/site-content.js?v=7ef09ab3"></script>
-    <script src="/static/js/script.js?v=d698dc9d"></script>
+    <script src="/static/js/script.js?v=079ef1e6"></script>
   </body>
 </html>

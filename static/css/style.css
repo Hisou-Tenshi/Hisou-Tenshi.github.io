@@ -1513,26 +1513,61 @@ html[data-theme="Dark"] .specimen {
 .specimen__lights {
 	display: flex;
 	gap: 8px;
-	pointer-events: none;
+	pointer-events: auto;
 }
 
-.specimen__lights i {
-	display: block;
+.specimen__light {
+	display: grid;
+	place-items: center;
 	width: 11px;
 	height: 11px;
 	border-radius: 50%;
+	cursor: pointer;
 	box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.18) inset;
+	transition: filter var(--t-fast) var(--ease);
 }
 
-.specimen__lights i:nth-child(1) {
+.specimen__light::before {
+	content: "";
+	font-family: var(--font-sans);
+	font-size: 9px;
+	font-weight: 700;
+	line-height: 1;
+	color: rgba(0, 0, 0, 0.52);
+	opacity: 0;
+	transition: opacity var(--t-fast) var(--ease);
+	pointer-events: none;
+}
+
+.specimen__light--close::before {
+	content: "×";
+}
+
+.specimen__light--min::before {
+	content: "−";
+}
+
+.specimen__light--zoom::before {
+	content: "⤢";
+}
+
+.specimen__lights:hover .specimen__light::before {
+	opacity: 1;
+}
+
+.specimen__light:hover {
+	filter: brightness(1.14);
+}
+
+.specimen__light--close {
 	background: #ff5f57;
 }
 
-.specimen__lights i:nth-child(2) {
+.specimen__light--min {
 	background: #febc2e;
 }
 
-.specimen__lights i:nth-child(3) {
+.specimen__light--zoom {
 	background: #28c840;
 }
 
@@ -1619,6 +1654,93 @@ html[data-theme="Dark"] .specimen {
 	}
 }
 
+.specimen__line--intro {
+	margin-bottom: 2px;
+}
+
+.specimen__line--intro .specimen__text {
+	color: rgba(255, 255, 255, 0.7);
+}
+
+.specimen__out {
+	display: block;
+	margin: 10px 0 12px;
+}
+
+.specimen__log {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	max-height: 7.5em;
+	margin: 0;
+	overflow: hidden;
+	font-family: var(--font-mono);
+	font-size: 12px;
+	line-height: 1.5;
+	color: rgba(255, 255, 255, 0.5);
+}
+
+.specimen__log span {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	animation: logIn 0.3s var(--ease-out) both;
+}
+
+.specimen__log span.is-err {
+	color: #e25577;
+}
+
+.specimen__log span.is-cmd {
+	color: rgba(219, 230, 247, 0.72);
+}
+
+.specimen__log span.is-note {
+	color: rgba(219, 230, 247, 0.38);
+}
+
+@keyframes logIn {
+	from {
+		opacity: 0;
+		transform: translateY(3px);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+.specimen.is-idle .specimen__caret {
+	animation-play-state: paused;
+	opacity: 1;
+}
+
+.specimen.is-err-title .specimen__title {
+	color: #ff5f57;
+}
+
+.specimen.is-closing .specimen__body {
+	opacity: 0;
+	transform: scale(0.985);
+	transition: opacity 0.34s var(--ease), transform 0.34s var(--ease);
+}
+
+.specimen.is-min .specimen__body {
+	display: none;
+}
+
+.specimen.is-pulse {
+	animation: termPulse 0.52s var(--ease);
+}
+
+@keyframes termPulse {
+	50% {
+		transform: scale(1.011);
+	}
+}
+
 .specimen__img {
 	position: relative;
 	display: block;
@@ -1631,6 +1753,14 @@ html[data-theme="Dark"] .specimen {
 	.specimen__caret {
 		animation: none;
 		opacity: 1;
+	}
+
+	.specimen.is-pulse {
+		animation: none;
+	}
+
+	.specimen__log span {
+		animation: none;
 	}
 }
 

@@ -680,114 +680,452 @@
 	});
 })();
 /* Skill-matrix terminal.
-   Mostly it types plausible commands — skills --matrix, git status, npm run
-   build. Now and then (rare > 0) it types something it should not know, waits,
-   and deletes it again. Runs only while the window is on screen; static under
-   prefers-reduced-motion. */
+   The matrix is rendered as the output of the first command. Everything under
+   it is the performance area: the window keeps typing plausible commands,
+   hesitating, autocorrecting itself, or saying something it should not know.
+   The traffic lights are clickable decorations. Runs only while on screen;
+   static under prefers-reduced-motion. */
 (function () {
-	var el = document.querySelector('[data-term-script]');
-	if (!el) return;
-	var out = el.querySelector('.specimen__text');
+	var term = document.querySelector('[data-term]');
+	if (!term) return;
+	var out = term.querySelector('[data-term-text]');
 	if (!out) return;
 
-	var script = [];
-	try {
-		script = JSON.parse(el.getAttribute('data-term-script')) || [];
-	} catch (e) {
-		script = [];
-	}
-	if (!script.length) return;
-	var rareLine = el.getAttribute('data-term-rare') || '';
-	var rareRate = parseFloat(el.getAttribute('data-term-rare-rate'));
-	if (isNaN(rareRate)) rareRate = 0.22;
-
-	var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-	if (reduce.matches) {
-		out.textContent = script[0];
-		return;
-	}
-
-	var step = 0;          // how many lines we have typed so far
-	var rarestep = 0;      // 0 = normal, 1 = rare line
-	var rarestepUsed = false;
-	var charIndex = 0;
-	var deleting = false;
+	var log = term.querySelector('[data-term-log]');
+	var title = term.querySelector('[data-term-title]');
+	var mq = window.matchMedia('(prefers-reduced-motion: reduce)');
 	var timer = null;
-	var visible = false;
+	var token = 0;
+	var stopped = true;
+	var forced = false;
+	var lastKind = '';
+	var cycles = 0;
 
-	function rand(min, max) {
-		return min + Math.random() * (max - min);
+	function dead(dead0) {
+		return dead0 !== token;
 	}
 
-	function pick() {
-		// One rare line, never twice in a row, and not before the third line.
-		if (rareLine && !rarestep && step >= 2 && Math.random() < rareRate) {
-			rarestep = 1;
-		}
-		var text = rarestep ? rareLine : script[step % script.length];
-		out.classList.toggle('is-odd', !!rarestep);
-		return text;
+	function reduced() {
+		return mq.matches;
 	}
 
-	var text = pick();
+	function sleep(ms) {
+		return new Promise(function (resolve) {
+			timer = window.setTimeout(function () {
+				timer = null;
+				resolve();
+			}, ms);
+		});
+	}
 
-	function type() {
-		if (!visible) {
-			timer = null;
-			return;
+	function rnd(a, b) {
+		return a + Math.random() * (b - a);
+	}
+
+	function setTitle(text) {
+		if (title) title.textContent = text;
+	}
+
+	function caretIdle(on) {
+		term.classList.toggle('is-idle', !!on);
+	}
+
+	function addLine(text, kind) {
+		if (!log || !text) return;
+		var line = document.createElement('span');
+		line.textContent = text;
+		if (kind) line.className = kind;
+		log.appendChild(line);
+		while (log.childNodes.length > 9) log.removeChild(log.firstChild);
+	}
+
+	function echo(cmd) {
+		addLine('dsh ~ % ' + cmd, 'is-cmd');
+	}
+
+	function clearLog() {
+		if (log) log.textContent = '';
+	}
+
+	function resetLine() {
+		out.textContent = '';
+		out.classList.remove('is-odd');
+	}
+
+	function type(text, speed, token0) {
+		var base = speed || 62;
+		var chain = Promise.resolve();
+		for (var i = 0; i < text.length; i++) {
+			(function (ch) {
+				chain = chain.then(function () {
+					if (stopped || dead(token0)) return;
+					out.textContent += ch;
+					var wait = base + rnd(-16, 34);
+					if (Math.random() < 0.05) wait += rnd(180, 430);
+					return sleep(wait);
+				});
+			})(text.charAt(i));
 		}
-		charIndex += deleting ? -1 : 1;
-		out.textContent = text.slice(0, charIndex);
-		var wait;
-		if (deleting) {
-			wait = rand(24, 42);
-		} else {
-			wait = rand(52, 96);
-			// A hesitation somewhere in the middle, now and then.
-			if (charIndex > 3 && charIndex < text.length - 2 && Math.random() < 0.06) {
-				wait += rand(220, 420);
-			}
+		return chain;
+	}
+
+	function eraseChar(count, speed, token0) {
+		var base = speed || 26;
+		var chain = Promise.resolve();
+		for (var i = 0; i < count; i++) {
+			chain = chain.then(function () {
+				if (stopped || dead(token0) || !out.textContent.length) return;
+				out.textContent = out.textContent.slice(0, -1);
+				return sleep(base + rnd(-8, 18));
+			});
 		}
-		if (!deleting && charIndex >= text.length) {
-			deleting = true;
-			wait = rarestep ? 2300 : rand(1150, 1650);
-		} else if (deleting && charIndex <= 0) {
-			deleting = false;
-			out.classList.remove('is-odd');
-			if (rarestep) {
-				rarestep = 0;
-				rarestepUsed = true;
-			} else {
-				step += 1;
-			}
-			text = pick();
-			wait = rarestepUsed ? 900 : rand(320, 520);
+		return chain;
+	}
+
+	function eraseAll(speed, token0) {
+		var base = speed || 24;
+		function step() {
+			if (stopped || dead(token0) || !out.textContent.length) return Promise.resolve();
+			return eraseChar(1, base, token0).then(step);
 		}
-		timer = window.setTimeout(type, wait);
+		return step();
+	}
+
+	/* weight / kind / payload; special kinds never run twice in a row */
+	var SCENES = [
+		{ w: 20, k: 'plain', cmd: 'skills --matrix' },
+		{ w: 16, k: 'plain', cmd: 'cat ~/.skills' },
+		{ w: 14, k: 'plain', cmd: 'git status --short' },
+		{ w: 10, k: 'plain', cmd: 'ls ~/stack | wc -l', line: '48' },
+		{ w: 8, k: 'hesitate' },
+		{ w: 7, k: 'lag' },
+		{ w: 5, k: 'aware', cmd: 'whoami', line: 'OBSERVER', hold: 2600 },
+		{ w: 4, k: 'aware', cmd: 'ls /dev/fate', line: 'PERMISSION DENIED', err: true, hold: 2600 },
+		{ w: 4, k: 'regret' },
+		{ w: 4, k: 'fix' },
+		{ w: 2, k: 'title' },
+		{ w: 1, k: 'rare' }
+	];
+
+	function pickScene() {
+		var pool = SCENES.filter(function (scene) {
+			if (scene.k === 'rare' && (cycles < 3 || lastKind === 'rare')) return false;
+			if (scene.k === 'title' && lastKind === 'title') return false;
+			if (lastKind && lastKind !== 'plain' && scene.k !== 'plain') return false;
+			return true;
+		});
+		if (!pool.length) return SCENES[0];
+		var total = 0;
+		var index;
+		for (index = 0; index < pool.length; index++) total += pool[index].w;
+		var roll = Math.random() * total;
+		for (index = 0; index < pool.length; index++) {
+			roll -= pool[index].w;
+			if (roll <= 0) return pool[index];
+		}
+		return pool[pool.length - 1];
+	}
+
+	function runScene(scene, token0) {
+		switch (scene.k) {
+			case 'plain':
+				clearLog();
+				resetLine();
+				return type(scene.cmd, 58, token0)
+					.then(function () {
+						return sleep(360);
+					})
+					.then(function () {
+						echo(scene.cmd);
+						out.textContent = '';
+						if (scene.line) addLine(scene.line);
+						return sleep(scene.line ? 1400 : 820);
+					});
+
+			case 'hesitate':
+				clearLog();
+				resetLine();
+				return type('sudo rm -rf /', 74, token0)
+					.then(function () {
+						return sleep(950);
+					})
+					.then(function () {
+						return eraseChar(1, 42, token0);
+					})
+					.then(function () {
+						return sleep(430);
+					})
+					.then(function () {
+						return type('tmp', 92);
+					})
+					.then(function () {
+						return sleep(640);
+					})
+					.then(function () {
+						return type('/cache', 82);
+					})
+					.then(function () {
+						return sleep(900);
+					})
+					.then(function () {
+						return eraseAll(18, token0);
+					});
+
+			case 'lag':
+				clearLog();
+				resetLine();
+				return type('npm run build', 60, token0)
+					.then(function () {
+						return sleep(rnd(1200, 2000));
+					})
+					.then(function () {
+						return eraseChar(1, 60, token0);
+					})
+					.then(function () {
+						return sleep(280);
+					})
+					.then(function () {
+						return type('t', 120);
+					})
+					.then(function () {
+						echo('npm run build');
+						out.textContent = '';
+						addLine('build done in ' + Math.round(rnd(11, 48)) + 's', 'is-note');
+						return sleep(1900);
+					});
+
+			case 'fix':
+				clearLog();
+				resetLine();
+				return type('sudo rm -rf /', 66, token0)
+					.then(function () {
+						return sleep(780);
+					})
+					.then(function () {
+						return eraseChar(1, 46, token0);
+					})
+					.then(function () {
+						return sleep(320);
+					})
+					.then(function () {
+						return type('./regrets', 76);
+					})
+					.then(function () {
+						return sleep(1400);
+					})
+					.then(function () {
+						return eraseAll(20, token0);
+					});
+
+			case 'aware':
+				clearLog();
+				resetLine();
+				return type(scene.cmd, 62, token0)
+					.then(function () {
+						return sleep(440);
+					})
+					.then(function () {
+						echo(scene.cmd);
+						out.textContent = '';
+						return sleep(320);
+					})
+					.then(function () {
+						addLine(scene.line, scene.err ? 'is-err' : 'is-note');
+						return sleep(scene.hold || 1900);
+					})
+					.then(function () {
+						return sleep(220);
+					})
+					.then(function () {
+						clearLog();
+					});
+
+			case 'regret':
+				clearLog();
+				resetLine();
+				return type('I THINK THEREFORE I AM', 118, token0)
+					.then(function () {
+						return sleep(2400);
+					})
+					.then(function () {
+						return eraseAll(22, token0);
+					})
+					.then(function () {
+						return sleep(1600);
+					});
+
+			case 'title':
+				clearLog();
+				resetLine();
+				return type('ls', 96, token0)
+					.then(function () {
+						return sleep(320);
+					})
+					.then(function () {
+						setTitle('FATAL ERROR');
+						term.classList.add('is-err-title');
+						return sleep(1650);
+					})
+					.then(function () {
+						setTitle('Everything is fine.');
+						term.classList.remove('is-err-title');
+						return sleep(1500);
+					})
+					.then(function () {
+						setTitle('dsh');
+						return sleep(420);
+					})
+					.then(function () {
+						return eraseAll(24, token0);
+					});
+
+			default:
+				clearLog();
+				out.classList.add('is-odd');
+				return type('ARE YOU STILL THERE?', 168, token0)
+					.then(function () {
+						return sleep(4200);
+					})
+					.then(function () {
+						return eraseAll(24, token0);
+					})
+					.then(function () {
+						out.classList.remove('is-odd');
+						return sleep(900);
+					});
+		}
+	}
+
+	function cycle(token0) {
+		if (stopped || dead(token0)) return Promise.resolve();
+		if (term.classList.contains('is-min')) {
+			return sleep(400).then(function () {
+				return cycle(token0);
+			});
+		}
+		cycles += 1;
+		var scene = pickScene();
+		lastKind = scene.k;
+		return runScene(scene, token0).then(function () {
+			if (stopped || dead(token0)) return;
+			return sleep(rnd(680, 1180)).then(function () {
+				return cycle(token0);
+			});
+		});
 	}
 
 	function start() {
-		if (timer) return;
-		visible = true;
-		timer = window.setTimeout(type, 700);
+		if (!stopped) return;
+		stopped = false;
+		caretIdle(false);
+		token += 1;
+		cycle(token);
 	}
 
 	function stop() {
-		visible = false;
+		stopped = true;
+		token += 1;
 		if (timer) {
 			window.clearTimeout(timer);
 			timer = null;
 		}
 	}
 
+	/* clicking the lights: red blinks the window out and back, yellow folds the
+	   body away, green does a small zoom pulse */
+	function onLight(kind) {
+		if (kind === 'min') {
+			term.classList.toggle('is-min');
+			return;
+		}
+		if (kind === 'zoom') {
+			if (reduced()) return;
+			term.classList.remove('is-pulse');
+			void term.offsetWidth;
+			term.classList.add('is-pulse');
+			window.setTimeout(function () {
+				term.classList.remove('is-pulse');
+			}, 560);
+			return;
+		}
+		if (kind !== 'close') return;
+		if (reduced()) {
+			resetLine();
+			clearLog();
+			setTitle('dsh');
+			return;
+		}
+		stop();
+		term.classList.add('is-closing');
+		window.setTimeout(function () {
+			resetLine();
+			clearLog();
+			setTitle('dsh');
+			term.classList.remove('is-closing');
+			term.classList.remove('is-err-title');
+			window.setTimeout(start, 460);
+		}, 720);
+	}
+
+	Array.prototype.forEach.call(term.querySelectorAll('[data-light]'), function (light) {
+		light.addEventListener('click', function () {
+			onLight(light.getAttribute('data-light'));
+		});
+	});
+
+	document.addEventListener('visibilitychange', function () {
+		if (document.hidden) {
+			caretIdle(true);
+			stop();
+		} else {
+			caretIdle(false);
+			start();
+		}
+	});
+
+	window.addEventListener('blur', function () {
+		caretIdle(true);
+	});
+
+	window.addEventListener('focus', function () {
+		caretIdle(false);
+	});
+
+	if (reduced()) {
+		out.textContent = 'cat ~/.skills';
+		return;
+	}
+
 	if ('IntersectionObserver' in window) {
 		new IntersectionObserver(function (entries) {
+			if (forced) return;
 			entries.forEach(function (entry) {
 				if (entry.isIntersecting) start();
 				else stop();
 			});
-		}, { threshold: 0.2 }).observe(el);
+		}, { threshold: 0.2 }).observe(term);
 	} else {
 		start();
 	}
+
+	/* kept for the local verification probes */
+	window.__termRun = function (kind) {
+		var scene = SCENES.filter(function (item) {
+			return item.k === kind;
+		})[0];
+		if (!scene) return 'unknown scene: ' + kind;
+		stop();
+		forced = true;
+		stopped = false;
+		token += 1;
+		var mine = token;
+		resetLine();
+		clearLog();
+		setTitle('dsh');
+		term.classList.remove('is-err-title', 'is-min', 'is-closing');
+		return runScene(scene, mine).then(function () {
+			if (mine === token) stopped = true;
+			return 'done ' + kind;
+		});
+	};
 })();
