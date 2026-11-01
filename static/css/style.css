@@ -485,14 +485,14 @@ html[data-theme="Dark"] .icon-sun {
 	height: min(82vh, 780px);
 	z-index: 0;
 	pointer-events: none;
-	background: url("../img/opt/bg-photo-soft.webp") center 30% / cover no-repeat;
+	background: url("../img/opt/bg-photo-soft.webp?v=d2a9b9c0") center 30% / cover no-repeat;
 	opacity: 0.18;
 	-webkit-mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 52%, transparent 100%);
 	mask-image: linear-gradient(180deg, #000 0%, rgba(0, 0, 0, 0.55) 52%, transparent 100%);
 }
 
 html[data-theme="Dark"] .hero__bg {
-	background-image: url("../img/opt/bg-dark-photo.webp");
+	background-image: url("../img/opt/bg-dark-photo.webp?v=39b53621");
 	opacity: 0.3;
 	filter: saturate(0.7) brightness(0.85);
 }

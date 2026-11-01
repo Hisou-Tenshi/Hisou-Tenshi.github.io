@@ -181,7 +181,7 @@ html[data-theme="Dark"] {
    the "thunder big text" look collapses. See static/fonts/README.txt. */
 @font-face {
 	font-family: "HST Display";
-	src: url("../fonts/display-900.woff2") format("woff2");
+	src: url("../fonts/display-900.woff2?v=e4c59ec4") format("woff2");
 	font-weight: 900;
 	font-style: normal;
 	font-display: swap;

@@ -527,6 +527,27 @@ staticrypt .\download\download.html `
 
 ---
 
+## 静态资源版本标识（内容哈希）
+
+Cloudflare 代理后，`/static/*` 会被边缘缓存（CSS/JS 30 天）。为了让「换内容 = 换 URL」，页面里的静态引用都带内容哈希：
+
+```
+/static/css/style.css?v=2fc33959
+/static/img/opt/avatar.webp?v=48314a59 320w
+url("../fonts/display-900.woff2?v=e4c59ec4")   /* CSS 内部也一样 */
+```
+
+哈希 = `sha256(文件内容)` 前 8 位。**改完任何 HTML/CSS 后、提交前跑一次**：
+
+```bash
+node scripts/stamp-assets.mjs          # 写入
+node scripts/stamp-assets.mjs --check  # 只检查（CI 用，过期则退出码 1）
+```
+
+脚本是幂等的：已带 `?v=` 的会被替换而不是追加；CSS 自身做哈希时会先剥掉内部 `?v=`，避免自引用抖动。
+
+推送后 `.github/workflows/purge-cache.yml` 会等 Pages 构建完成，再用 `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ZONE_ID` 调 `purge_cache` 清掉本次改动的 URL（资产 URL 已变、其实只需清 HTML；这一步是保险）。仓库 secrets 里需要这两个值，权限为 *Zone → Cache Purge → Purge*。
+
 ## 部署到 GitHub Pages
 
 仓库已配置为 GitHub Pages 站点，典型步骤：
