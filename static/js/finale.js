@@ -316,7 +316,7 @@
 					? '<button class="egg__ghost" type="button" data-egg-light="close" aria-label="关闭终端，进入最终场景"><span></span></button>'
 					: "";
 			var inputLine =
-				'<div class="egg__input-line" data-egg-input-line' +
+				'<div class="egg__line egg__input-line egg__line--input" data-egg-input-line' +
 				(i === 5 ? " hidden" : "") +
 				">" +
 				(cfg.prompt
@@ -336,8 +336,9 @@
 				'">' +
 				bar +
 				'<div class="specimen__body egg__body">' +
-				'<div class="egg__log" data-egg-log role="log" aria-label="终端输出"></div>' +
+				'<div class="egg__log" data-egg-log role="log" aria-label="终端输出">' +
 				inputLine +
+				"</div>" +
 				"</div>" +
 				ghost +
 				"</div>";
@@ -353,6 +354,9 @@
 				input: el.querySelector("[data-egg-input]"),
 				inputText: el.querySelector("[data-egg-input-text]"),
 				inputLine: el.querySelector("[data-egg-input-line]"),
+				history: [],
+				histPos: null,
+				histDraft: "",
 				cfg: LAYERS[i]
 			};
 			el.__log = windows[i].log;
@@ -399,6 +403,7 @@
 						return;
 					}
 					if (windows[i].inputText) windows[i].inputText.textContent = eggInput.value;
+					windows[i].histPos = null;
 				});
 				eggInput.addEventListener("keydown", function (ev) {
 					if (inputBusy) {
@@ -407,6 +412,11 @@
 					}
 					if (ev.key === "Escape") {
 						eggInput.blur();
+						return;
+					}
+					if (ev.key === "ArrowUp" || ev.key === "ArrowDown") {
+						ev.preventDefault();
+						browseEggHistory(windows[i], ev.key === "ArrowUp" ? -1 : 1);
 						return;
 					}
 					if (ev.key !== "Enter" || ev.isComposing) return;
@@ -521,8 +531,21 @@
 
 	function removeCarets(win) {
 		Array.prototype.forEach.call(win.log.querySelectorAll(".egg__caret"), function (c) {
+			if (c.closest(".egg__input-line")) return;
 			c.remove();
 		});
+	}
+
+	/* Story lines and the live prompt are children of the same scrolling
+	   column, so the prompt always lands on the real next line. */
+	function clearStoryLines(win) {
+		if (!win || !win.log) return;
+		Array.prototype.slice.call(win.log.children).forEach(function (el) {
+			if (el !== win.inputLine) el.remove();
+		});
+		if (win.inputLine && win.inputLine.parentNode !== win.log) {
+			win.log.appendChild(win.inputLine);
+		}
 	}
 
 	function createLine(win, opts) {
@@ -545,7 +568,11 @@
 		var caret = document.createElement("span");
 		caret.className = "egg__caret";
 		line.appendChild(caret);
-		win.log.appendChild(line);
+		if (win.inputLine && win.inputLine.parentNode === win.log) {
+			win.log.insertBefore(line, win.inputLine);
+		} else {
+			win.log.appendChild(line);
+		}
 		scrollLog(win);
 		return { el: line, txt: txt, caret: caret, prompt: prompt };
 	}
@@ -558,7 +585,11 @@
 		removeCarets(win);
 		var line = document.createElement("div");
 		line.className = "egg__line egg__line--blank";
-		win.log.appendChild(line);
+		if (win.inputLine && win.inputLine.parentNode === win.log) {
+			win.log.insertBefore(line, win.inputLine);
+		} else {
+			win.log.appendChild(line);
+		}
 		scrollLog(win);
 	}
 
@@ -618,8 +649,52 @@
 			win.input.readOnly = false;
 		}
 		if (win.inputText) win.inputText.textContent = "";
-		if (win.inputLine) win.inputLine.classList.remove("is-cmd", "is-busy");
+		if (win.inputLine) {
+			win.inputLine.classList.remove("is-cmd", "is-busy");
+			win.inputLine.hidden = true;
+		}
+		win.history = [];
+		win.histPos = null;
+		win.histDraft = "";
 		if (win.el) win.el.classList.remove("is-typing", "is-taking-over");
+	}
+
+	function setEggInputValue(win, value) {
+		if (!win || !win.input) return;
+		win.input.value = value;
+		if (win.inputText) win.inputText.textContent = value;
+		try {
+			win.input.setSelectionRange(value.length, value.length);
+		} catch (e) {
+			/* older browsers */
+		}
+		scrollLog(win);
+	}
+
+	function rememberEggCommand(win, cmd) {
+		if (!win) return;
+		var value = String(cmd == null ? "" : cmd);
+		if (!value) return;
+		if (win.history[win.history.length - 1] !== value) win.history.push(value);
+	}
+
+	/* Each terminal owns its own command history: only the lines that
+	   appeared in that terminal, plus whatever the visitor typed into it. */
+	function browseEggHistory(win, dir) {
+		if (!win.input || !win.history.length) return;
+		if (win.histPos === null) {
+			win.histDraft = win.input.value;
+			win.histPos = win.history.length;
+		}
+		var next = win.histPos + dir;
+		if (next < 0) next = 0;
+		if (next >= win.history.length) {
+			win.histPos = null;
+			setEggInputValue(win, win.histDraft);
+			return;
+		}
+		win.histPos = next;
+		setEggInputValue(win, win.history[next]);
 	}
 
 	async function eraseInputCount(win, count, token) {
@@ -642,8 +717,43 @@
 		for (var i = 0; i < chars.length; i++) {
 			if (token !== runToken) return false;
 			win.inputText.textContent += chars[i];
+			if (win.input) win.input.value += chars[i];
 			await wait(reduced() ? 24 : typeDelay(chars[i]));
 		}
+		return token === runToken;
+	}
+
+	/* Layer 01 does not drop `exit` into the prompt in one frame: the story
+	   types it letter by letter, exactly like any other line, then waits. */
+	async function typePrefilledExit(win, token) {
+		if (!win || !win.input) return false;
+		if (win.inputLine) win.inputLine.hidden = false;
+		win.input.readOnly = true;
+		win.input.value = "";
+		if (win.inputText) win.inputText.textContent = "";
+		inputBusy = true;
+		await wait(reduced() ? 20 : 80);
+		var chars = Array.from("exit");
+		for (var i = 0; i < chars.length; i++) {
+			if (token !== runToken) {
+				inputBusy = false;
+				return false;
+			}
+			win.inputText.textContent += chars[i];
+			win.input.value += chars[i];
+			scrollLog(win);
+			await wait(reduced() ? 20 : typeDelay(chars[i]));
+		}
+		rememberEggCommand(win, "exit");
+		win.input.readOnly = false;
+		win.histPos = null;
+		try {
+			win.input.focus({ preventScroll: true });
+			win.input.setSelectionRange(win.input.value.length, win.input.value.length);
+		} catch (e) {
+			/* older browsers */
+		}
+		inputBusy = false;
 		return token === runToken;
 	}
 
@@ -702,7 +812,9 @@
    drop it so the visitor's takeover does not leave a duplicate pair. */
 function pruneScriptedExit(win) {
 	if (!win || !win.log) return;
-	var kids = win.log.children;
+	var kids = Array.prototype.filter.call(win.log.children, function (el) {
+		return el !== win.inputLine;
+	});
 	if (kids.length < 2) return;
 	var last = kids[kids.length - 1];
 	var prev = kids[kids.length - 2];
@@ -723,6 +835,7 @@ async function submitEggInput(win) {
 			: win.inputText
 				? win.inputText.textContent
 				: "";
+		if (submitted.trim()) rememberEggCommand(win, submitted.trim());
 		win.inputLine.classList.add("is-busy");
 		win.el.classList.add("is-taking-over");
 
@@ -834,6 +947,7 @@ async function submitEggInput(win) {
 				var line = createLine(win, { prompt: cfg.prompt });
 				await typeInto(line.txt, step.cmd, step.speed || cfg.speed, token);
 				if (token !== runToken) return;
+				rememberEggCommand(win, step.cmd);
 				if (step.backspace) {
 					await wait(reduced() ? 40 : 440);
 					await eraseChars(line.txt, step.backspace, token);
@@ -882,7 +996,7 @@ async function submitEggInput(win) {
 			win.inputLine.hidden = true;
 		}
 		resetInputState(win);
-		win.log.textContent = "";
+		clearStoryLines(win);
 		shim.classList.remove("is-on");
 
 		await wait(reduced() ? 20 : 200);
@@ -893,13 +1007,11 @@ async function submitEggInput(win) {
 		/* The live input line is the point of the red-light layers. Layer 06
 		   has no keyboard of its own; its ghost button is the only way on. */
 		if (LAYERS[index].takeover !== "locked" && win.input) {
-			if (win.inputLine) win.inputLine.hidden = false;
-			/* Layer 01 leaves `exit` typed in the prompt, deliberately not
-			   submitted yet. The visitor can change it before pressing Return. */
 			if (LAYERS[index].prefillExit) {
-				win.input.value = "exit";
-				if (win.inputText) win.inputText.textContent = "exit";
+				await typePrefilledExit(win, token);
+				return;
 			}
+			if (win.inputLine) win.inputLine.hidden = false;
 			try {
 				win.input.focus({ preventScroll: true });
 				win.input.setSelectionRange(win.input.value.length, win.input.value.length);
@@ -1161,7 +1273,7 @@ async function submitEggInput(win) {
 		windows.forEach(function (w) {
 			w.el.classList.remove("is-active", "is-gone", "is-min", "is-max", "is-nocaret");
 			resetInputState(w);
-			w.log.textContent = "";
+			clearStoryLines(w);
 			var minBtn = w.el.querySelector('[data-egg-light="min"]');
 			var zoomBtn = w.el.querySelector('[data-egg-light="zoom"]');
 			if (minBtn) minBtn.setAttribute("aria-pressed", "false");
