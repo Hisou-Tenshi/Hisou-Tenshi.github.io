@@ -38,11 +38,12 @@ function hashOf(absPath) {
 	let h;
 	try {
 		let buf = readFileSync(absPath);
-		// A CSS file is itself stamped (its url() refs carry ?v=…), so hash the
-		// canonical form: otherwise every run would change every CSS hash.
-		if (absPath.endsWith('.css')) {
-			buf = Buffer.from(buf.toString('utf8').replace(/\?v=[0-9a-f]{8}/g, ''), 'utf8');
-		}
+		// Hash the canonical form so the value is identical on a Windows checkout
+		// (CRLF) and on Linux/CI (LF), and so a CSS file — which is itself stamped
+		// with ?v=… inside its url() refs — does not chase its own tail.
+		let text = buf.toString('utf8');
+		if (absPath.endsWith('.css')) text = text.replace(/\?v=[0-9a-f]{8}/g, '');
+		buf = Buffer.from(text.replace(/\r\n/g, '\n'), 'utf8');
 		h = createHash('sha256').update(buf).digest('hex').slice(0, 8);
 	} catch {
 		h = null;
