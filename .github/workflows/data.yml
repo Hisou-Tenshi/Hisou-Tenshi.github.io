@@ -51,7 +51,7 @@ jobs:
             echo "no data changes"
             exit 0
           fi
-          git -c user.name='比那名居天子' -c user.email='97383295+Hisou-Tenshi@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats'
+          git -c user.name='「全人類の緋想天」' -c user.email='268836736+ZenjinruiNoHisouten@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats'
           # The branch can move under us (a content push, or another run), so
           # rebase and retry instead of failing the whole job on one rejection.
           for i in 1 2 3; do
