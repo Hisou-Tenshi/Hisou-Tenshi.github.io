@@ -679,3 +679,81 @@
 		getJSON('/static/data/repos.json').then(paintRepos).catch(function () {});
 	});
 })();
+
+/* Skill-matrix terminal: type a phrase, hold, delete it, then the next one.
+   Runs only while the window is on screen, and stays static for reduced motion. */
+(function () {
+	var els = document.querySelectorAll('[data-type-cycle]');
+	if (!els.length) return;
+	var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	Array.prototype.forEach.call(els, function (el) {
+		var words = [];
+		try {
+			words = JSON.parse(el.getAttribute('data-type-cycle')) || [];
+		} catch (e) {
+			words = [];
+		}
+		var out = el.querySelector('.specimen__text');
+		if (!words.length || !out) return;
+		if (reduce.matches) {
+			out.textContent = words[0];
+			return;
+		}
+
+		var w = 0;
+		var i = 0;
+		var deleting = false;
+		var timer = null;
+		var visible = false;
+
+		function step() {
+			var word = words[w];
+			i += deleting ? -1 : 1;
+			out.textContent = word.slice(0, i);
+			var wait = deleting ? 38 : 76;
+			if (!deleting && i >= word.length) {
+				deleting = true;
+				wait = 1500;
+			} else if (deleting && i <= 0) {
+				deleting = false;
+				w = (w + 1) % words.length;
+				wait = 380;
+			}
+			timer = window.setTimeout(step, wait);
+		}
+
+		function start() {
+			if (timer) return;
+			visible = true;
+			timer = window.setTimeout(step, 600);
+		}
+
+		function stop() {
+			visible = false;
+			if (timer) {
+				window.clearTimeout(timer);
+				timer = null;
+			}
+		}
+
+		if ('IntersectionObserver' in window) {
+			new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) start();
+					else stop();
+				});
+			}, { threshold: 0.2 }).observe(el);
+		} else {
+			start();
+		}
+
+		if (typeof reduce.addEventListener === 'function') {
+			reduce.addEventListener('change', function () {
+				stop();
+				out.textContent = reduce.matches ? words[0] : '';
+				if (!reduce.matches) start();
+			});
+		}
+	});
+})();

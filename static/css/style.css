@@ -1482,55 +1482,152 @@ html[data-theme="Dark"] .hero__bolt {
 }
 
 /* Skills specimen plate */
+/* Terminal window — the skills matrix, framed like a macOS terminal */
 .specimen {
 	position: relative;
-	padding: clamp(16px, 2.6vw, 30px);
-	border-radius: var(--r-lg);
-	background: var(--grad-plate);
-	box-shadow: var(--sh-2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+	border-radius: 12px;
+	border: 1px solid rgba(0, 0, 0, 0.42);
+	background: #0c0c10;
+	box-shadow:
+		0 1px 0 rgba(255, 255, 255, 0.05) inset,
+		0 18px 42px -20px rgba(16, 24, 40, 0.55),
+		0 2px 8px rgba(16, 24, 40, 0.16);
 	overflow: hidden;
 }
 
-.specimen::before {
-	content: "";
-	position: absolute;
-	inset: 0;
-	background: radial-gradient(60% 80% at 12% 0%, rgba(102, 204, 255, 0.30), transparent 62%);
-	pointer-events: none;
+html[data-theme="Dark"] .specimen {
+	border-color: rgba(255, 255, 255, 0.12);
 }
 
-.specimen__label {
+.specimen__bar {
 	position: relative;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	margin-bottom: 14px;
+	height: 32px;
+	padding: 0 12px;
+	background: linear-gradient(#3d3d42, #323237);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.55);
+	box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset;
+}
+
+.specimen__lights {
+	display: flex;
+	gap: 8px;
+	pointer-events: none;
+}
+
+.specimen__lights i {
+	display: block;
+	width: 11px;
+	height: 11px;
+	border-radius: 50%;
+	box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.18) inset;
+}
+
+.specimen__lights i:nth-child(1) {
+	background: #ff5f57;
+}
+
+.specimen__lights i:nth-child(2) {
+	background: #febc2e;
+}
+
+.specimen__lights i:nth-child(3) {
+	background: #28c840;
+}
+
+.specimen__title {
+	position: absolute;
+	left: 0;
+	right: 0;
+	text-align: center;
+	font-family: var(--font-sans);
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.01em;
+	color: rgba(255, 255, 255, 0.62);
+	pointer-events: none;
+	user-select: none;
+}
+
+.specimen__body {
+	position: relative;
+	padding: 16px clamp(14px, 2.4vw, 26px) clamp(16px, 2.2vw, 24px);
+}
+
+.specimen__body::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(62% 82% at 12% 0%, rgba(102, 204, 255, 0.26), transparent 64%);
+	pointer-events: none;
+}
+
+.specimen__line {
+	position: relative;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	margin: 0 0 14px;
 	font-family: var(--font-mono);
-	font-size: 9.5px;
-	letter-spacing: 0.2em;
-	text-transform: uppercase;
-	color: rgba(255, 255, 255, 0.42);
+	font-size: 12.5px;
+	line-height: 1.5;
+	color: rgba(255, 255, 255, 0.86);
+	white-space: nowrap;
 }
 
-.specimen__label span {
-	display: inline-flex;
-	align-items: center;
-	gap: 6px;
+.specimen__user {
+	color: var(--accent);
 }
 
-.specimen__label .arc {
-	width: 8px;
-	height: 10px;
-	background: var(--arc-2);
-	filter: none;
+.specimen__path {
+	color: rgba(255, 255, 255, 0.38);
+}
+
+.specimen__pct {
+	color: #3fd67a;
+}
+
+.specimen__cmd {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.specimen__caret {
+	display: inline-block;
+	width: 7px;
+	height: 1.02em;
+	margin-left: 2px;
+	vertical-align: -0.14em;
+	background: rgba(255, 255, 255, 0.78);
+	animation: caretBlink 1.06s steps(1, end) infinite;
+}
+
+@keyframes caretBlink {
+	0%,
+	49% {
+		opacity: 1;
+	}
+
+	50%,
+	100% {
+		opacity: 0;
+	}
 }
 
 .specimen__img {
 	position: relative;
+	display: block;
 	width: 100%;
 	height: auto;
 	filter: saturate(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.specimen__caret {
+		animation: none;
+		opacity: 1;
+	}
 }
 
 /* Update log */
