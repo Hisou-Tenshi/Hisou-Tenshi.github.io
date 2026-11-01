@@ -55,7 +55,7 @@
 			takeover: "plain",
 			title: "Terminal — zsh",
 			bar: true,
-			prompt: "$",
+			prompt: "visitor@mac ~ %",
 			bg: "#0c0c10",
 			fg: "rgba(255, 255, 255, 0.86)",
 			out: "rgba(255, 255, 255, 0.55)",
@@ -86,7 +86,7 @@
 			takeover: "pause",
 			title: "Terminal — zsh",
 			bar: true,
-			prompt: "$",
+			prompt: "???@macintosh ~ %",
 			bg: "#0c0c10",
 			fg: "rgba(255, 255, 255, 0.86)",
 			out: "rgba(255, 255, 255, 0.55)",
@@ -121,7 +121,7 @@
 			takeover: "interject",
 			title: "Terminal — guest",
 			bar: true,
-			prompt: "$",
+			prompt: "you@localhost ~ %",
 			bg: "#0b0b0e",
 			fg: "rgba(255, 246, 246, 0.87)",
 			out: "rgba(255, 238, 238, 0.6)",
@@ -144,7 +144,11 @@
 			script: [
 				{ cmd: "whoami", out: ["visitor"], pause: 560 },
 				{ cmd: "who are you?", out: ["..."], pause: 700 },
-				{ cmd: "just someone who lives here.", pause: 600 },
+				{
+					cmd: "just someone who lives here.",
+					setPrompt: "someone@somewhere ~ %",
+					pause: 600
+				},
 				{
 					cmd: "can I close this window?",
 					out: ["You can try."],
@@ -158,7 +162,7 @@
 			takeover: "replace",
 			title: "I was here first",
 			bar: true,
-			prompt: "$",
+			prompt: "please@stay ~/here %",
 			bg: "#180509",
 			fg: "#ff9b9b",
 			out: "#ff6f6f",
@@ -190,7 +194,7 @@
 			takeover: "warn",
 			title: "please stay",
 			bar: true,
-			prompt: "$",
+			prompt: "I AM HERE %",
 			bg: "#2a070d",
 			fg: "#ffb4b4",
 			out: "#ff8f8f",
@@ -326,6 +330,7 @@
 				'<span class="egg__txt egg__input-text" data-egg-input-text></span>' +
 				'<span class="egg__caret" data-egg-input-caret></span>' +
 				'<input class="egg__input" data-egg-input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="输入任意内容并按回车" />' +
+				'<span class="egg__hint" data-egg-hint hidden></span>' +
 				"</div>";
 			html +=
 				'<div class="egg__win specimen egg__win--' +
@@ -355,6 +360,12 @@
 				input: el.querySelector("[data-egg-input]"),
 				inputText: el.querySelector("[data-egg-input-text]"),
 				inputLine: el.querySelector("[data-egg-input-line]"),
+				inputPrompt: el.querySelector(".egg__input-prompt"),
+				hint: el.querySelector("[data-egg-hint]"),
+				prompt: LAYERS[i].prompt || "",
+				firstInputAt: 0,
+				warnTimer: 0,
+				warnShown: false,
 				history: [],
 				histPos: null,
 				histDraft: "",
@@ -405,6 +416,7 @@
 					}
 					if (windows[i].inputText) windows[i].inputText.textContent = eggInput.value;
 					windows[i].histPos = null;
+					warnOnInput(windows[i]);
 				});
 				eggInput.addEventListener("keydown", function (ev) {
 					if (inputBusy) {
@@ -582,6 +594,12 @@
 		if (line && line.caret && line.caret.parentNode) line.caret.remove();
 	}
 
+	function setWindowPrompt(win, text, line) {
+		win.prompt = text || "";
+		if (win.inputPrompt) win.inputPrompt.textContent = win.prompt;
+		if (line && line.prompt) line.prompt.textContent = win.prompt;
+	}
+
 	function addBlank(win) {
 		removeCarets(win);
 		var line = document.createElement("div");
@@ -657,6 +675,11 @@
 		win.history = [];
 		win.histPos = null;
 		win.histDraft = "";
+		win.firstInputAt = 0;
+		win.warnShown = false;
+		clearWarnTimer(win);
+		hideHint(win);
+		setWindowPrompt(win, win.cfg.prompt || "");
 		if (win.el) win.el.classList.remove("is-typing", "is-taking-over");
 	}
 
@@ -748,13 +771,9 @@
 		rememberEggCommand(win, "exit");
 		win.input.readOnly = false;
 		win.histPos = null;
-		try {
-			win.input.focus({ preventScroll: true });
-			win.input.setSelectionRange(win.input.value.length, win.input.value.length);
-		} catch (e) {
-			/* older browsers */
-		}
 		inputBusy = false;
+		focusActiveInput();
+		window.requestAnimationFrame(focusActiveInput);
 		return token === runToken;
 	}
 
@@ -784,6 +803,88 @@
 		return token === runToken;
 	}
 
+	/* These little asides are part of the input row, not new output lines:
+	   they type into the lower-right corner so the prompt never gets pushed
+	   down by a message that is really about the prompt itself. */
+	async function typeHint(win, text, token) {
+		if (!win || !win.hint) return false;
+		win.hint.hidden = false;
+		win.hint.textContent = "";
+		if (win.inputLine) win.inputLine.classList.add("has-hint");
+		var chars = Array.from(text);
+		for (var i = 0; i < chars.length; i++) {
+			if (token !== runToken) return false;
+			win.hint.textContent += chars[i];
+			scrollLog(win);
+			await wait(reduced() ? 16 : typeDelay(chars[i]));
+		}
+		return token === runToken;
+	}
+
+	function hideHint(win) {
+		if (!win) return;
+		if (win.hint) {
+			win.hint.hidden = true;
+			win.hint.textContent = "";
+		}
+		if (win.inputLine) win.inputLine.classList.remove("has-hint");
+	}
+
+	function clearWarnTimer(win) {
+		if (!win || !win.warnTimer) return;
+		window.clearTimeout(win.warnTimer);
+		win.warnTimer = 0;
+	}
+
+	function showWarnHint(win) {
+		if (!win || win.warnShown || inputBusy) return;
+		win.warnShown = true;
+		clearWarnTimer(win);
+		var token = runToken;
+		typeHint(win, "please don't.", token);
+	}
+
+	function warnOnInput(win) {
+		if (!win || win.cfg.takeover !== "warn" || inputBusy) return;
+		var value = win.input ? win.input.value : "";
+		if (!value.length) return;
+		if (!win.firstInputAt) win.firstInputAt = Date.now();
+		if (win.warnShown) {
+			/* The warning was the last thing this terminal was willing to say.
+			   The next keystroke belongs to the takeover, not the visitor. */
+			submitEggInput(win);
+			return;
+		}
+		var elapsed = Date.now() - win.firstInputAt;
+		if (elapsed >= 1000 && Array.from(value).length >= 3) {
+			showWarnHint(win);
+			return;
+		}
+		if (!win.warnTimer) {
+			win.warnTimer = window.setTimeout(
+				function () {
+					win.warnTimer = 0;
+					if (!win.warnShown && win.input && Array.from(win.input.value).length >= 3) {
+						showWarnHint(win);
+					}
+				},
+				Math.max(0, 1000 - elapsed)
+			);
+		}
+	}
+
+	function focusActiveInput() {
+		var win = windows[activeIndex];
+		if (!win || !win.input || !win.inputLine || win.inputLine.hidden) return;
+		if (inputBusy || win.cfg.takeover === "locked") return;
+		try {
+			win.input.focus({ preventScroll: true });
+			win.input.setSelectionRange(win.input.value.length, win.input.value.length);
+		} catch (e) {
+			/* older browsers */
+		}
+	}
+
 	/* Move the forced `exit` out of the live prompt and into the transcript,
 	   then print the shell's farewell underneath it. This keeps the command
 	   before its output instead of leaving an input line below the feedback. */
@@ -795,7 +896,7 @@
 		if (win.inputText) win.inputText.textContent = "";
 		if (win.inputLine) win.inputLine.hidden = true;
 
-		var line = createLine(win, { prompt: win.cfg.prompt });
+		var line = createLine(win, { prompt: win.prompt });
 		line.txt.textContent = exitText;
 		finishLine(line);
 		scrollLog(win);
@@ -821,7 +922,7 @@ function pruneScriptedExit(win) {
 	var prev = kids[kids.length - 2];
 	if (!last || !prev) return;
 	if (last.textContent.trim() !== "logout") return;
-	if (!/^\$\s*exit$/.test(prev.textContent.trim())) return;
+	if (!/(?:^|\s)exit$/.test(prev.textContent.trim())) return;
 	last.remove();
 	prev.remove();
 }
@@ -870,12 +971,25 @@ async function submitEggInput(win) {
 
 		var mode = win.cfg.takeover || "plain";
 
-		/* Layer 05 says it out loud before it takes the line away. */
+		/* Layer 05 says it out loud before it takes the line away. The warning
+		   may already have appeared while the visitor was still typing; in
+		   that case the takeover is the response to the next keystroke. */
 		if (mode === "warn") {
-			await takeoverLine(win, "please don't.", token);
-			if (takeoverStale(token)) return;
-			await wait(reduced() ? 30 : 560);
-			if (takeoverStale(token)) return;
+			var warnReady =
+				win.firstInputAt &&
+				Date.now() - win.firstInputAt >= 1000 &&
+				Array.from(win.input ? win.input.value : "").length >= 3;
+			if (!win.warnShown && warnReady) {
+				win.warnShown = true;
+				await typeHint(win, "please don't.", token);
+				if (takeoverStale(token)) return;
+				await wait(reduced() ? 30 : 560);
+				if (takeoverStale(token)) return;
+			} else if (win.warnShown && win.hint) {
+				win.hint.hidden = false;
+				win.hint.textContent = "please don't.";
+				if (win.inputLine) win.inputLine.classList.add("has-hint");
+			}
 		}
 
 		if (mode === "interject") {
@@ -885,12 +999,13 @@ async function submitEggInput(win) {
 				await eraseInputCount(win, Math.ceil(typed / 2), token);
 				if (takeoverStale(token)) return;
 			}
-			await takeoverLine(win, "I know what you want.", token);
+			await wait(reduced() ? 30 : 1000);
 			if (takeoverStale(token)) return;
-			await wait(reduced() ? 40 : 520);
+			await typeHint(win, "I know what you want.", token);
+			if (takeoverStale(token)) return;
+			await wait(reduced() ? 30 : 1000);
 			if (takeoverStale(token)) return;
 			await eraseInputLine(win, token);
-			if (takeoverStale(token)) return;
 			await wait(reduced() ? 20 : 220);
 			if (takeoverStale(token)) return;
 			await typeExitCommand(win, token);
@@ -945,7 +1060,7 @@ async function submitEggInput(win) {
 				);
 				finishLine(plainLine);
 			} else if (step.cmd != null) {
-				var line = createLine(win, { prompt: cfg.prompt });
+				var line = createLine(win, { prompt: win.prompt });
 				await typeInto(line.txt, step.cmd, step.speed || cfg.speed, token);
 				if (token !== runToken) return;
 				rememberEggCommand(win, step.cmd);
@@ -958,6 +1073,10 @@ async function submitEggInput(win) {
 						await typeInto(line.txt, step.retype, step.speed || cfg.speed, token);
 					}
 				}
+				/* The prompt belongs to the same beat as the line it introduces.
+				   Changing it here means the next command and the live input both
+				   inherit the new identity at the exact end of this sentence. */
+				if (step.setPrompt) setWindowPrompt(win, step.setPrompt, line);
 				finishLine(line);
 				if (step.out) {
 					var outs = Array.isArray(step.out) ? step.out : [step.out];
@@ -1013,12 +1132,8 @@ async function submitEggInput(win) {
 				return;
 			}
 			if (win.inputLine) win.inputLine.hidden = false;
-			try {
-				win.input.focus({ preventScroll: true });
-				win.input.setSelectionRange(win.input.value.length, win.input.value.length);
-			} catch (e) {
-				/* older browsers */
-			}
+			focusActiveInput();
+			window.requestAnimationFrame(focusActiveInput);
 		}
 	}
 
@@ -1045,7 +1160,7 @@ async function submitEggInput(win) {
 		window.setTimeout(
 			function () {
 				if (token !== runToken) return;
-				playLayer(index + 1, token);
+				playLayer(index + 1, token).then(focusActiveInput);
 			},
 			reduced() ? 20 : 370
 		);
@@ -1350,7 +1465,7 @@ async function submitEggInput(win) {
 		window.setTimeout(
 			function () {
 				if (token !== runToken) return;
-				playLayer(0, token);
+				playLayer(0, token).then(focusActiveInput);
 			},
 			reduced() ? 30 : 470
 		);

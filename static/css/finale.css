@@ -274,6 +274,32 @@ body.egg-open {
 .egg__input-line > .egg__caret {
 	pointer-events: none;
 }
+.egg__win .egg__input-line.has-hint {
+	padding-bottom: 1.25em;
+}
+.egg__hint {
+	position: absolute;
+	right: 0;
+	bottom: 0.1em;
+	z-index: 3;
+	max-width: 68%;
+	overflow: hidden;
+	color: var(--egg-dim, #a34a4a);
+	font-size: 0.82em;
+	line-height: 1.35;
+	text-align: right;
+	white-space: nowrap;
+	text-overflow: clip;
+	pointer-events: none;
+	opacity: 0.92;
+	text-shadow: 0 0 12px currentColor;
+}
+.egg__hint[hidden] {
+	display: none;
+}
+.egg__win--5 .egg__hint {
+	color: #ff9b9b;
+}
 .egg__input-line.is-busy > .egg__caret,
 .egg__input-line.is-busy .egg__caret {
 	display: none;
