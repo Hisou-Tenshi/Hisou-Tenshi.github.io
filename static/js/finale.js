@@ -282,6 +282,10 @@
 	var inertNodes = [];
 	var geo = { baseW: 820, baseH: 540, baseDx: 0, baseDy: 0 };
 	var windows = [];
+	var galStage = -1;
+	var galTyping = false;
+	var galTypeRun = 0;
+	var galLineEl = null;
 
 	/* ── Build the six windows ───────────────────────────────────────────── */
 
@@ -1299,13 +1303,13 @@ async function submitEggInput(win) {
 		galSr.textContent = "";
 		galNext.classList.remove("is-on");
 		updateMute();
+		galStage = 0;
+		galTyping = false;
+		galTypeRun += 1;
 
-		var l1 = document.createElement("p");
-		l1.className = "gal__line";
-		var l2 = document.createElement("p");
-		l2.className = "gal__line";
-		galText.appendChild(l1);
-		galText.appendChild(l2);
+		galLineEl = document.createElement("p");
+		galLineEl.className = "gal__line";
+		galText.appendChild(galLineEl);
 
 		window.requestAnimationFrame(function () {
 			gal.classList.add("is-on");
@@ -1314,29 +1318,65 @@ async function submitEggInput(win) {
 		await wait(reduced() ? 40 : 460);
 		if (token !== runToken) return;
 
-		await typeGal(l1, LINE1, token);
-		if (token !== runToken) return;
-		await wait(reduced() ? 50 : 1500);
-		if (token !== runToken) return;
-		await typeGal(l2, LINE2, token);
-		if (token !== runToken) return;
-		galSr.textContent = LINE1 + " " + LINE2;
+		galTyping = true;
+		await typeGal(galLineEl, LINE1, token);
+		if (token !== runToken || galStage !== 0) return;
+		galTyping = false;
+		galStage = 1;
+		galSr.textContent = LINE1;
 		galNext.classList.add("is-on");
 	}
 
 	async function typeGal(el, text, token) {
 		var chars = Array.from(text);
+		var run = galTypeRun;
 		if (reduced()) {
 			el.textContent = text;
 			await wait(50);
 			return;
 		}
 		for (var i = 0; i < chars.length; i++) {
-			if (token !== runToken) return;
+			if (token !== runToken || run !== galTypeRun) return;
 			var ch = chars[i];
 			el.textContent += ch;
 			await wait(typeDelay(ch));
 		}
+	}
+
+	/* A click / Space / Enter advances the Galgame one sentence at a time.
+	   While the first sentence is still typing, the first press completes it;
+	   the next press clears the box and reveals the second sentence. */
+	function advanceDialogue() {
+		if (state !== "dialogue") return;
+		if (galStage === 0 && galTyping) {
+			galTypeRun += 1;
+			galTyping = false;
+			if (galLineEl) galLineEl.textContent = LINE1;
+			galStage = 1;
+			galSr.textContent = LINE1;
+			galNext.classList.add("is-on");
+			return;
+		}
+		if (galStage !== 1) return;
+
+		galStage = 2;
+		galTyping = true;
+		galNext.classList.remove("is-on");
+		galText.textContent = "";
+		galSr.textContent = "";
+
+		window.setTimeout(async function () {
+			if (state !== "dialogue" || galStage !== 2) return;
+			var token = runToken;
+			galLineEl = document.createElement("p");
+			galLineEl.className = "gal__line";
+			galText.appendChild(galLineEl);
+			await typeGal(galLineEl, LINE2, token);
+			if (token !== runToken || galStage !== 2) return;
+			galTyping = false;
+			galStage = 3;
+			galSr.textContent = LINE1 + " " + LINE2;
+		}, reduced() ? 20 : 180);
 	}
 
 	function updateMute() {
@@ -1381,6 +1421,10 @@ async function submitEggInput(win) {
 		galSr.textContent = "";
 		galNext.classList.remove("is-on");
 		galName.textContent = "";
+		galStage = -1;
+		galTyping = false;
+		galTypeRun += 1;
+		galLineEl = null;
 		updateMute();
 	}
 
@@ -1526,6 +1570,24 @@ async function submitEggInput(win) {
 
 	galMute.addEventListener("click", toggleMute);
 	galExit.addEventListener("click", exitEgg);
+
+	function isDialogueUiTarget(target) {
+		if (!target || !target.closest) return false;
+		return !!(target.closest(".gal__menu, button, a, input, textarea, select"));
+	}
+
+	document.addEventListener("click", function (e) {
+		if (state !== "dialogue" || isDialogueUiTarget(e.target)) return;
+		advanceDialogue();
+	});
+
+	document.addEventListener("keydown", function (e) {
+		if (state !== "dialogue") return;
+		if (e.key !== " " && e.key !== "Enter") return;
+		if (isDialogueUiTarget(e.target)) return;
+		e.preventDefault();
+		advanceDialogue();
+	});
 
 	document.addEventListener("keydown", function (e) {
 		if (e.key !== "Escape") return;
