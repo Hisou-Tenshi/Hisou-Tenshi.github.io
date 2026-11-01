@@ -32,18 +32,22 @@
 	--line-3: rgba(20, 20, 26, 0.035);
 
 	/* ── Accents ──────────────────────────────────────────────── */
-	--accent: #d81f26;          /* 緋 — scarlet */
-	--accent-ink: #ffffff;
-	--accent-soft: rgba(216, 31, 38, 0.09);
-	--arc: #0a6cff;             /* 雷 — electric arc blue */
-	--arc-2: #7fb2ff;
-	--arc-soft: rgba(10, 108, 255, 0.12);
-	--arc-glow: rgba(10, 108, 255, 0.32);
+	--accent: #66ccff;          /* 天依蓝 — Tianyi blue */
+	--accent-deep: #2fa6dd;     /* 同一色相，压深一档，用于浅底上的文字 */
+	--accent-ink: #062436;
+	--accent-soft: rgba(102, 204, 255, 0.16);
+	--pink: #ffc0cb;            /* 巡音粉 — Megurine pink */
+	--pink-deep: #e2708e;       /* 压深一档，用于文字与错误提示 */
+	--pink-soft: rgba(255, 192, 203, 0.24);
+	--arc: #66ccff;             /* 雷 — electric arc blue */
+	--arc-2: #a8e4ff;
+	--arc-soft: rgba(102, 204, 255, 0.14);
+	--arc-glow: rgba(102, 204, 255, 0.34);
 
 	/* ── Display gradients ────────────────────────────────────── */
 	--grad-title: linear-gradient(178deg, #1b1b20 6%, #4c4c55 62%, #7d7d88 100%);
 	--grad-rule: linear-gradient(90deg, var(--line) 0%, transparent 100%);
-	--grad-arc: linear-gradient(120deg, #0a6cff 0%, #7fb2ff 45%, #d81f26 100%);
+	--grad-arc: linear-gradient(120deg, #66ccff 0%, #b7e9ff 42%, #ffc0cb 100%);
 	--grad-plate: linear-gradient(160deg, #101014 0%, #1c1c22 55%, #0c0c10 100%);
 
 	/* ── Type ─────────────────────────────────────────────────── */
@@ -94,7 +98,7 @@
 	/* ── Chrome ───────────────────────────────────────────────── */
 	--nav-bg: rgba(251, 251, 253, 0.72);
 	--nav-bg-solid: rgba(251, 251, 253, 0.94);
-	--selection: rgba(216, 31, 38, 0.16);
+	--selection: rgba(102, 204, 255, 0.30);
 	--scrollbar: rgba(20, 20, 26, 0.18);
 	--noise-opacity: 0.028;
 
@@ -119,17 +123,21 @@ html[data-theme="Dark"] {
 	--line-2: rgba(255, 255, 255, 0.075);
 	--line-3: rgba(255, 255, 255, 0.045);
 
-	--accent: #ff4b4f;
-	--accent-ink: #14060a;
-	--accent-soft: rgba(255, 75, 79, 0.14);
-	--arc: #62a8ff;
-	--arc-2: #a8ccff;
-	--arc-soft: rgba(98, 168, 255, 0.16);
-	--arc-glow: rgba(98, 168, 255, 0.34);
+	--accent: #7fd6ff;
+	--accent-deep: #66ccff;
+	--accent-ink: #04131d;
+	--accent-soft: rgba(127, 214, 255, 0.18);
+	--pink: #ffc0cb;
+	--pink-deep: #ffb3c1;
+	--pink-soft: rgba(255, 192, 203, 0.18);
+	--arc: #7fd6ff;
+	--arc-2: #b7e9ff;
+	--arc-soft: rgba(127, 214, 255, 0.18);
+	--arc-glow: rgba(127, 214, 255, 0.36);
 
 	--grad-title: linear-gradient(178deg, #ffffff 8%, #c9c9d3 58%, #7d7d8a 100%);
 	--grad-rule: linear-gradient(90deg, var(--line) 0%, transparent 100%);
-	--grad-arc: linear-gradient(120deg, #62a8ff 0%, #b8d6ff 45%, #ff4b4f 100%);
+	--grad-arc: linear-gradient(120deg, #7fd6ff 0%, #c9eeff 42%, #ffc0cb 100%);
 	--grad-plate: linear-gradient(160deg, #17171c 0%, #0d0d11 60%, #050507 100%);
 
 	--sh-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 10px 26px -16px rgba(0, 0, 0, 0.7);
@@ -139,7 +147,7 @@ html[data-theme="Dark"] {
 
 	--nav-bg: rgba(10, 10, 13, 0.68);
 	--nav-bg-solid: rgba(10, 10, 13, 0.94);
-	--selection: rgba(255, 75, 79, 0.24);
+	--selection: rgba(127, 214, 255, 0.34);
 	--scrollbar: rgba(255, 255, 255, 0.2);
 	--noise-opacity: 0.035;
 

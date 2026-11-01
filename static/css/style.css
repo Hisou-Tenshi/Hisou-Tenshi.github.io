@@ -508,7 +508,7 @@ html[data-theme="Dark"] .hero__bg {
 	pointer-events: none;
 	background: var(--grad-arc);
 	clip-path: var(--bolt);
-	opacity: 0.09;
+	opacity: 0.10;
 	transform: rotate(-7deg);
 	animation: boltDrift 11s var(--ease-inout) infinite;
 }
@@ -524,7 +524,7 @@ html[data-theme="Dark"] .hero__bg {
 }
 
 html[data-theme="Dark"] .hero__bolt {
-	opacity: 0.13;
+	opacity: 0.17;
 }
 
 .hero__in {
@@ -1101,7 +1101,7 @@ html[data-theme="Dark"] .hero__bolt {
 
 .tile:hover .tile__icon {
 	transform: scale(1.06) rotate(-3deg);
-	color: var(--accent);
+	color: var(--accent-deep);
 	border-color: var(--accent-soft);
 }
 
@@ -1140,7 +1140,7 @@ html[data-theme="Dark"] .hero__bolt {
 }
 
 .tile:hover .tile__go {
-	color: var(--accent);
+	color: var(--accent-deep);
 	gap: 9px;
 }
 
@@ -1200,7 +1200,7 @@ html[data-theme="Dark"] .hero__bolt {
 }
 
 .link:hover .link__icon {
-	color: var(--accent);
+	color: var(--accent-deep);
 }
 
 .link__icon svg {
@@ -1286,7 +1286,7 @@ html[data-theme="Dark"] .hero__bolt {
 }
 
 .chip:hover {
-	color: var(--accent);
+	color: var(--accent-deep);
 	border-color: var(--accent-soft);
 	background: var(--card-hover);
 	transform: translateY(-1px);
@@ -1495,7 +1495,7 @@ html[data-theme="Dark"] .hero__bolt {
 	content: "";
 	position: absolute;
 	inset: 0;
-	background: radial-gradient(60% 80% at 12% 0%, rgba(10, 108, 255, 0.28), transparent 62%);
+	background: radial-gradient(60% 80% at 12% 0%, rgba(102, 204, 255, 0.30), transparent 62%);
 	pointer-events: none;
 }
 
@@ -1665,7 +1665,7 @@ html[data-theme="Dark"] .hero__bolt {
 }
 
 .social:hover {
-	color: var(--accent);
+	color: var(--accent-deep);
 	border-color: var(--accent-soft);
 	background: var(--card);
 	transform: translateY(-2px);
@@ -2021,7 +2021,7 @@ html[data-theme="Dark"] .hero__bolt {
 }
 
 .player__item.is-on {
-	color: var(--accent);
+	color: var(--accent-deep);
 	font-weight: 650;
 }
 
@@ -2246,7 +2246,7 @@ body.has-player-open .secnav {
 }
 
 .stats__note a:hover {
-	color: var(--accent);
+	color: var(--accent-deep);
 	border-color: var(--accent);
 }
 
@@ -2634,7 +2634,7 @@ body.has-player-open .secnav {
 }
 
 .doc__body a {
-	color: var(--accent);
+	color: var(--accent-deep);
 	text-decoration: underline;
 	text-decoration-color: var(--accent-soft);
 	text-decoration-thickness: 1.5px;
@@ -3045,7 +3045,7 @@ body.has-player-open .secnav {
 }
 
 .purpleText {
-	color: var(--accent);
+	color: var(--accent-deep);
 	font-weight: 650;
 }
 
@@ -3112,7 +3112,7 @@ body.has-player-open .secnav {
 }
 
 .iconItem:hover {
-	color: var(--accent);
+	color: var(--accent-deep);
 	border-color: var(--accent-soft);
 	transform: translateY(-2px);
 }
@@ -3306,7 +3306,7 @@ body.has-player-open .secnav {
 }
 
 .vault__msg.is-error {
-	color: var(--accent);
+	color: var(--pink-deep);
 }
 
 .vault__msg.is-busy::after {
@@ -3513,7 +3513,7 @@ body.has-player-open .secnav {
 }
 
 .cv__pubs a:hover {
-	color: var(--accent);
+	color: var(--accent-deep);
 	border-color: var(--accent);
 }
 
@@ -3530,7 +3530,7 @@ body.has-player-open .secnav {
 	font-weight: 700;
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
-	color: var(--accent);
+	color: var(--accent-deep);
 }
 
 .cv__group p {
@@ -3631,7 +3631,7 @@ body.has-player-open .secnav {
 }
 
 .file:hover .file__go {
-	color: var(--accent);
+	color: var(--accent-deep);
 }
 
 .file__panel {
@@ -3679,7 +3679,7 @@ body.has-player-open .secnav {
 }
 
 .file__msg.is-error {
-	color: var(--accent);
+	color: var(--pink-deep);
 }
 
 .file__out {
