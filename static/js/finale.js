@@ -75,10 +75,10 @@
 			rot: 0,
 			speed: 52,
 			outSpeed: 28,
-			script: [
-				{ cmd: 'echo "Hello."', out: ["Hello."], pause: 560 },
-				{ cmd: "exit", out: ["logout"], pause: 420 }
-			]
+			/* The first layer is the trap: it types `exit` into the live prompt
+			   and waits. The visitor may edit it, but Return always ends here. */
+			prefillExit: true,
+			script: [{ cmd: 'echo "Hello."', out: ["Hello."], pause: 560 }]
 		},
 		{
 			state: "layer-2",
@@ -673,6 +673,31 @@
 		return token === runToken;
 	}
 
+	/* Move the forced `exit` out of the live prompt and into the transcript,
+	   then print the shell's farewell underneath it. This keeps the command
+	   before its output instead of leaving an input line below the feedback. */
+	async function commitExitLine(win, token) {
+		if (token !== runToken) return false;
+		var exitText = win.inputText ? win.inputText.textContent : "exit";
+		if (!exitText) exitText = "exit";
+		if (win.input) win.input.value = "";
+		if (win.inputText) win.inputText.textContent = "";
+		if (win.inputLine) win.inputLine.hidden = true;
+
+		var line = createLine(win, { prompt: win.cfg.prompt });
+		line.txt.textContent = exitText;
+		finishLine(line);
+		scrollLog(win);
+		await wait(reduced() ? 30 : 140);
+		if (token !== runToken) return false;
+
+		var feedback = createLine(win, { out: true });
+		await typeInto(feedback.txt, "logout", 0, token);
+		finishLine(feedback);
+		await wait(1500);
+		return token === runToken;
+	}
+
 	/* If the layer's scripted farewell already printed `$ exit` / `logout`,
    drop it so the visitor's takeover does not leave a duplicate pair. */
 function pruneScriptedExit(win) {
@@ -693,6 +718,11 @@ async function submitEggInput(win) {
 		if (win !== windows[activeIndex] || !win.inputLine) return;
 		if (win.cfg.takeover === "locked") return;
 		inputBusy = true;
+		var submitted = win.input
+			? win.input.value
+			: win.inputText
+				? win.inputText.textContent
+				: "";
 		win.inputLine.classList.add("is-busy");
 		win.el.classList.add("is-taking-over");
 
@@ -710,6 +740,19 @@ async function submitEggInput(win) {
 
 		await wait(reduced() ? 30 : 180);
 		if (takeoverStale(token)) return;
+
+		/* Layer 01 already typed `exit` and left it waiting. If the visitor did
+		   not change it, Return simply lets the command run; if they did, the
+		   normal erase-and-retype ceremony below plays instead. */
+		if (win.cfg.prefillExit && submitted.trim() === "exit") {
+			await wait(reduced() ? 20 : 120);
+			if (takeoverStale(token)) return;
+			await commitExitLine(win, token);
+			if (takeoverStale(token)) return;
+			inputBusy = false;
+			closeCurrent();
+			return;
+		}
 
 		var mode = win.cfg.takeover || "plain";
 
@@ -752,15 +795,10 @@ async function submitEggInput(win) {
 		}
 
 		if (takeoverStale(token)) return;
-		win.inputLine.classList.add("is-cmd");
 		await wait(reduced() ? 40 : 300);
 		if (takeoverStale(token)) return;
 
-		var feedback = createLine(win, { out: true });
-		await typeInto(feedback.txt, "logout", 0, token);
-		finishLine(feedback);
-		win.inputLine.classList.remove("is-cmd");
-		await wait(1500);
+		await commitExitLine(win, token);
 		if (takeoverStale(token)) return;
 		inputBusy = false;
 		closeCurrent();
@@ -856,8 +894,15 @@ async function submitEggInput(win) {
 		   has no keyboard of its own; its ghost button is the only way on. */
 		if (LAYERS[index].takeover !== "locked" && win.input) {
 			if (win.inputLine) win.inputLine.hidden = false;
+			/* Layer 01 leaves `exit` typed in the prompt, deliberately not
+			   submitted yet. The visitor can change it before pressing Return. */
+			if (LAYERS[index].prefillExit) {
+				win.input.value = "exit";
+				if (win.inputText) win.inputText.textContent = "exit";
+			}
 			try {
 				win.input.focus({ preventScroll: true });
+				win.input.setSelectionRange(win.input.value.length, win.input.value.length);
 			} catch (e) {
 				/* older browsers */
 			}
