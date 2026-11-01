@@ -737,18 +737,26 @@
 		if (kind) line.className = kind;
 		log.appendChild(line);
 		while (log.childNodes.length > 16) log.removeChild(log.firstChild);
-		syncLogMask();
+		/* 从顶部开始逐行追加；写满之后才把旧行顶出去 */
+		log.scrollTop = log.scrollHeight;
+		/* 等这一帧的布局（flex 高度变化）落定后再判断是否需要渐隐 */
+		setTimeout(syncLogMask, 80);
 	}
 
 	/* 顶部渐隐只在内容确实超出可视高度时启用，避免白白压暗第一行 */
 	function syncLogMask() {
 		if (!log) return;
-		log.classList.toggle('is-clipped', log.scrollHeight > log.clientHeight + 1);
+		/* 只有真的滚动起来了（内容超出）才加顶部渐隐 */
+		log.classList.toggle(
+			'is-clipped',
+			log.scrollTop > 0 && log.scrollHeight > log.clientHeight + 1
+		);
 	}
 
 	function clearLog() {
 		if (log) {
 			log.textContent = '';
+			log.scrollTop = 0;
 			log.classList.remove('is-clipped');
 		}
 	}

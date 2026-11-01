@@ -1678,8 +1678,9 @@ html[data-theme="Dark"] .specimen {
 .specimen__log {
 	display: flex;
 	flex-direction: column;
-	justify-content: flex-end;
-	flex: 1 1 auto;
+	justify-content: flex-start;
+	/* 内容少时高度=内容，多时收缩到剩余空间并内部滚动：光标跟着输出往下走 */
+	flex: 0 1 auto;
 	min-height: 0;
 	margin: 0;
 	overflow: hidden;
