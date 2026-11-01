@@ -1593,6 +1593,10 @@ html[data-theme="Dark"] .specimen {
 	overflow: hidden;
 }
 
+.specimen__text.is-odd {
+	color: var(--pink);
+}
+
 .specimen__caret {
 	display: inline-block;
 	width: 7px;

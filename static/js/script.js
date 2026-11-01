@@ -679,81 +679,115 @@
 		getJSON('/static/data/repos.json').then(paintRepos).catch(function () {});
 	});
 })();
-
-/* Skill-matrix terminal: type a phrase, hold, delete it, then the next one.
-   Runs only while the window is on screen, and stays static for reduced motion. */
+/* Skill-matrix terminal.
+   Mostly it types plausible commands — skills --matrix, git status, npm run
+   build. Now and then (rare > 0) it types something it should not know, waits,
+   and deletes it again. Runs only while the window is on screen; static under
+   prefers-reduced-motion. */
 (function () {
-	var els = document.querySelectorAll('[data-type-cycle]');
-	if (!els.length) return;
-	var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+	var el = document.querySelector('[data-term-script]');
+	if (!el) return;
+	var out = el.querySelector('.specimen__text');
+	if (!out) return;
 
-	Array.prototype.forEach.call(els, function (el) {
-		var words = [];
-		try {
-			words = JSON.parse(el.getAttribute('data-type-cycle')) || [];
-		} catch (e) {
-			words = [];
+	var script = [];
+	try {
+		script = JSON.parse(el.getAttribute('data-term-script')) || [];
+	} catch (e) {
+		script = [];
+	}
+	if (!script.length) return;
+	var rareLine = el.getAttribute('data-term-rare') || '';
+	var rareRate = parseFloat(el.getAttribute('data-term-rare-rate'));
+	if (isNaN(rareRate)) rareRate = 0.22;
+
+	var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+	if (reduce.matches) {
+		out.textContent = script[0];
+		return;
+	}
+
+	var step = 0;          // how many lines we have typed so far
+	var rarestep = 0;      // 0 = normal, 1 = rare line
+	var rarestepUsed = false;
+	var charIndex = 0;
+	var deleting = false;
+	var timer = null;
+	var visible = false;
+
+	function rand(min, max) {
+		return min + Math.random() * (max - min);
+	}
+
+	function pick() {
+		// One rare line, never twice in a row, and not before the third line.
+		if (rareLine && !rarestep && step >= 2 && Math.random() < rareRate) {
+			rarestep = 1;
 		}
-		var out = el.querySelector('.specimen__text');
-		if (!words.length || !out) return;
-		if (reduce.matches) {
-			out.textContent = words[0];
+		var text = rarestep ? rareLine : script[step % script.length];
+		out.classList.toggle('is-odd', !!rarestep);
+		return text;
+	}
+
+	var text = pick();
+
+	function type() {
+		if (!visible) {
+			timer = null;
 			return;
 		}
-
-		var w = 0;
-		var i = 0;
-		var deleting = false;
-		var timer = null;
-		var visible = false;
-
-		function step() {
-			var word = words[w];
-			i += deleting ? -1 : 1;
-			out.textContent = word.slice(0, i);
-			var wait = deleting ? 38 : 76;
-			if (!deleting && i >= word.length) {
-				deleting = true;
-				wait = 1500;
-			} else if (deleting && i <= 0) {
-				deleting = false;
-				w = (w + 1) % words.length;
-				wait = 380;
-			}
-			timer = window.setTimeout(step, wait);
-		}
-
-		function start() {
-			if (timer) return;
-			visible = true;
-			timer = window.setTimeout(step, 600);
-		}
-
-		function stop() {
-			visible = false;
-			if (timer) {
-				window.clearTimeout(timer);
-				timer = null;
-			}
-		}
-
-		if ('IntersectionObserver' in window) {
-			new IntersectionObserver(function (entries) {
-				entries.forEach(function (entry) {
-					if (entry.isIntersecting) start();
-					else stop();
-				});
-			}, { threshold: 0.2 }).observe(el);
+		charIndex += deleting ? -1 : 1;
+		out.textContent = text.slice(0, charIndex);
+		var wait;
+		if (deleting) {
+			wait = rand(24, 42);
 		} else {
-			start();
+			wait = rand(52, 96);
+			// A hesitation somewhere in the middle, now and then.
+			if (charIndex > 3 && charIndex < text.length - 2 && Math.random() < 0.06) {
+				wait += rand(220, 420);
+			}
 		}
+		if (!deleting && charIndex >= text.length) {
+			deleting = true;
+			wait = rarestep ? 2300 : rand(1150, 1650);
+		} else if (deleting && charIndex <= 0) {
+			deleting = false;
+			out.classList.remove('is-odd');
+			if (rarestep) {
+				rarestep = 0;
+				rarestepUsed = true;
+			} else {
+				step += 1;
+			}
+			text = pick();
+			wait = rarestepUsed ? 900 : rand(320, 520);
+		}
+		timer = window.setTimeout(type, wait);
+	}
 
-		if (typeof reduce.addEventListener === 'function') {
-			reduce.addEventListener('change', function () {
-				stop();
-				out.textContent = reduce.matches ? words[0] : '';
-				if (!reduce.matches) start();
-			});
+	function start() {
+		if (timer) return;
+		visible = true;
+		timer = window.setTimeout(type, 700);
+	}
+
+	function stop() {
+		visible = false;
+		if (timer) {
+			window.clearTimeout(timer);
+			timer = null;
 		}
-	});
+	}
+
+	if ('IntersectionObserver' in window) {
+		new IntersectionObserver(function (entries) {
+			entries.forEach(function (entry) {
+				if (entry.isIntersecting) start();
+				else stop();
+			});
+		}, { threshold: 0.2 }).observe(el);
+	} else {
+		start();
+	}
 })();
