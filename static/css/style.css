@@ -1671,9 +1671,11 @@ html[data-theme="Dark"] .specimen {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	max-height: 7.5em;
+	max-height: 15em;
 	margin: 0;
 	overflow: hidden;
+	-webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+	mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
 	font-family: var(--font-mono);
 	font-size: 12px;
 	line-height: 1.5;
@@ -1682,6 +1684,7 @@ html[data-theme="Dark"] .specimen {
 
 .specimen__log span {
 	display: block;
+	flex: 0 0 auto;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -1693,6 +1696,10 @@ html[data-theme="Dark"] .specimen {
 }
 
 .specimen__log span.is-cmd {
+	color: rgba(219, 230, 247, 0.72);
+}
+
+.specimen__log span.is-out {
 	color: rgba(219, 230, 247, 0.72);
 }
 
@@ -1710,6 +1717,10 @@ html[data-theme="Dark"] .specimen {
 		opacity: 1;
 		transform: none;
 	}
+}
+
+.specimen.is-nocaret .specimen__caret {
+	opacity: 0;
 }
 
 .specimen.is-idle .specimen__caret {

@@ -679,12 +679,11 @@
 		getJSON('/static/data/repos.json').then(paintRepos).catch(function () {});
 	});
 })();
-/* Skill-matrix terminal.
-   The matrix is rendered as the output of the first command. Everything under
-   it is the performance area: the window keeps typing plausible commands,
-   hesitating, autocorrecting itself, or saying something it should not know.
-   The traffic lights are clickable decorations. Runs only while on screen;
-   static under prefers-reduced-motion. */
+/* Skill-matrix terminal — a small theatre.
+   The matrix is the output of the first command; everything under it is a set
+   of short scripted scenes (input -> output -> follow-up -> settle) that make
+   the window feel like a real macOS session. A few scenes break character.
+   Runs only while on screen; static under prefers-reduced-motion. */
 (function () {
 	var term = document.querySelector('[data-term]');
 	if (!term) return;
@@ -698,15 +697,16 @@
 	var token = 0;
 	var stopped = true;
 	var forced = false;
-	var lastKind = '';
-	var cycles = 0;
-
-	function dead(dead0) {
-		return dead0 !== token;
-	}
+	var played = 0;
+	var lastId = '';
+	var lastTier = '';
 
 	function reduced() {
 		return mq.matches;
+	}
+
+	function dead(token0) {
+		return token0 !== token;
 	}
 
 	function sleep(ms) {
@@ -736,11 +736,7 @@
 		line.textContent = text;
 		if (kind) line.className = kind;
 		log.appendChild(line);
-		while (log.childNodes.length > 9) log.removeChild(log.firstChild);
-	}
-
-	function echo(cmd) {
-		addLine('dsh ~ % ' + cmd, 'is-cmd');
+		while (log.childNodes.length > 16) log.removeChild(log.firstChild);
 	}
 
 	function clearLog() {
@@ -753,247 +749,396 @@
 	}
 
 	function type(text, speed, token0) {
-		var base = speed || 62;
+		var base = speed || 52;
 		var chain = Promise.resolve();
 		for (var i = 0; i < text.length; i++) {
 			(function (ch) {
 				chain = chain.then(function () {
 					if (stopped || dead(token0)) return;
 					out.textContent += ch;
-					var wait = base + rnd(-16, 34);
-					if (Math.random() < 0.05) wait += rnd(180, 430);
-					return sleep(wait);
+					return sleep(base + rnd(-14, 30));
 				});
 			})(text.charAt(i));
 		}
 		return chain;
 	}
 
-	function eraseChar(count, speed, token0) {
-		var base = speed || 26;
-		var chain = Promise.resolve();
-		for (var i = 0; i < count; i++) {
-			chain = chain.then(function () {
-				if (stopped || dead(token0) || !out.textContent.length) return;
-				out.textContent = out.textContent.slice(0, -1);
-				return sleep(base + rnd(-8, 18));
-			});
-		}
-		return chain;
-	}
-
 	function eraseAll(speed, token0) {
-		var base = speed || 24;
+		var base = speed || 26;
 		function step() {
 			if (stopped || dead(token0) || !out.textContent.length) return Promise.resolve();
-			return eraseChar(1, base, token0).then(step);
+			out.textContent = out.textContent.slice(0, -1);
+			return sleep(base + rnd(-8, 16)).then(step);
 		}
 		return step();
 	}
 
-	/* weight / kind / payload; special kinds never run twice in a row */
-	var SCENES = [
-		{ w: 20, k: 'plain', cmd: 'skills --matrix' },
-		{ w: 16, k: 'plain', cmd: 'cat ~/.skills' },
-		{ w: 14, k: 'plain', cmd: 'git status --short' },
-		{ w: 10, k: 'plain', cmd: 'ls ~/stack | wc -l', line: '48' },
-		{ w: 8, k: 'hesitate' },
-		{ w: 7, k: 'lag' },
-		{ w: 5, k: 'aware', cmd: 'whoami', line: 'OBSERVER', hold: 2600 },
-		{ w: 4, k: 'aware', cmd: 'ls /dev/fate', line: 'PERMISSION DENIED', err: true, hold: 2600 },
-		{ w: 4, k: 'regret' },
-		{ w: 4, k: 'fix' },
-		{ w: 2, k: 'title' },
-		{ w: 1, k: 'rare' }
-	];
-
-	function pickScene() {
-		var pool = SCENES.filter(function (scene) {
-			if (scene.k === 'rare' && (cycles < 3 || lastKind === 'rare')) return false;
-			if (scene.k === 'title' && lastKind === 'title') return false;
-			if (lastKind && lastKind !== 'plain' && scene.k !== 'plain') return false;
-			return true;
+	function typeThenPause(text, token0) {
+		return type(text, 50, token0).then(function () {
+			return sleep(rnd(360, 620));
 		});
-		if (!pool.length) return SCENES[0];
-		var total = 0;
-		var index;
-		for (index = 0; index < pool.length; index++) total += pool[index].w;
-		var roll = Math.random() * total;
-		for (index = 0; index < pool.length; index++) {
-			roll -= pool[index].w;
-			if (roll <= 0) return pool[index];
-		}
-		return pool[pool.length - 1];
 	}
 
-	function runScene(scene, token0) {
-		switch (scene.k) {
-			case 'plain':
-				clearLog();
-				resetLine();
-				return type(scene.cmd, 58, token0)
-					.then(function () {
-						return sleep(360);
-					})
-					.then(function () {
-						echo(scene.cmd);
-						out.textContent = '';
-						if (scene.line) addLine(scene.line);
-						return sleep(scene.line ? 1400 : 820);
-					});
+	function stamp(text) {
+		addLine('dsh ~ % ' + text, 'is-cmd');
+		resetLine();
+	}
 
-			case 'hesitate':
-				clearLog();
-				resetLine();
-				return type('sudo rm -rf /', 74, token0)
-					.then(function () {
-						return sleep(950);
-					})
-					.then(function () {
-						return eraseChar(1, 42, token0);
-					})
-					.then(function () {
-						return sleep(430);
-					})
-					.then(function () {
-						return type('tmp', 92);
-					})
-					.then(function () {
-						return sleep(640);
-					})
-					.then(function () {
-						return type('/cache', 82);
-					})
-					.then(function () {
-						return sleep(900);
-					})
-					.then(function () {
-						return eraseAll(18, token0);
-					});
-
-			case 'lag':
-				clearLog();
-				resetLine();
-				return type('npm run build', 60, token0)
-					.then(function () {
-						return sleep(rnd(1200, 2000));
-					})
-					.then(function () {
-						return eraseChar(1, 60, token0);
-					})
-					.then(function () {
-						return sleep(280);
-					})
-					.then(function () {
-						return type('t', 120);
-					})
-					.then(function () {
-						echo('npm run build');
-						out.textContent = '';
-						addLine('build done in ' + Math.round(rnd(11, 48)) + 's', 'is-note');
-						return sleep(1900);
-					});
-
-			case 'fix':
-				clearLog();
-				resetLine();
-				return type('sudo rm -rf /', 66, token0)
-					.then(function () {
-						return sleep(780);
-					})
-					.then(function () {
-						return eraseChar(1, 46, token0);
-					})
-					.then(function () {
-						return sleep(320);
-					})
-					.then(function () {
-						return type('./regrets', 76);
-					})
-					.then(function () {
-						return sleep(1400);
-					})
-					.then(function () {
-						return eraseAll(20, token0);
-					});
-
-			case 'aware':
-				clearLog();
-				resetLine();
-				return type(scene.cmd, 62, token0)
-					.then(function () {
-						return sleep(440);
-					})
-					.then(function () {
-						echo(scene.cmd);
-						out.textContent = '';
-						return sleep(320);
-					})
-					.then(function () {
-						addLine(scene.line, scene.err ? 'is-err' : 'is-note');
-						return sleep(scene.hold || 1900);
-					})
-					.then(function () {
-						return sleep(220);
-					})
-					.then(function () {
-						clearLog();
-					});
-
-			case 'regret':
-				clearLog();
-				resetLine();
-				return type('I THINK THEREFORE I AM', 118, token0)
-					.then(function () {
-						return sleep(2400);
-					})
-					.then(function () {
-						return eraseAll(22, token0);
-					})
-					.then(function () {
-						return sleep(1600);
-					});
-
-			case 'title':
-				clearLog();
-				resetLine();
-				return type('ls', 96, token0)
-					.then(function () {
-						return sleep(320);
-					})
-					.then(function () {
-						setTitle('FATAL ERROR');
-						term.classList.add('is-err-title');
-						return sleep(1650);
-					})
-					.then(function () {
-						setTitle('Everything is fine.');
-						term.classList.remove('is-err-title');
-						return sleep(1500);
-					})
-					.then(function () {
-						setTitle('dsh');
-						return sleep(420);
-					})
-					.then(function () {
-						return eraseAll(24, token0);
-					});
-
-			default:
-				clearLog();
-				out.classList.add('is-odd');
-				return type('ARE YOU STILL THERE?', 168, token0)
-					.then(function () {
-						return sleep(4200);
-					})
-					.then(function () {
-						return eraseAll(24, token0);
-					})
-					.then(function () {
-						out.classList.remove('is-odd');
-						return sleep(900);
-					});
+	/* ── scripts ──────────────────────────────────────────────────────────
+	   beat shorthand:
+	     ['c', cmd, {keep}]  type a command (keep = leave it on the live line)
+	     ['o', line|lines]   output, one line at a time
+	     ['w', ms]           wait
+	     ['t', note]         window title becomes "dsh — note"
+	     ['r']               title back to "dsh"
+	     ['del']             erase whatever is on the live line, unexecuted
+	*/
+	var SCRIPTS = [
+		{
+			id: 'deploy',
+			tier: 'normal',
+			beats: [
+				['c', 'git status'],
+				['o', 'On branch main'],
+				['o', 'Your branch is up to date.'],
+				['c', 'git add .'],
+				['c', 'git commit -m "Update homepage"'],
+				['o', '[main 8f2a1c4] Update homepage'],
+				['o', ' 6 files changed, 42 insertions(+)'],
+				['c', 'git push origin main'],
+				['o', 'Enumerating objects: 12, done.'],
+				['o', 'Writing objects: 100% (12/12), done.'],
+				['o', 'To github.com:user/project.git'],
+				['o', '   7c31e2a..8f2a1c4  main -> main'],
+				['c', 'echo "Deployment complete."'],
+				['o', 'Deployment complete.'],
+				['t', 'Deployment complete.'],
+				['w', 2200],
+				['r']
+			]
+		},
+		{
+			id: 'find',
+			tier: 'normal',
+			beats: [
+				['c', 'pwd'],
+				['o', '/home/user/project'],
+				['c', 'ls'],
+				['o', 'assets  config  index.html  scripts'],
+				['c', 'find . -name "*.json"'],
+				['o', './config/site.json'],
+				['o', './config/settings.json'],
+				['o', './package.json'],
+				['c', 'cat config/site.json'],
+				['o', '{'],
+				['o', '  "name": "My Website",'],
+				['o', '  "version": "1.0.0"'],
+				['o', '}'],
+				['c', 'echo "Found 3 configuration files."'],
+				['o', 'Found 3 configuration files.'],
+				['w', 2000]
+			]
+		},
+		{
+			id: 'python',
+			tier: 'normal',
+			beats: [
+				['c', 'python --version'],
+				['o', 'Python 3.13.2'],
+				['c', 'pip list'],
+				['o', 'Package        Version'],
+				['o', '-------------- -------'],
+				['o', 'numpy          2.2.3'],
+				['o', 'pandas         2.2.3'],
+				['o', 'requests       2.32.3'],
+				['c', "python -c \"print('Hello, world!')\""],
+				['o', 'Hello, world!'],
+				['c', 'python -c "print(2 ** 10)"'],
+				['o', '1024'],
+				['c', 'echo "All systems operational."'],
+				['o', 'All systems operational.'],
+				['w', 1600]
+			]
+		},
+		{
+			id: 'network',
+			tier: 'normal',
+			beats: [
+				['c', 'ping -c 3 github.com'],
+				['o', 'PING github.com (140.82.112.3): 56 data bytes'],
+				['o', '64 bytes from 140.82.112.3: time=32.1 ms'],
+				['o', '64 bytes from 140.82.112.3: time=31.8 ms'],
+				['o', '64 bytes from 140.82.112.3: time=32.4 ms'],
+				['o', '--- github.com ping statistics ---'],
+				['o', '3 packets transmitted, 3 received, 0% packet loss'],
+				['c', 'curl -I https://github.com'],
+				['o', 'HTTP/2 200'],
+				['c', 'echo "Network looks good."'],
+				['o', 'Network looks good.'],
+				['w', 1500]
+			]
+		},
+		{
+			id: 'secret',
+			tier: 'mild',
+			beats: [
+				['c', 'ls -la'],
+				['o', 'total 24'],
+				['o', 'drwxr-xr-x  5 user staff  160 .'],
+				['o', 'drwxr-xr-x  8 user staff  256 ..'],
+				['o', '-rw-r--r--  1 user staff 1024 index.html'],
+				['o', '-rw-r--r--  1 user staff  512 package.json'],
+				['o', '-rw-r--r--  1 user staff   42 .secret'],
+				['c', 'cat .secret'],
+				['o', 'Hello, stranger.', 'is-note'],
+				['c', 'who wrote this?'],
+				['o', 'Unknown.', 'is-note'],
+				['w', 900],
+				['c', 'ls -la', { keep: true }],
+				['w', 700],
+				['del'],
+				['w', 2400]
+			]
+		},
+		{
+			id: 'permission',
+			tier: 'mild',
+			beats: [
+				['c', 'sudo rm -rf /important'],
+				['o', 'Password:'],
+				['o', 'Sorry, try again.', 'is-err'],
+				['o', 'Password:'],
+				['o', 'Sorry, try again.', 'is-err'],
+				['c', 'sudo rm -rf /important'],
+				['o', 'Password:'],
+				['w', 800],
+				['o', 'Nice try.', 'is-note'],
+				['c', 'whoami'],
+				['o', 'still_not_root', 'is-note'],
+				['c', 'exit'],
+				['o', 'logout'],
+				['t', 'Access denied.'],
+				['w', 2600],
+				['r']
+			]
+		},
+		{
+			id: 'guest',
+			tier: 'mild',
+			beats: [
+				['c', 'uptime'],
+				['o', '13:53  up 12 days,  4:21, 2 users'],
+				['c', 'who'],
+				['o', 'user     console'],
+				['o', 'guest    ?', 'is-note'],
+				['c', 'who is guest?'],
+				['o', 'guest    watching', 'is-note'],
+				['c', 'whoami'],
+				['o', 'user'],
+				['c', 'echo "Are you sure?"'],
+				['o', 'Are you sure?'],
+				['w', 2100],
+				['c', 'exit', { keep: true }],
+				['w', 700],
+				['o', 'logout'],
+				['w', 500],
+				['del'],
+				['w', 2600]
+			]
+		},
+		{
+			id: 'close',
+			tier: 'mild',
+			beats: [
+				['c', 'exit'],
+				['o', 'logout'],
+				['w', 900],
+				['c', 'exit'],
+				['o', 'logout'],
+				['w', 800],
+				['c', 'quit'],
+				['o', 'zsh: command not found: quit', 'is-err'],
+				['c', 'close'],
+				['o', 'zsh: command not found: close', 'is-err'],
+				['c', '...', { keep: true }],
+				['w', 900],
+				['del'],
+				['t', 'Nice try.'],
+				['w', 2600],
+				['r']
+			]
+		},
+		{
+			id: 'fate',
+			tier: 'hidden',
+			beats: [
+				['c', 'ls /dev'],
+				['o', 'console  null  random  zero'],
+				['c', 'ls /dev/fate'],
+				['o', 'ls: /dev/fate: No such file or directory', 'is-err'],
+				['c', 'mkdir -p /dev/fate'],
+				['o', 'mkdir: permission denied', 'is-err'],
+				['c', 'sudo mkdir -p /dev/fate'],
+				['o', 'Password:', 'is-out'],
+				['w', 900],
+				['c', 'ls /dev/fate'],
+				['o', 'past'],
+				['o', 'present'],
+				['o', 'future', 'is-note'],
+				['c', 'cat /dev/fate/future'],
+				['o', 'The file does not exist yet.', 'is-note'],
+				['w', 1400],
+				['c', 'date'],
+				['o', '__DATE__', 'is-note'],
+				['t', 'The file does not exist yet.'],
+				['w', 2400],
+				['r']
+			]
+		},
+		{
+			id: 'observer',
+			tier: 'hidden',
+			beats: [
+				['c', 'ps aux'],
+				['o', 'USER       PID  COMMAND'],
+				['o', 'user      1024  zsh'],
+				['o', 'user      1025  node'],
+				['o', 'user      1026  browser'],
+				['c', 'ps aux | grep observer'],
+				['o', 'No matching processes found.'],
+				['c', 'ps aux | grep observer'],
+				['o', 'No matching processes found.'],
+				['w', 1100],
+				['c', 'ps aux | grep observer'],
+				['o', 'USER       PID  COMMAND'],
+				['o', '???       4096  observer', 'is-note'],
+				['c', 'kill 4096'],
+				['o', 'kill: operation not permitted', 'is-err'],
+				['c', 'whoami'],
+				['o', 'user'],
+				['c', 'whoami'],
+				['o', 'observer', 'is-note'],
+				['t', '1 process running.'],
+				['w', 3000],
+				['r']
+			]
 		}
+	];
+
+	var TIERS = {
+		normal: 70,
+		mild: 25,
+		hidden: 5
+	};
+
+	function clockString() {
+		var days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+		var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+		var now = new Date();
+		var pad = function (n) {
+			return (n < 10 ? ' ' : '') + n;
+		};
+		return (
+			days[now.getDay()] + ' ' + months[now.getMonth()] + ' ' + pad(now.getDate()) + ' ' +
+			pad(now.getHours()) + ':' + pad(now.getMinutes()) + ':' + pad(now.getSeconds()) + ' ' +
+			now.getFullYear()
+		);
+	}
+
+	function pickScript() {
+		var roll = Math.random() * 100;
+		var tier = roll < TIERS.normal ? 'normal' : roll < TIERS.normal + TIERS.mild ? 'mild' : 'hidden';
+		var pool = SCRIPTS.filter(function (script) {
+			return script.tier === tier && script.id !== lastId;
+		});
+		if (!pool.length) {
+			pool = SCRIPTS.filter(function (script) {
+				return script.id !== lastId;
+			});
+		}
+		/* hidden scenes stay rare even inside their tier, and never twice running */
+		if (tier === 'hidden' && lastTier === 'hidden') {
+			pool = SCRIPTS.filter(function (script) {
+				return script.tier === 'normal' && script.id !== lastId;
+			});
+		}
+		return pool[Math.floor(Math.random() * pool.length)];
+	}
+
+	function runBeat(beat, token0) {
+		var kind = beat[0];
+		var value = beat[1];
+		var opts = beat[2] || {};
+
+		if (kind === 'c') {
+			return type(value, 50, token0)
+				.then(function () {
+					return sleep(rnd(340, 620));
+				})
+				.then(function () {
+					if (stopped || dead(token0)) return;
+					if (!opts.keep) stamp(value);
+				});
+		}
+
+		if (kind === 'o') {
+			var lines = typeof value === 'string' ? [value] : value;
+			return lines.reduce(function (chain, line) {
+				return chain.then(function () {
+					if (stopped || dead(token0)) return;
+					addLine(String(line).replace('__DATE__', clockString()), beat[2]);
+					return sleep(rnd(120, 260));
+				});
+			}, Promise.resolve());
+		}
+
+		if (kind === 'w') {
+			return sleep(value);
+		}
+
+		if (kind === 't') {
+			setTitle('dsh — ' + value);
+			return Promise.resolve();
+		}
+
+		if (kind === 'r') {
+			setTitle('dsh');
+			return Promise.resolve();
+		}
+
+		if (kind === 'del') {
+			return eraseAll(22, token0);
+		}
+
+		return Promise.resolve();
+	}
+
+	function play(script, token0) {
+		term.classList.add('is-busy');
+		clearLog();
+		resetLine();
+		setTitle('dsh');
+		var chain = Promise.resolve();
+		script.beats.forEach(function (beat) {
+			chain = chain.then(function () {
+				if (stopped || dead(token0)) return;
+				return runBeat(beat, token0);
+			});
+		});
+		return chain.then(function () {
+			if (stopped || dead(token0)) return;
+			setTitle('dsh');
+			term.classList.remove('is-err-title');
+			played += 1;
+			term.classList.remove('is-busy');
+			/* 1 in 7: the caret goes missing for a beat, as if the window forgot */
+			if (Math.random() < 0.14) {
+				term.classList.add('is-nocaret');
+				return sleep(900).then(function () {
+					term.classList.remove('is-nocaret');
+				});
+			}
+		});
 	}
 
 	function cycle(token0) {
@@ -1003,12 +1148,12 @@
 				return cycle(token0);
 			});
 		}
-		cycles += 1;
-		var scene = pickScene();
-		lastKind = scene.k;
-		return runScene(scene, token0).then(function () {
+		var script = pickScript();
+		lastId = script.id;
+		lastTier = script.tier;
+		return play(script, token0).then(function () {
 			if (stopped || dead(token0)) return;
-			return sleep(rnd(680, 1180)).then(function () {
+			return sleep(rnd(1800, 3200)).then(function () {
 				return cycle(token0);
 			});
 		});
@@ -1031,8 +1176,6 @@
 		}
 	}
 
-	/* clicking the lights: red blinks the window out and back, yellow folds the
-	   body away, green does a small zoom pulse */
 	function onLight(kind) {
 		if (kind === 'min') {
 			term.classList.toggle('is-min');
@@ -1092,7 +1235,7 @@
 	});
 
 	if (reduced()) {
-		out.textContent = 'cat ~/.skills';
+		out.textContent = '';
 		return;
 	}
 
@@ -1109,23 +1252,23 @@
 	}
 
 	/* kept for the local verification probes */
-	window.__termRun = function (kind) {
-		var scene = SCENES.filter(function (item) {
-			return item.k === kind;
+	window.__termRun = function (id) {
+		var script = SCRIPTS.filter(function (item) {
+			return item.id === id;
 		})[0];
-		if (!scene) return 'unknown scene: ' + kind;
+		if (!script) return 'unknown script: ' + id;
 		stop();
 		forced = true;
 		stopped = false;
 		token += 1;
 		var mine = token;
-		resetLine();
-		clearLog();
-		setTitle('dsh');
-		term.classList.remove('is-err-title', 'is-min', 'is-closing');
-		return runScene(scene, mine).then(function () {
+		term.classList.remove('is-err-title', 'is-min', 'is-closing', 'is-nocaret');
+		return play(script, mine).then(function () {
 			if (mine === token) stopped = true;
-			return 'done ' + kind;
+			return 'done ' + id;
 		});
 	};
+	window.__termScripts = SCRIPTS.map(function (script) {
+		return script.id + ':' + script.tier;
+	});
 })();
