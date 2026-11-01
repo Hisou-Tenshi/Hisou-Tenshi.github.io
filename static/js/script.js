@@ -737,10 +737,20 @@
 		if (kind) line.className = kind;
 		log.appendChild(line);
 		while (log.childNodes.length > 16) log.removeChild(log.firstChild);
+		syncLogMask();
+	}
+
+	/* 顶部渐隐只在内容确实超出可视高度时启用，避免白白压暗第一行 */
+	function syncLogMask() {
+		if (!log) return;
+		log.classList.toggle('is-clipped', log.scrollHeight > log.clientHeight + 1);
 	}
 
 	function clearLog() {
-		if (log) log.textContent = '';
+		if (log) {
+			log.textContent = '';
+			log.classList.remove('is-clipped');
+		}
 	}
 
 	function resetLine() {

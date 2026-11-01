@@ -1485,6 +1485,10 @@ html[data-theme="Dark"] .hero__bolt {
 /* Terminal window — the skills matrix, framed like a macOS terminal */
 .specimen {
 	position: relative;
+	display: flex;
+	flex-direction: column;
+	/* 固定尺寸：窗口高度不随日志行数变化（02 一节正好约一屏） */
+	height: clamp(400px, calc(100svh - 405px), 660px);
 	border-radius: 12px;
 	border: 1px solid rgba(0, 0, 0, 0.42);
 	background: #0c0c10;
@@ -1587,6 +1591,10 @@ html[data-theme="Dark"] .specimen {
 
 .specimen__body {
 	position: relative;
+	flex: 1 1 auto;
+	display: flex;
+	flex-direction: column;
+	min-height: 0;
 	padding: 16px clamp(14px, 2.4vw, 26px) clamp(16px, 2.2vw, 24px);
 }
 
@@ -1671,15 +1679,24 @@ html[data-theme="Dark"] .specimen {
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-end;
-	max-height: 15em;
+	flex: 1 1 auto;
+	min-height: 0;
 	margin: 0;
 	overflow: hidden;
-	-webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
-	mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
 	font-family: var(--font-mono);
 	font-size: 12px;
 	line-height: 1.5;
 	color: rgba(255, 255, 255, 0.5);
+}
+
+.specimen__out,
+.specimen__line--intro {
+	flex: 0 0 auto;
+}
+
+.specimen__log.is-clipped {
+	-webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
+	mask-image: linear-gradient(to bottom, transparent 0, #000 26px);
 }
 
 .specimen__log span {
@@ -2712,6 +2729,15 @@ body.has-player-open .secnav {
 }
 
 @media (max-width: 900px) {
+	.specimen {
+		height: auto;
+	}
+
+	.specimen__log {
+		flex: 0 0 auto;
+		height: 9.5em;
+	}
+
 	.split {
 		grid-template-columns: minmax(0, 1fr);
 		gap: 26px;
