@@ -1572,7 +1572,7 @@ html[data-theme="Dark"] .specimen {
 	font-family: var(--font-mono);
 	font-size: 12.5px;
 	line-height: 1.5;
-	color: rgba(255, 255, 255, 0.86);
+	color: #dbe6f7;
 	white-space: nowrap;
 }
 
@@ -1594,7 +1594,7 @@ html[data-theme="Dark"] .specimen {
 }
 
 .specimen__text.is-odd {
-	color: var(--pink);
+	color: #e25577;
 }
 
 .specimen__caret {
