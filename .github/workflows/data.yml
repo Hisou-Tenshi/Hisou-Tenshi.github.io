@@ -47,4 +47,19 @@ jobs:
       - name: Commit data changes
         run: |
           git add static/data
-          git diff --staged --quiet || (git -c user.name='比那名居天子' -c user.email='97383295+Hisou-Tenshi@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats' && git push)
+          if git diff --staged --quiet; then
+            echo "no data changes"
+            exit 0
+          fi
+          git -c user.name='比那名居天子' -c user.email='97383295+Hisou-Tenshi@users.noreply.github.com' commit -m 'chore(data): refresh bangumi/repo stats'
+          # The branch can move under us (a content push, or another run), so
+          # rebase and retry instead of failing the whole job on one rejection.
+          for i in 1 2 3; do
+            if git pull --rebase --autostash --quiet origin main && git push --quiet; then
+              echo "pushed on attempt $i"
+              exit 0
+            fi
+            sleep $((i * 3))
+          done
+          echo "::error::could not push the refreshed data files"
+          exit 1
