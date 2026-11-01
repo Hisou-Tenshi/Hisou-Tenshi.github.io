@@ -28,7 +28,7 @@
 
 架构要点：
 
-- `static/css/root.css`：**只放设计变量**（颜色 `--ink/--ink-2/3/4`、底色 `--bg/--bg-band/--card`、强调色 `--accent` 绯红 / `--arc` 电蓝、字体栈、`--fs-*` 字号、`--ease` 缓动、圆角、阴影、`--bolt` 闪电几何）。换主题只改这里。
+- `static/css/root.css`：**只放设计变量**（颜色 `--ink/--ink-2/3/4`、底色 `--bg/--bg-band/--card`、强调色 `--accent` 天依蓝 `#66ccff`（浅底文字走 `--accent-deep`）/ 副色 `--pink` 巡音粉 `#ffc0cb` / `--arc` 电蓝、`--grad-arc` 蓝→粉渐变、字体栈、`--fs-*` 字号、`--ease` 缓动、圆角、阴影、`--bolt` 闪电几何）。换主题只改这里。
 - `static/css/style.css`：**全部组件**，按编号分节（设计变量 → 基础 → 导航 → 首屏/雷霆大字 → 区块 → 卡片/链接/标签/统计 → 角色跑马灯 → 技能标本板 → 更新记录 → 页脚 → 播放器 → 灯箱 → 文档页 → 404 → 兼容层 → 响应式）。无 `@import`、无远程字体。
 - `static/js/script.js`：主题切换（cookie `themeMode`/`themeState`，首屏前由 `<head>` 内联脚本上色，无闪白）、`[data-rv]` 滚动入场、导航滚动态/移动端抽屉、页脚年份、标签页标题彩蛋、角色立绘图灯箱、自绘 BGM 播放器（`preload="none"`，首帧不下载 mp3；歌名按命名约定拆成「标签 + 曲名」，超长时在播放位跑马灯）。**不再有** `worldtimeapi` 请求、FPS 覆盖层、加载遮罩。
 - `static/js/vault.js`：页面内「就地解锁」逻辑（见下文“私密内容”一节）。
@@ -79,7 +79,7 @@
 - `_config.yml`：GitHub Pages / Jekyll 配置（兼容保留）。
 - `static/`：站点静态资源根目录。
   - `static/css/`：站点样式（`root.css` 设计变量 + `style.css` 组件；`APlayer.min.css` 已不再引用，保留仅作备份）。
-  - `static/js/`：公共脚本（`site-content.js` 跨页文案配置、`script.js`、`vault.js`；`APlayer.min.js`/`Meting.min.js` 已不再引用）。
+  - `static/js/`：公共脚本（`site-content.js` 页脚与彩蛋标题配置、`script.js`、`vault.js`；`APlayer.min.js`/`Meting.min.js` 已不再引用）。
   - `static/img/`：图片资源原图（角色立绘、logo、背景图等）。
   - `static/img/opt/`：**页面实际使用的优化后图片**（WebP + favicon + `th/` 角色缩略图）。
   - `static/fonts/`：`display-900.woff2` 标题子集字体 + `subset-chars.txt` + `README.txt`（构建说明）。
@@ -126,9 +126,8 @@ python3 -m http.server 8080
 - `static/css/root.css`：设计变量层，改主题色/字号/圆角/动效只动这里。
 - `static/css/style.css`：所有组件样式，按编号分节。
 - `static/js/site-content.js`
-  - 跨页面共用的**文案数据**（角色标签、更新记录、页脚、彩蛋标题对、社交图标路径等）。
-  - 修改站点级文案时优先编辑此文件。
-  - 页面级覆盖：在引入脚本前设置 `window.SITE_PAGE`（如 `'download'`），并在 `SITE_CONTENT.pages` 中配置对应 `*Overrides`。
+  - 只保留 `script.js` 真正会读的两项：`footer`（页脚起始年份/作者，年份运行时算）与 `titlePairs`（切后台再回来时替换标签页标题的颜文字）。
+  - **页面文案一律写在各自 HTML 里**，改文案请改 HTML；项目卡片文案在 `scripts/fetch-repos.mjs`（`node scripts/check-repos.mjs` 校验）。
 - `static/js/script.js`
   - 深浅色主题切换（写 cookie，`<head>` 内联脚本在首帧前套用，避免闪白）。
   - `[data-rv]` 元素滚动入场（rAF + 视口矩形判定，支持 `--rv-d` 延迟；`prefers-reduced-motion` 下全部直出）。
@@ -146,7 +145,7 @@ python3 -m http.server 8080
 </blockquote>
 ```
 
-- 引文左侧留 44px 给悬挂的红色引号（`::before`），正文用 Georgia 系斜体，宽度吃满容器。
+- 引文左侧留 44px 给悬挂的天依蓝引号（`::before`），正文用 Georgia 系斜体，宽度吃满容器。
 - `<cite>` 必须写在 `epigraph__text` 段落**内部且位于末尾**：它 `float: right`，最后一行的右侧还有位置时就贴在那一行，位置不够才落到下一行右对齐（距右边缘 16px）。
 - 想让它全宽，所在 `section` 要带 `doc--wide`（否则 `.doc__body` 的 76ch 会限制宽度）。
 - 720px 以下 `<cite>` 自动改为块级右对齐。
