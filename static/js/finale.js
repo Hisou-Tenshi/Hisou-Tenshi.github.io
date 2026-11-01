@@ -3,6 +3,7 @@
    A single config-driven state machine. No dependencies.
    States: normal → layer-1 … layer-6 → final-title → monika-reveal →
            dialogue → exited → normal
+   Revision: fused-input-2
    ========================================================================== */
 (function () {
 	"use strict";
