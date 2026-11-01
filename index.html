@@ -44,6 +44,7 @@
     <link rel="preload" href="/static/fonts/display-900.woff2?v=fd3ab177" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="/static/css/root.css?v=9f79e097" />
     <link rel="stylesheet" href="/static/css/style.css?v=7f5f9566" />
+    <link rel="stylesheet" href="/static/css/finale.css?v=20261101h" />
     <link rel="preload" as="image" href="/static/img/opt/avatar-768.webp?v=738480a9" imagesrcset="/static/img/opt/avatar.webp?v=dfc2a054 320w, /static/img/opt/avatar-768.webp?v=738480a9 768w" imagesizes="(max-width: 900px) 86vw, 420px" fetchpriority="high" />
   </head>
   <body>
@@ -1068,7 +1069,44 @@
       <a class="tc__get" id="tcGet" href="#" download rel="noopener">下载原图</a>
     </div>
 
+    <!-- Hidden finale: six terminal layers, then Monika. Opened by the red close light. -->
+    <div class="egg" id="egg" hidden aria-hidden="true" tabindex="-1" aria-label="隐藏终章">
+      <div class="egg__stage" id="eggStage">
+        <div class="egg__shim" id="eggShim" aria-hidden="true"></div>
+      </div>
+
+      <section class="finale" id="finale" hidden aria-label="终章">
+        <div class="finale__welcome" id="finaleWelcome" aria-hidden="true"></div>
+
+        <div class="finale__monika" id="finaleMonika" hidden>
+          <div class="finale__frame">
+            <div class="finale__glass" aria-hidden="true">
+              <div class="finale__rec" data-rec style="--x:4.1406%;--y:28.8889%;--w:19.6875%;--h:23.6111%"></div>
+              <div class="finale__rec" data-rec style="--x:75.8594%;--y:28.75%;--w:7.8906%;--h:23.75%"></div>
+            </div>
+            <img class="finale__img" src="/static/img/opt/monika-bg.webp" alt="Monika 坐在教室里，窗玻璃中映着层层叠叠的终端窗口" decoding="async" />
+          </div>
+        </div>
+
+        <div class="gal" id="gal" hidden>
+          <div class="gal__tab" id="galTab">
+            <span class="gal__name" id="galName"></span>
+          </div>
+          <div class="gal__panel">
+            <div class="gal__body" id="galText" aria-hidden="true"></div>
+            <p class="gal__sr sr-only" id="galSr" aria-live="polite"></p>
+            <div class="gal__menu">
+              <button class="gal__btn" id="galMute" type="button" aria-pressed="false">MUTE</button>
+              <button class="gal__btn" id="galExit" type="button">EXIT</button>
+            </div>
+            <span class="gal__next" id="galNext" aria-hidden="true"></span>
+          </div>
+        </div>
+      </section>
+    </div>
+
     <script src="/static/js/site-content.js?v=7ef09ab3"></script>
-    <script src="/static/js/script.js?v=ab227972"></script>
+    <script src="/static/js/script.js?v=20261101h"></script>
+    <script src="/static/js/finale.js?v=20261101h"></script>
   </body>
 </html>

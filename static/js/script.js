@@ -483,7 +483,131 @@
 			curEl && (curEl.textContent = fmt(audio.currentTime));
 			barEl && barEl.setAttribute('aria-valuenow', String(Math.round(pct)));
 		});
-		audio.addEventListener('ended', function () { load(idx + 1, true); });
+		audio.addEventListener('ended', function () {
+			if (ext.active) return;
+			load(idx + 1, true);
+		});
+
+		/* ------------------------------------------------------------------
+		   External-source bridge, used only by the hidden finale.
+		   The finale reuses this <audio> element and this UI; it never opens
+		   a second player, so the normal playlist and the finale can never
+		   fight over playback. The previous track is snapshotted and put
+		   back on exit, paused exactly as it was.
+		------------------------------------------------------------------- */
+		var ext = {
+			active: false,
+			muted: false,
+			saved: null
+		};
+
+		function snapshotPlayer() {
+			ext.saved = {
+				src: audio.getAttribute('src') || '',
+				time: audio.currentTime || 0,
+				paused: audio.paused,
+				idx: idx,
+				now: nowText ? nowText.textContent : (nowEl ? nowEl.textContent : ''),
+				artist: artistEl ? artistEl.textContent : '',
+				label: labelText ? labelText.textContent : (labelMain ? labelMain.textContent : ''),
+				sub: labelSub ? labelSub.textContent : ''
+			};
+		}
+
+		function paintExternal() {
+			if (nowText) nowText.textContent = 'Doki Doki Literature Club!';
+			else if (nowEl) nowEl.textContent = 'Doki Doki Literature Club!';
+			if (artistEl) artistEl.textContent = 'Dan Salvato';
+			if (labelText) labelText.textContent = 'Doki Doki Literature Club!';
+			else if (labelMain) labelMain.textContent = 'Doki Doki Literature Club!';
+			if (labelSub) labelSub.textContent = 'Dan Salvato · 终章';
+			if (curEl) curEl.textContent = '0:00';
+			if (durEl) durEl.textContent = '0:00';
+			if (fillEl) fillEl.style.width = '0%';
+			fitMarquees();
+		}
+
+		function playIntro(url) {
+			if (!url) return Promise.resolve(false);
+			if (!ext.active) {
+				snapshotPlayer();
+				ext.active = true;
+				idx = -1;
+				audio.pause();
+				markList();
+				paintExternal();
+			}
+			audio.muted = !!ext.muted;
+			audio.src = url;
+			return audio.play().catch(function () {
+				/* Autoplay may be refused; the story continues regardless. */
+				return false;
+			});
+		}
+
+		function stopIntro() {
+			if (!ext.active) return;
+			ext.active = false;
+			audio.pause();
+			audio.muted = false;
+			var saved = ext.saved;
+			ext.saved = null;
+			ext.muted = false;
+
+			if (saved) {
+				idx = saved.idx;
+				if (saved.src) audio.setAttribute('src', saved.src);
+				else audio.removeAttribute('src');
+				try {
+					audio.load();
+					if (saved.time) audio.currentTime = saved.time;
+				} catch (e) {
+					/* ignore */
+				}
+				if (nowText) nowText.textContent = saved.now;
+				else if (nowEl) nowEl.textContent = saved.now;
+				if (artistEl) artistEl.textContent = saved.artist;
+				if (labelText) labelText.textContent = saved.label;
+				else if (labelMain) labelMain.textContent = saved.label;
+				if (labelSub) labelSub.textContent = saved.sub;
+				markList();
+				fitMarquees();
+				if (!saved.paused) {
+					audio.play().catch(function () {});
+				}
+			} else {
+				idx = -1;
+				try {
+					audio.removeAttribute('src');
+					audio.load();
+				} catch (e) {
+					/* ignore */
+				}
+				markList();
+			}
+		}
+
+		function setMuted(muted) {
+			ext.muted = !!muted;
+			audio.muted = ext.muted;
+			if (!ext.muted && ext.active && audio.paused) {
+				audio.play().catch(function () {});
+			}
+		}
+
+		function retryExternal() {
+			if (ext.active && !ext.muted && audio.paused) {
+				audio.play().catch(function () {});
+			}
+		}
+
+		window.HisoBgm = {
+			playIntro: playIntro,
+			stopIntro: stopIntro,
+			setMuted: setMuted,
+			isMuted: function () { return !!ext.muted; },
+			retry: retryExternal
+		};
 
 		var rsz;
 		window.addEventListener('resize', function () {
@@ -1210,6 +1334,11 @@
 			return;
 		}
 		if (kind !== 'close') return;
+		/* The red light opens the hidden story instead of closing the window. */
+		if (window.HisouFinale && window.HisouFinale.enter) {
+			window.HisouFinale.enter();
+			return;
+		}
 		if (reduced()) {
 			resetLine();
 			clearLog();
@@ -1251,6 +1380,24 @@
 	window.addEventListener('focus', function () {
 		caretIdle(false);
 	});
+
+	window.HisouTerm = {
+		stop: stop,
+		start: start,
+		reset: function () {
+			resetLine();
+			clearLog();
+			setTitle('dsh');
+			term.classList.remove('is-closing', 'is-err-title');
+		},
+		restore: function () {
+			resetLine();
+			clearLog();
+			setTitle('dsh');
+			term.classList.remove('is-closing', 'is-err-title', 'is-min', 'is-pulse');
+			start();
+		}
+	};
 
 	if (reduced()) {
 		out.textContent = '';
