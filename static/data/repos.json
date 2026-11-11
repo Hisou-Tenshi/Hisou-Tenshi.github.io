@@ -1,11 +1,11 @@
 {
-  "updated": "2026-11-11T01:16:18Z",
+  "updated": "2026-11-11T07:49:02Z",
   "items": [
     {
       "repo": "SenrenBanka-CN-Text-Extractor",
       "name": "SenrenBanka-CN-Text-Extractor",
       "lang": "Python",
-      "stars": 1,
+      "stars": 2,
       "icon": "text",
       "desc": "千恋＊万花 Steam 版的文本提取与简体排版，顺带把 KiriKiri 的 XP3 解包流程跑通了。",
       "url": "https://github.com/Hisou-Tenshi/SenrenBanka-CN-Text-Extractor"
