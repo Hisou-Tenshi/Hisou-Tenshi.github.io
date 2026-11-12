@@ -13,12 +13,12 @@ Windows a 900-weight CJK headline otherwise falls back to Microsoft YaHei
 Bold (a fake-bold ~700), which is nowhere near heavy enough for the
 "雷霆大字" look.
 
-CHARACTER SET: 346 characters. This is the union of
+CHARACTER SET: 359 characters. This is the union of
 
-  * every character that occurs in display-size text on the site (238 unique
-    characters extracted from the pages today; see "HOW subset-chars.txt WAS
-    DERIVED"), plus everything the previous 329-character build already covered,
-    so a page edit can never silently drop a glyph,
+  * every character that occurs in display-size text on the site (77 unique
+    characters extracted from the live pages today; see "HOW subset-chars.txt
+    WAS DERIVED"), plus everything the previous 346-character build already
+    covered, so a page edit can never silently drop a glyph,
   * the full ASCII printable range U+0020-U+007E,
   * ". , : % – — · × →" and the CJK punctuation used on the site
     （，。、；：？！「」『』【】〔〕（）［］｛｝《》〈〉…‥～￥＄％＆＊＋－＝＜＞｜＠＾＿｀＃）,
@@ -31,13 +31,16 @@ visibly thinner and smaller than their neighbours. If you add a new heading
 with a character that is not in subset-chars.txt, that ONE glyph falls back
 to the next family in --font-display (see "TO EXTEND THE SET" below).
 
-The 17 characters added by this rebuild are 个以作和品张提有现真签统表解认输锁.
-They come from pages that were decrypted/edited while the previous subset was
-being built; the most visible one is the /download/ vault heading
-"输密码解锁" (<h3 class="vault__title">, 28 px, weight 900), which used to
-fall back to the system font. Because the pages keep changing, extract2.py now
-UNIONS its output with the existing subset-chars.txt instead of replacing it
-(see "HOW subset-chars.txt WAS DERIVED").
+The 13 characters added by the 2026-11-12 rebuild are
+传 平 折 施 时 痕 腾 藏 轮 迹 送 造 门. They were missing from the previous
+subset, so on macOS (and any platform without a 900-weight CJK fallback) those
+glyphs silently dropped to PingFang SC Semibold while the rest of the same
+heading stayed Noto Sans SC Black — the heading looked half-bold, half-light.
+That was the "部分文字字体出错" bug reported for Chrome and Safari on macOS.
+Now a full-coverage check over all nine pages reports every display glyph
+as the custom face (see VERIFICATION below). Because pages keep changing,
+extract2-style tooling UNIONS its output with the existing subset-chars.txt
+instead of replacing it (see "HOW subset-chars.txt WAS DERIVED").
 
 FONT
 ----
@@ -48,7 +51,7 @@ FONT
   Upstream project      https://github.com/googlefonts/noto-cjk
   Source file used      NotoSansSC-Black.otf
                         8,855,916 bytes, 31,036 glyphs, CFF-flavoured OTF
-                        (cached at .site-tools/font-fix/src.otf)
+                        (not committed; re-download with curl if needed)
   Source URL            https://raw.githubusercontent.com/googlefonts/noto-cjk/main/Sans/SubsetOTF/SC/NotoSansSC-Black.otf
                         mirror that also worked:
                         https://cdn.jsdelivr.net/gh/googlefonts/noto-cjk@main/Sans/SubsetOTF/SC/NotoSansSC-Black.otf
@@ -69,28 +72,32 @@ LICENCE
 
 SUBSET
 ------
-  Characters          346 (190 CJK ideographs + 12 kana + 95 ASCII printable
-                      + 49 punctuation/symbols; 329 of them are shared with
-                      the previous build, 17 are new)
-  Glyphs in file      347 (346 mapped CFF ids + .notdef)
-  cmap entries        346
+  Characters          359 (203 CJK ideographs + 12 kana + 95 ASCII printable
+                      + 49 punctuation/symbols; 346 of them are shared with
+                      the previous build, 13 are new)
+  Glyphs in file      367 (359 mapped CFF ids + .notdef + 7 unmapped side
+                      glyphs the subsetter keeps for the kept name/GSUB data)
+  cmap entries        359
   Byte size before    8,855,916 bytes  (source OTF, 31,036 glyphs)
-  Byte size after        47,896 bytes  (46.77 KiB)  = 79.8% of the 60 KB budget
-                      (12,104 bytes of headroom left)
-  SHA-256 (woff2)      e4c59ec4b170e2733e8e08eb4a69ef817b2e96ba1ff9ac029a9d0f29b6070119
-  SHA-256 (chars)      6b1be21fd715ba57b31b12376115a74cca0abc054f35da5b4dd7385097088126
+  Byte size after        50,972 bytes  (49.78 KiB)  = 82.9% of the 60 KB budget
+                      (10,468 bytes of headroom left)
+  SHA-256 (woff2)      3402f296b4fed34b6300009bfdbee1f158fa01504b3ee4a4c58b6e9a160c19ff
+  SHA-256 (chars)      be506811a290100b3d31bca4b78d6cd35993e7b6abdd4c2a7c43e3ce309cb201
   Font tables kept     BASE CFF GPOS GSUB OS/2 VORG cmap head hhea hmtx
                        maxp name post vhea vmtx
 
-  The previous shipped file was the 329-character build (44,524 B, SHA-256
-  51c6f53c08845d81f09b2ae88113d0a1b7a96c876d10af02637890e48cf3fe91). It is
-  superseded only because the set grew (the /download/ vault heading and other
-  pages added while it was being built); it was otherwise visually correct.
+  The previous shipped file was the 346-character build (47,896 B, SHA-256
+  e4c59ec4b170e2733e8e08eb4a69ef817b2e96ba1ff9ac029a9d0f29b6070119). It is
+  superseded because it was missing 13 glyphs that are on the site today; it
+  also caused the mixed-weight heading reported on macOS. Before that shipped
+  the 329-character build (44,524 B, SHA-256
+  51c6f53c08845d81f09b2ae88113d0a1b7a96c876d10af02637890e48cf3fe91).
   Before that came an 118-character build (17,844 B), and before that a build
   with --no-hinting that rendered broken at 1x (see KEEP THE HINTS below).
 
-COMMAND USED (fontTools 4.66.0; brotli 1.2.1 required for --flavor=woff2;
-brotli is what actually compresses the CFF data to ~200x smaller)
+COMMAND USED (fontTools 4.51.0 for this rebuild, 4.66.0 for the previous one;
+any 4.x works. brotli is required for --flavor=woff2; brotli is what actually
+compresses the CFF data to ~200x smaller)
 
   python -m fontTools.subset NotoSansSC-Black.otf \
       --text-file=subset-chars.txt \
@@ -101,7 +108,7 @@ brotli is what actually compresses the CFF data to ~200x smaller)
       --output-file=display-900.woff2
 
   --text-file   subset-chars.txt next to this README = the exact character
-                string that went in (346 chars, 846 bytes, UTF-8, no BOM; note
+                string that went in (359 chars, 885 bytes, UTF-8, no BOM; note
                 it starts with a single space, which is intentional - see below)
   --layout-features=''   drops GSUB/GPOS lookups; headings are not shaped.
                 Side effect to know about: this also drops the Latin 'kern'
@@ -123,9 +130,9 @@ brotli is what actually compresses the CFF data to ~200x smaller)
   rendered broken; every build after that keeps the hints (this one included)
   and is clean from 1x to 3x. Keeping the hints costs ~3.7 KB (for the 118-char
   set: 14,188 B without hints vs 17,844 B with hints; the same trade applies
-  here). Verified for this file: all 346 glyphs still carry their hintmasks
-  (763 hintmask ops, identical hint/op skeleton to the source OTF), while the
-  --no-hinting build has 0.
+  here). Verified for this file: all 359 glyphs still carry their hintmasks
+  (816 hintmask ops in both the shipped file and the source OTF, i.e. an
+  identical hint/op skeleton), while a --no-hinting build has 0.
   --name-IDs='*'         keeps the OFL text (licence compliance)
 
 HOW subset-chars.txt WAS DERIVED
@@ -133,7 +140,8 @@ HOW subset-chars.txt WAS DERIVED
 Tool: C:\Users\Tenshi\Documents\GitHub\.site-tools\font-fix2\extract2.py
 (stdlib html.parser; run it with Python 3, no third-party packages)
 
-It parses every *.html in the repo (12 files today):
+It parses every *.html in the repo (10 files today, plus the two encrypted
+vault-src pages when they are present):
   404.html
   index.html, template/my_template.html
   about-us/index.html, about-us/vault-src.html
@@ -187,18 +195,41 @@ TO EXTEND THE SET (new heading with a new character)
   Characters OUTSIDE this subset simply fall back to the next family in
   --font-display, so nothing breaks; it just looks thinner for that glyph.
 
-USAGE (already wired in this repo — static/css/root.css:182-188)
+USAGE (already wired in this repo — static/css/root.css:182-197)
 ---------------------------------------------------------------
   static/css/root.css line 53 puts "HST Display" first in --font-display,
   and the face is declared as:
 
     @font-face {
         font-family: "HST Display";
-        src: url("../fonts/display-900.woff2") format("woff2");
+        src: url("../fonts/display-900.woff2?v=3402f296") format("woff2");
         font-weight: 900;
         font-style: normal;
-        font-display: swap;
+        font-display: block;
     }
+
+  font-display: block, NOT swap. With swap, the browser paints the fallback
+  face immediately and swaps to HST Display whenever the 50 KB font arrives;
+  on macOS the fallback is PingFang SC Semibold (~600) because style.css sets
+  font-synthesis-weight: none, so the first paint looks visibly lighter than
+  the final one — the "先出文字再跳变成雷霆大字" flash. block keeps display
+  text invisible during the block period instead, so the first paint of a
+  heading is already the heavy face.
+
+  THE PRELOAD URL MUST MATCH THE CSS URL EXACTLY (including ?v=...). Every
+  page has
+
+    <link rel="preload" href="/static/fonts/display-900.woff2?v=3402f296"
+          as="font" type="font/woff2" crossorigin>
+
+  If the two differ, the preload is downloaded and discarded, the CSS then
+  fetches the font again seconds later, and the block period is spent waiting
+  for a request that only started after the stylesheet parsed. That was the
+  other half of the jump: preload used a stale hash (fd3ab177) while root.css
+  pointed at e4c59ec4, producing two 47 KB downloads ~4 s apart. When you
+  rebuild the font, update the hash in THREE places: the @font-face url above,
+  the preload link on every page, and (if root.css itself changed) every
+  root.css?v=... link.
 
   The relative url() is intentional: the stylesheet lives in static/css/, so
   ../fonts/ resolves to static/fonts/ regardless of whether the site is
@@ -209,7 +240,57 @@ USAGE (already wired in this repo — static/css/root.css:182-188)
   900 face, because style.css sets font-synthesis-weight: none — that is why
   the stat numbers are heavy.
 
-VERIFICATION (2026-10-31, this machine, headless Chrome + fontTools 4.66.0)
+VERIFICATION OF THIS BUILD (2026-11-12, macOS 26.7.3, headless Chrome
+157.0.8103.51, fontTools 4.51.0)
+--------------------------------------------------------------------------
+  Coverage / subset
+  * fontTools: name ID 4 = "Noto Sans SC Black", 367 glyphs, 359 cmap
+    entries, usWeightClass 900, name IDs 13/14 still contain the OFL text.
+  * all 359 characters of subset-chars.txt resolve through getBestCmap();
+    0 missing in the subset, 0 missing in the source OTF.
+  Hints
+  * all 359 glyphs carry hintmasks: 816 hintmask ops in both the source OTF
+    and this file (identical op/hint skeleton; a --no-hinting build has 0).
+    This is what keeps 緋 / 想 / 天 clean at 1x.
+  Rendered coverage (the reported bug)
+  * every leaf element whose computed font-family contains "HST Display" on
+    all nine pages (23 elements) was checked with
+    CSS.getPlatformFontsForNode at deviceScaleFactor 1 AND 2: every glyph of
+    every element reports family "Noto Sans SC Black", isCustomFont true,
+    and 0 glyphs fall back. Text checked includes 平时折腾的玩具, 造过的轮子,
+    私藏传送门, 施工痕迹, 全人類の緋想天、比那名居天子, 緋想天Tools,
+    浓度与体积计算器.
+  * before/after of the reported heading at 1x: before, 平 时 折 腾 rendered
+    in PingFang SC Semibold while 的 玩 具 stayed Noto Sans SC Black (the
+    half-light heading in the bug report); after, all seven glyphs are the
+    same heavy face.
+  Fallback flash (the "先出文字再跳变" bug)
+  * with request interception holding the font back 2.5 s, the heading region
+    paints 0 ink while document.fonts is "loading", then paints the heavy
+    glyphs the moment the face loads — font-display: block never shows a
+    fallback frame. Same result for #heroTitle (緋想天 at 200 px): blank
+    during the delay, heavy immediately after.
+  * the network log now shows exactly ONE font request. The old build made
+    two (?v=fd3ab177 from the preload, ?v=e4c59ec4 from root.css) ~4 s apart.
+  * under Chrome throttling at 400 kbps / 200 ms latency the font request
+    starts at 294 ms, together with root.css; the old live build started it
+    at 3486 ms and again at 9402 ms, and first-contentful-paint was 9724 ms
+    vs 6104 ms. The remaining FCP cost is the render-blocking Google Fonts
+    @import on style.css line 1 — a separate issue, not this font.
+  Residual risk
+  * font-display: block hides display text for at most ~3 s; on a first
+    visit over a link slower than ~15 KB/s the font can land after the block
+    period and one swap frame becomes visible. Repeat visits come from the
+    4 h cache and are unaffected.
+  Safari
+  * not script-verified this round: safaridriver needs Safari's "Allow
+    remote automation" setting enabled manually. The fix mechanism itself is
+    engine-independent (coverage is in the font file, block is standard CSS),
+    so Safari should behave like Chrome; verify by hand before closing the
+    macOS issue.
+
+VERIFICATION OF THE 346-CHARACTER BUILD (2026-10-31, Windows machine, headless
+Chrome + fontTools 4.66.0) — kept as history
 ---------------------------------------------------------------------------
   Coverage
   * fontTools: name ID 4 = "Noto Sans SC Black", 347 glyphs, 346 cmap
