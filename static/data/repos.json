@@ -1,5 +1,5 @@
 {
-  "updated": "2026-11-12T03:49:45Z",
+  "updated": "2026-11-12T12:45:28Z",
   "items": [
     {
       "repo": "SenrenBanka-CN-Text-Extractor",
@@ -68,7 +68,7 @@
       "repo": "Hisou-Tenshi.github.io",
       "name": "本站",
       "lang": "HTML",
-      "stars": 0,
+      "stars": 1,
       "icon": "star",
       "desc": "你现在看的这个站。纯静态，推上 GitHub Pages 就上线。",
       "url": "https://github.com/Hisou-Tenshi/Hisou-Tenshi.github.io"
