@@ -202,7 +202,7 @@ USAGE (already wired in this repo — static/css/root.css:182-197)
 
     @font-face {
         font-family: "HST Display";
-        src: url("../fonts/display-900.woff2?v=3402f296") format("woff2");
+        src: url("../fonts/display-900.woff2?v=47677276") format("woff2");
         font-weight: 900;
         font-style: normal;
         font-display: block;
@@ -219,17 +219,29 @@ USAGE (already wired in this repo — static/css/root.css:182-197)
   THE PRELOAD URL MUST MATCH THE CSS URL EXACTLY (including ?v=...). Every
   page has
 
-    <link rel="preload" href="/static/fonts/display-900.woff2?v=3402f296"
+    <link rel="preload" href="/static/fonts/display-900.woff2?v=47677276"
           as="font" type="font/woff2" crossorigin>
 
   If the two differ, the preload is downloaded and discarded, the CSS then
   fetches the font again seconds later, and the block period is spent waiting
   for a request that only started after the stylesheet parsed. That was the
   other half of the jump: preload used a stale hash (fd3ab177) while root.css
-  pointed at e4c59ec4, producing two 47 KB downloads ~4 s apart. When you
-  rebuild the font, update the hash in THREE places: the @font-face url above,
-  the preload link on every page, and (if root.css itself changed) every
-  root.css?v=... link.
+  pointed at e4c59ec4, producing two 47 KB downloads ~4 s apart.
+
+  NEVER hand-write the ?v= in root.css. Leave the url() without a query and
+  run `node scripts/stamp-assets.mjs`; it fills in every ?v= in HTML and CSS
+  from the file contents, so the preload and the @font-face URL can never
+  drift apart again (that drift is exactly what broke the preload). The
+  purge-cloudflare-cache workflow runs the same script with --check and fails
+  the deploy if any URL is stale, so after touching an asset always run:
+
+    node scripts/stamp-assets.mjs   # rewrite in place
+    node scripts/stamp-assets.mjs --check
+
+  One quirk worth knowing: the stamper hashes files after a UTF-8 round-trip,
+  which is fine for text but not for a binary woff2 — so the ?v= it assigns
+  the font (47677276) is NOT the font's SHA-256 (3402f296...). Do not compute
+  the ?v= by hand; let the script own it.
 
   The relative url() is intentional: the stylesheet lives in static/css/, so
   ../fonts/ resolves to static/fonts/ regardless of whether the site is
