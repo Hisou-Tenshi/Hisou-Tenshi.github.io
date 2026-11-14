@@ -9,7 +9,46 @@
 
 ---
 
-## 2026-10 重构备忘（当前架构）
+## 2026-11 云上博丽神社（当前视觉）
+
+当前公开页面采用确认后的 V3 场景设计，技术栈仍为纯 HTML / CSS / JavaScript，沿用 GitHub Pages 部署。
+
+- Home：固定云天鸟居背景，前景章节正常滚动；顶部导航在 `scrollY=0` 时完全透明、无模糊，滚动至约 500px 内渐黑。Profile 开放排版，Skills 使用原生终端 DOM，项目使用三列 16:9 符卡，说明和链接在展开后展示，章节间为居中的出云式注连绳。
+- About：本殿、障子廊下、无支架镜框中的原角色照片、巡礼地图、完整原简介与密码简历。
+- Contact：真实挂架关系的绘马、翻面、邮箱／电话复制、原社交入口、信纸转邮件客户端、御神籤。
+- Tools：主推 ACGMN-Grid，示例可展开，计算器与 Calling 保留独立入口；`/tools/cellCalculator/` 保留四项原计算及联动。
+- Download：木箱、封印御札、展开卷轴与直接下载链接；原密码入口、密文与解密逻辑保留。
+- `/sites/`：36 个书签按分类显示，移除「全部」筛选；搜索限定当前分类。无 JavaScript 时通过 noscript 展示所有书签。
+- `/changelog/`：16 条记录（含全部 15 条原记录）存在于 HTML，按蛇腹朱印帐翻页。桌面每折 4 条、平板 2 条、手机 1 条；无 JavaScript 时全部可读。
+- Privacy / Terms：分别为结界文档与规约卷轴，原全文、日期、22／23 个章节、目录及打印入口保留。
+
+### 文件分工
+
+- `static/css/root.css`：语义变量、明暗主题、原终端与隐藏剧情的隔离变量。
+- `static/css/style.css`：原终端、播放器、灯箱、解密内容、文档等功能样式；已移除上一版重复的神社屋檐卡片层。
+- `static/css/scenes.css`：V3 各地点布局、器物、导航透明渐黑、明暗配色、动效与响应式。
+- `static/js/project-view.js`：静态构建与运行时项目水合共用的符卡渲染器，避免每小时数据刷新覆盖视觉结构。
+- `static/js/shrine.js`：目录分类、朱印帐翻页、项目符卡、仙桃、导航位置弹幕、真实神签、绘马复制、信纸 mailto、卷轴展开、返回系统主题及模态焦点管理。
+- `static/fonts/shrine-hand.woff2`：霞鹜文楷网页子集（标题及中日文样本）；许可证为 `wenkai-OFL.txt`，字符清单 `shrine-chars.txt`。终端保留原等宽与 HST Display 字体。
+- `static/img/shrine/`：确认过的场景材质、仙桃、绘马、御札、注连绳、浮岛与工具示例；`oracles/` 为 128 张原尺寸无损 WebP。
+- `static/data/oracles.json`：第 1—128 番与源页的映射：源页 17—148，排除 52、79、117、139。只有点击抽签才载入清单，先展示「第 N 番」小签，点击展开后才请求一张 WebP。
+
+### 日常修改与校验
+
+收藏、日志分别编辑 `static/data/sites.json`、`static/data/changelog.json`；项目文案仍维护 `scripts/fetch-repos.mjs` 的 curated 列表，JSON 和静态兜底应同步。
+
+```bash
+node scripts/render-archives.mjs
+node scripts/stamp-assets.mjs
+node scripts/check-shrine.mjs
+node scripts/stamp-assets.mjs --check
+```
+
+两处页面密文已在更新解锁后提示文案后重新加密；原解密协议、简历正文和文件入口保留。`vault.js`、`finale.js`、`finale.css` 未修改。明文源文件及密码不得提交。素材研究与署名边界见 `DESIGN-SOURCES.md`。没有新增留言后台、统计、自动播放或实时天气请求；信纸交给邮件客户端，由访客自行发送。
+
+---
+
+## 2026-10 重构备忘（历史架构）
 
 这一版对整个站点做了重写，**下面的旧章节只保留操作流程类信息（BGM 目录规则、Staticrypt 旧方案、部署、DNS），界面/主题相关描述以本节为准。**
 
@@ -698,3 +737,43 @@ curl -sH 'accept: application/dns-json' 'https://cloudflare-dns.com/dns-query?na
   - 尽量通过 `http://localhost:PORT/` 访问，避免直接打开 `file://` 协议导致资源路径和脚本行为异常。
 
 如需补充更多页面功能说明或运维细节，可在本 README 中继续扩展对应章节。
+
+### 2026-11-12 细化：横向符卡与原作弹幕
+
+- Home 的八个项目共用 `static/js/project-view.js` 渲染为三列 16:9 符卡；说明和 URL 留在 JSON 中，仅在展开后显示。修改项目文案仍从 `scripts/fetch-repos.mjs` 与 `static/data/repos.json` 入手，执行 `node scripts/render-archives.mjs` 同步静态 HTML。
+- 角色为连续横向滚动列，悬停或键盘聚焦暂停；绘马使用 560ms 的正向／反向三维翻面，正反面采用独立木纹，背面的悬绳与绳头镜像；文字不反转。朱印统一右列先读。
+- `static/js/danmaku.js` 为十一条路由配置不同 STG 作品的弹形和轨迹，采用多波或分阶段演出，该段记录的是早期画布方案，现已由下方 11 月 14 日的 GIF 播放方案取代；Home 不再有弹幕。映射及参考见 `DESIGN-SOURCES.md`；`check-shrine.mjs` 检查作品唯一性、资源接入与轨迹生命周期。
+- Hero 原图右裁 2.5%，白色竖轴与天空小标题中点对齐；Hero 下缘新增醒目抽签入口，仍使用完整 128 番原签图。
+
+本轮交互修正：弹幕仅在普通点击站内链接、进入目标页面后播放一次。首页直达与刷新保持安静；移除悬停、聚焦、章节滚动、符卡弹窗的重复发射。Tools / Privacy / Terms 的轨迹已按 THBWiki 原作截图重画，详情见视觉来源记录。
+
+### 2026-11-13 弹幕全部转为原生 GIF
+
+全站十一套弹幕现使用透明、单次播放 GIF，浏览器不再运行逐粒 Canvas 渲染。剩余八套均对照 THBWiki 原图重画；来源、图名和转译说明集中在 `static/data/danmaku-references.json` 及 `DESIGN-SOURCES.md`。继续保留“点击站内链接进页后播一次；首页直达、刷新、悬停、聚焦、章节滚动不播”的规则。
+
+- `scripts/danmaku-source.cjs`：仅用于离线绘制的轨迹与弹形。
+- `scripts/render-danmaku.mjs` + `scripts/encode-danmaku.py`：生成 360px、约 15fps、6.4 秒 GIF，自动合并重复帧，记录哈希和体积。
+- `scripts/danmaku-player.template.js`：轻量原生图片播放器模板；页面使用自动生成的 `static/js/danmaku.js`。
+- `static/data/danmaku.json`：生成资源清单。每次只加载当前页的一份，不预取其他页面 GIF。
+- `node scripts/check-danmaku.mjs`：检查实际 GIF 容器的单次播放、时长、清底及哈希，已接入全站检查。
+
+离线重画需要 Node 的 `@napi-rs/canvas` 与 Python/Pillow；仅开发时使用，访客不下载这些依赖。正常部署直接使用已生成资源，不运行生成器。可用 `DANMAKU_CANVAS_MODULE` 指定本机 canvas 模块路径、`DANMAKU_PYTHON` 指定 Python，然后执行 `node scripts/render-danmaku.mjs`；单页重生成可加 `--only=about`，最后运行 `node scripts/stamp-assets.mjs`。
+
+### 2026-11-14 导航底边中心发射
+
+Home 全部关闭弹幕，包括导航点击返回。Tools 根据用户指定的 `th10_ring_half_arc_pmp_v4.gif` 及生成脚本取正常速度的 1.8–8.2 秒片段，保持原压缩图像数据与 512×512 分辨率，统一为 6.4 秒演出，最后 650ms 淡出。其余九页保留原来的弹形、弹道、波次与颜色，只将离线绘制的发射中心固定在画布中心，移除整体弹出位移。
+
+运行时以对应页签横向中心和导航栏实际底边作为发射点；图片上半部由裁切与导航层级共同隐藏，仅显示下半部。播放器不再把图片移入视口，也不为避开边缘而偏移发射中心。离线生成器保留用户提供的 Tools 素材，不再覆盖；Home 的旧资源只作存档，不进入播放目录。
+
+补充：所有弹幕的矩形素材边缘原本都是硬裁切，现在统一采用 26px 原生 CSS 软遮罩，保持 GIF 外的背景透明。其余九页已有逐弹寿命淡出，保留原来的淡出节奏；只给 Tools 增加整场末尾淡出。GIF 的单比特透明度不负责软边，避免重新量化造成色边和画质损失。
+
+### 2026-11-14 加载与资源维护
+
+- Hero 的三个预加载区间与 CSS 背景断点一致，避免高分屏同时下载两张背景。
+- 角色列在接近视口时载入剩余图片；首批图采用原生懒加载。`data-src`、灯箱地址与普通 `src` 统一内容版本，重复角色共享缓存。
+- 全站共享脚本采用有序 `defer`；BGM、神签原图、页面弹幕和加密内容继续按原交互请求，不预取整套媒体。
+- 绘马正反面及御札的内嵌材质已压缩为 WebP，仍为自包含 SVG；保留原图形结构、绳结方向及交互。
+- 工房大图和展开预览直接读取 ACGMN-Grid 的 `master/public/example.webp`；该页提前连接图片来源，并优先请求主图。
+- 莉莉网页光标覆盖 15 种状态，保留原 85 帧及速度，显示约 28px，热点同步缩放；触屏不启用，减少动态效果时使用静态回退。
+- `scripts/subset-shrine-font.py --check` 检查当前中日文用字；重新生成需要完整 LXGW WenKai v1.530。
+- `scripts/check-assets.mjs` 检查二进制指纹、嵌套资源更新及懒加载地址；已纳入 `check-shrine.mjs`。缓存清理会优先处理页面，再分批处理全部变更路径，不再截断于前 200 条。

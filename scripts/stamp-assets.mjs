@@ -16,7 +16,7 @@
  */
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
-import { join, dirname, relative } from 'node:path';
+import { join, dirname, relative, extname } from 'node:path';
 
 const ROOT = process.cwd();
 const SKIP = new Set(['.git', 'node_modules', '.site-tools']);
@@ -38,12 +38,11 @@ function hashOf(absPath) {
 	let h;
 	try {
 		let buf = readFileSync(absPath);
-		// Hash the canonical form so the value is identical on a Windows checkout
-		// (CRLF) and on Linux/CI (LF), and so a CSS file — which is itself stamped
-		// with ?v=… inside its url() refs — does not chase its own tail.
-		let text = buf.toString('utf8');
-		if (absPath.endsWith('.css')) text = text.replace(/\?v=[0-9a-f]{8}/g, '');
-		buf = Buffer.from(text.replace(/\r\n/g, '\n'), 'utf8');
+		// Normalize line endings across checkouts. CSS is stamped before HTML,
+		// so its hash also changes when a nested font or image URL changes.
+		if (/^\.(?:html|css|js|json|svg|txt)$/.test(extname(absPath))) {
+			buf = Buffer.from(buf.toString('utf8').replace(/\r\n/g, '\n'), 'utf8');
+		}
 		h = createHash('sha256').update(buf).digest('hex').slice(0, 8);
 	} catch {
 		h = null;
@@ -78,7 +77,7 @@ function stampSrcset(value) {
 		.join(', ');
 }
 
-const ATTR = /(\s(?:src|href|content)=")(\/static\/[^"]*)(")/g;
+const ATTR = /(\s(?:src|href|content|data-src|data-full|poster)=")(\/static\/[^"]*)(")/g;
 const SRCSET = /(\s(?:srcset|imagesrcset)=")([^"]*)(")/g;
 
 function stampHtml(text) {
@@ -93,16 +92,19 @@ function stampHtml(text) {
 function stampCss(text, cssFile) {
 	return text.replace(/url\(\s*(['"]?)(\.[^'")]+|[^'")]+)\1\s*\)/g, (all, q, ref) => {
 		if (/^(data:|https?:|\/\/)/.test(ref)) return all;
-		const abs = ref.startsWith('/') ? diskPathFor(ref) : join(dirname(cssFile), ref);
+		const [p] = ref.split('?');
+		const abs = p.startsWith('/') ? diskPathFor(p) : join(dirname(cssFile), p);
 		const h = hashOf(abs);
 		if (!h) return all;
-		const [p] = ref.split('?');
 		return `url(${q}${p}?v=${h}${q})`;
 	});
 }
 
 const files = walk(ROOT);
-const targets = files.filter((f) => /\.(html|css)$/.test(f));
+const targets = [
+	...files.filter((f) => f.endsWith('.css')),
+	...files.filter((f) => f.endsWith('.html')),
+];
 const check = process.argv.includes('--check');
 let changed = 0;
 const stampReport = [];
@@ -117,7 +119,7 @@ for (const file of targets) {
 		if (!check) writeFileSync(file, after);
 	}
 	// validate every /static/ reference resolves
-	const refs = [...after.matchAll(/(?:src|href|srcset|imagesrcset)="(\/static\/[^"]*)"/g)];
+	const refs = [...after.matchAll(/(?:src|href|data-src|data-full|poster|srcset|imagesrcset)="(\/static\/[^"]*)"/g)];
 	for (const r of refs) {
 		for (const piece of r[1].split(',')) {
 			const url = piece.trim().split(/\s+/)[0];

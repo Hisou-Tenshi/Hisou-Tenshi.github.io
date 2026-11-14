@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>神社日志 - 全人類の緋想天</title>
+	<meta name="description" content="从初建到修缮，所有施工痕迹都留在这里。">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#F4E9DC" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#172638" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="神社日志">
+	<meta property="og:description" content="从初建到修缮，所有施工痕迹都留在这里。">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/changelog/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png?v=6d841c43" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png?v=22e44718">
+	<link rel="canonical" href="https://tenshi.qzz.io/changelog/">
+	<link rel="stylesheet" href="/static/css/root.css?v=9a7b9db8">
+	<link rel="stylesheet" href="/static/css/style.css?v=e0f53c1f">
+
+<link rel="preload" href="/static/fonts/shrine-hand.woff2?v=1ac1c84f" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/scenes.css?v=66d7e268">
+<link rel="stylesheet" href="/static/css/lily-cursor.css?v=fb82fec3">
+<script defer src="/static/js/lily-cursor.js?v=b76df7f7"></script>
+</head>
+<body class="shrine-site scene chronicle-scene scene--chronicle" data-page="chronicle"><a class="skip-link" href="#main">跳到主要内容</a><header class="global-nav" id="nav"><a class="global-brand" href="/" aria-label="全人類の緋想天 — 首页">全人類の緋想天</a><nav id="navLinks" class="primary-links" aria-label="主导航"><a class="nav__link" href="/" data-nav-page="home">Home</a><a class="nav__link" href="/about-us/" data-nav-page="about">About</a><a class="nav__link" href="/tools/" data-nav-page="tools">Tools</a><a class="nav__link" href="/sites/" data-nav-page="directory">Directory</a><a class="nav__link" href="/download/" data-nav-page="download">Download</a><a class="nav__link" href="/contact-us/" data-nav-page="contact">Contact</a><a class="nav__link" href="/changelog/" data-nav-page="chronicle" aria-current="page">Chronicle</a><a class="nav__link" href="/privacy-policy/" data-nav-page="privacy">Privacy</a><a class="nav__link" href="/terms-and-conditions/" data-nav-page="terms">Terms</a></nav><div class="nav__tools">
+          <button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+            <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6" /></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z" /></svg>
+          </button>
+          <button class="nav__auto" id="themeAutoBtn" type="button" title="跟随系统主题" aria-label="跟随系统主题" aria-pressed="true">Auto</button>
+<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div></header><main id="main"><div class="location-title wrap"><p class="eyebrow">CHRONICLE / 御朱印帳</p><h1>神社の記録</h1><p class="subtitle">墨迹记事，朱印留痕。翻过每一次修缮。</p></div><section class="accordion-book" id="chronicleBook"><div class="chronicle-book-cover"></div><!-- archive:logs:start -->
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2026-11-14">2026-11-14</time><h2 class="entry-name">云上造境</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">博丽神社 × 有顶天全站改造：云海鸟居、分场景页面、符卡项目、御神签与弹幕演出；本次调整导航透明度、首页双栏、绘马双面翻转、御神镜与巡礼排版，并完善加密档案及收藏目录的阅读体验。</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2026-10-31">2026-10-31</time><h2 class="entry-name">全站新构</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">全站重构 · Apple 式排版与终末地雷霆大字标题</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2026-09-14">2026-09-14</time><h2 class="entry-name">琉璃墨韵</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">glass tint &amp; mono ink theme rework</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2026-07-24">2026-07-24</time><h2 class="entry-name">文枢重整</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">content config &amp; UI overhaul</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2026-04-10">2026-04-10</time><h2 class="entry-name">云景易帜</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">background &amp; logo update</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-12-17">2025-12-17</time><h2 class="entry-name">衣装新裁</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">style update</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-12-16">2025-12-16</time><h2 class="entry-name">器物补录</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">projects information update</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-09-27">2025-09-27</time><h2 class="entry-name">门庭焕新</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">homepage update</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-09-22">2025-09-22</time><h2 class="entry-name">身世拾遗</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">information update for about-us</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-07-18">2025-07-18</time><h2 class="entry-name">旧卷添墨</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">information update</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-03-08">2025-03-08</time><h2 class="entry-name">宝库初启</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">Downloader</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-03-07">2025-03-07</time><h2 class="entry-name">主人小传</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">About us</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-03-06">2025-03-06</time><h2 class="entry-name">细处拾补</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">ver 2.1.1</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-03-05">2025-03-05</time><h2 class="entry-name">层楼再筑</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">ver 2.1.0</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-03-05">2025-03-05</time><h2 class="entry-name">旧貌新生</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">ver 2.0.0</p></article>
+<article class="goshuin-leaf"><span class="eyebrow red">奉記</span><time class="date-vertical" datetime="2025-02-24">2025-02-24</time><h2 class="entry-name">初结此缘</h2><span class="margin-stamp" aria-hidden="true"><span>奉</span><span>記</span><span>修</span><span>繕</span></span><p class="chronicle-note">ver 1.0.0</p></article>
+<!-- archive:logs:end --></section><div class="chronicle-controls wrap"><button data-log-page="prev" type="button">← 前页</button><span aria-live="polite" id="logPageCount" role="status">第一折 · 01—04 / 15</span><button data-log-page="next" type="button">后页 →</button></div></main><footer class="scene-foot wrap"><div><a class="global-brand" href="/">全人類の緋想天</a><p>有頂天より</p><p>© 2022–<span data-site-year>2026</span> GitHub@Hisou-Tenshi</p></div><nav aria-label="页脚导航"><a href="https://github.com/Hisou-Tenshi">GitHub</a><a href="/about-us/">About</a><a href="/contact-us/">Contact</a><a href="/sites/">Directory</a><a href="/changelog/">Chronicle</a><a href="/privacy-policy/">Privacy</a><a href="/terms-and-conditions/">Terms</a></nav></footer><div class="edge-bullets" id="edgeBullets" aria-hidden="true"></div><div class="ritual-overlay" id="ritualOverlay" role="dialog" aria-modal="true" aria-label="神社器物" hidden><button class="ritual-close" type="button" aria-label="关闭预览">×</button><div class="ritual-circle" aria-hidden="true"></div><div class="ritual-dialog" id="ritualDialog"></div></div><script defer src="/static/js/site-content.js?v=7ef09ab3"></script><script defer src="/static/js/script.js?v=b4586134"></script><script defer src="/static/js/danmaku.js?v=15bf253f"></script><script defer src="/static/js/shrine.js?v=43722832"></script></body></html>

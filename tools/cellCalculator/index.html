@@ -23,8 +23,8 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 	<title>緋想天Tools - Concentration Calculator</title>
 	<meta name="description" content="浓度与体积计算器 — 面积密度、离心重悬体积、稀释与补加体积。">
 	<meta name="keywords" content="HisouTenshi,hisoutenshi,比那名居天子,ヒソウテンシ,cellCalculator,浓度计算器">
-	<meta name="theme-color" content="#fbfbfd" media="(prefers-color-scheme: light)">
-	<meta name="theme-color" content="#08080a" media="(prefers-color-scheme: dark)">
+	<meta name="theme-color" content="#F4E9DC" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#172638" media="(prefers-color-scheme: dark)">
 	<meta property="og:title" content="緋想天Tools — 浓度与体积计算器">
 	<meta property="og:type" content="website">
 	<meta property="og:locale" content="ja_JP">
@@ -33,12 +33,11 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 	<meta property="og:url" content="https://tenshi.qzz.io/tools/cellCalculator/">
 	<meta property="og:description" content="「空の天気も、地の安定も、人の気質も私の掌の上　数多の妖怪を退治してきた貴方の天気！見せて貰うわよ！」">
 	<meta property="og:site_name" content="緋想天Tools">
-	<link rel="icon" href="/static/img/opt/favicon-32.png?v=053d6cee" sizes="32x32" type="image/png">
-	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png?v=eb86eefc">
+	<link rel="icon" href="/static/img/opt/favicon-32.png?v=6d841c43" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png?v=22e44718">
 	<link rel="canonical" href="https://tenshi.qzz.io/tools/cellCalculator/">
-	<link rel="preload" href="/static/fonts/display-900.woff2?v=47677276" as="font" type="font/woff2" crossorigin>
-	<link rel="stylesheet" href="/static/css/root.css?v=763d6b59">
-	<link rel="stylesheet" href="/static/css/style.css?v=11bf2ef4">
+	<link rel="stylesheet" href="/static/css/root.css?v=9a7b9db8">
+	<link rel="stylesheet" href="/static/css/style.css?v=e0f53c1f">
 	<style>
 		.calc {
 			max-width: 760px;
@@ -154,112 +153,75 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 			}
 		}
 	</style>
+
+<link rel="preload" href="/static/fonts/shrine-hand.woff2?v=1ac1c84f" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/scenes.css?v=66d7e268">
+<link rel="stylesheet" href="/static/css/lily-cursor.css?v=fb82fec3">
+<script defer src="/static/js/lily-cursor.js?v=b76df7f7"></script>
 </head>
-<body>
-	<a class="skip-link" href="#main">跳到主要内容</a>
-
-	<header class="nav" id="nav">
-		<div class="nav__in">
-			<a class="nav__brand" href="/" aria-label="全人類の緋想天 — 首页">
-				<span class="nav__mark" aria-hidden="true"></span>
-				<span class="nav__wordmark">全人類の緋想天</span>
-			</a>
-			<nav class="nav__links" id="navLinks" aria-label="主导航">
-				<a class="nav__link" href="/">Home</a>
-				<a class="nav__link" href="/about-us/">About</a>
-				<a class="nav__link" href="/contact-us/">Contact</a>
-				<a class="nav__link" href="/tools/" aria-current="page">Tools</a>
-				<a class="nav__link" href="/download/">Download</a>
-				<a class="nav__link" href="/privacy-policy/">Privacy</a>
-				<a class="nav__link" href="/terms-and-conditions/">Terms</a>
-			</nav>
-			<div class="nav__tools">
-				<button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
-					<svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/></svg>
-					<svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z"/></svg>
-				</button>
-				<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
-					<span></span><span></span><span></span>
-				</button>
-			</div>
-		</div>
-	</header>
-
-	<main id="main">
-		<section class="pagehead" aria-labelledby="pageTitle">
-			<div class="wrap">
-				<div class="pagehead__kicker kicker" data-rv="fade">
-					<span class="kicker__num">TL</span>
-					<span>TOOLS / CELL CALCULATOR</span>
-				</div>
-				<h1 class="pagehead__title" id="pageTitle" data-rv>浓度与体积计算器</h1>
-				<div class="pagehead__latin" data-rv style="--rv-d:.06s">Concentration &amp; Volume Calculator</div>
-				<p class="pagehead__intro" data-rv style="--rv-d:.12s">细胞实验里最常算的四件事，面积密度换体积浓度、离心后的重悬体积、稀释配方，还有二次利用时的补加体积。输入数值，点「计算」。</p>
-			</div>
-		</section>
-
-		<section class="doc" aria-label="计算器">
-			<div class="wrap">
-				<div class="calc">
-					<div class="calc-card" id="sec1" data-rv>
-						<h2>1. 面积密度 → 体积密度计算</h2>
-						<div class="form-row"><label for="pConc">目标面积密度：</label><input id="pConc" placeholder="如 1.5E6"><span>个/cm²</span></div>
-						<div class="form-row"><label for="pArea">平面面积：</label><input id="pArea" placeholder="如 2.5"><select id="pAreaUnit"><option value="cm2">cm²</option><option value="mm2">mm²</option></select></div>
-						<div class="form-row"><label for="pVol">目标加入体积：</label><input id="pVol" placeholder="如 1"><select id="pVolUnit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
-						<button class="btn btn--primary" type="button" onclick="calc1()">计算</button>
-						<div class="calc-out" id="out1"></div>
-					</div>
-
-					<div class="calc-card" id="sec2" data-rv>
-						<h2>2. 离心重悬建议体积计算</h2>
-						<div class="form-row"><label for="cNum">管体标记细胞数：</label><input id="cNum" placeholder="如 2.0E6"><span>个</span></div>
-						<div class="form-row"><label for="tConc2">目标浓度：</label><input id="tConc2" placeholder="自动填充或手动输入"><span>个/mL</span></div>
-						<button class="btn btn--primary" type="button" onclick="calc2()">计算</button>
-						<div class="calc-out" id="out2"></div>
-					</div>
-
-					<div class="calc-card" id="sec3" data-rv>
-						<h2>3. 稀释及辅料计算</h2>
-						<div class="form-row"><label for="cConc3">当前浓度：</label><input id="cConc3" placeholder="如 1E6"><span>个/mL</span></div>
-						<div class="form-row"><label for="cVol3">当前体积：</label><input id="cVol3" placeholder="如 2"><select id="cVol3Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
-						<div class="form-row"><label for="tConc3">目标浓度：</label><input id="tConc3" placeholder="自动填充或手动输入"><span>个/mL</span></div>
-						<button class="btn btn--primary" type="button" onclick="calc3()">计算</button>
-						<div class="calc-out" id="out3"></div>
-					</div>
-
-					<div class="calc-card" id="sec4" data-rv>
-						<h2>4. 二次利用补加体积计算</h2>
-						<div class="form-row"><label for="cConc4">当前浓度：</label><input id="cConc4" placeholder="自动填充或手动输入"><span>个/mL</span></div>
-						<div class="form-row"><label for="preVol4">之前体积：</label><input id="preVol4" placeholder="自动填充或手动输入"><select id="preVol4Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
-						<div class="form-row"><label for="usedVol4">已用体积：</label><input id="usedVol4" placeholder="如 0.5"><select id="usedVol4Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
-						<div class="form-row"><label for="tConc4">目标浓度：</label><input id="tConc4" placeholder="如 5E5"><span>个/mL</span></div>
-						<button class="btn btn--primary" type="button" onclick="calc4()">计算</button>
-						<div class="calc-out" id="out4"></div>
-					</div>
-				</div>
-			</div>
-		</section>
-	</main>
-
-	<div class="wrap"><div class="rule rule--center" aria-hidden="true"><span class="rule__bolt"></span></div></div>
-
-	<footer class="foot">
-		<div class="wrap foot__in">
-			<div class="foot__brand"><span class="arc" aria-hidden="true"></span>全人類の緋想天</div>
-			<nav class="foot__links" aria-label="页脚导航">
-				<a href="https://github.com/Hisou-Tenshi" target="_blank" rel="noopener">GitHub</a>
-				<a href="/about-us/">About</a>
-				<a href="/contact-us/">Contact</a>
-				<a href="/privacy-policy/">Privacy</a>
-				<a href="/terms-and-conditions/">Terms</a>
-			</nav>
-			<div class="foot__meta">© 2022–2026 GitHub@Hisou-Tenshi</div>
-		</div>
-	</footer>
-
-	<script src="/static/js/site-content.js?v=7ef09ab3"></script>
-	<script src="/static/js/script.js?v=9bb4b7a4"></script>
-	<script>
+<body class="shrine-site scene calculator-scene scene--calculator" data-page="calculator"><a class="skip-link" href="#main">跳到主要内容</a><header class="global-nav" id="nav"><a class="global-brand" href="/" aria-label="全人類の緋想天 — 首页">全人類の緋想天</a><nav id="navLinks" class="primary-links" aria-label="主导航"><a class="nav__link" href="/" data-nav-page="home">Home</a><a class="nav__link" href="/about-us/" data-nav-page="about">About</a><a class="nav__link" href="/tools/" data-nav-page="tools" aria-current="page">Tools</a><a class="nav__link" href="/sites/" data-nav-page="directory">Directory</a><a class="nav__link" href="/download/" data-nav-page="download">Download</a><a class="nav__link" href="/contact-us/" data-nav-page="contact">Contact</a><a class="nav__link" href="/changelog/" data-nav-page="chronicle">Chronicle</a><a class="nav__link" href="/privacy-policy/" data-nav-page="privacy">Privacy</a><a class="nav__link" href="/terms-and-conditions/" data-nav-page="terms">Terms</a></nav><div class="nav__tools">
+          <button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+            <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6" /></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z" /></svg>
+          </button>
+          <button class="nav__auto" id="themeAutoBtn" type="button" title="跟随系统主题" aria-label="跟随系统主题" aria-pressed="true">Auto</button>
+<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div></header><main id="main">
+<section aria-labelledby="pageTitle" class="pagehead">
+<div class="wrap">
+<div class="pagehead__kicker kicker" data-rv="fade">
+<span class="kicker__num">TL</span>
+<span>TOOLS / CELL CALCULATOR</span>
+</div>
+<h1 class="pagehead__title" data-rv="" id="pageTitle">浓度与体积计算器</h1>
+<div class="pagehead__latin" data-rv="" style="--rv-d:.06s">Concentration &amp; Volume Calculator</div>
+<p class="pagehead__intro" data-rv="" style="--rv-d:.12s">细胞实验里最常算的四件事，面积密度换体积浓度、离心后的重悬体积、稀释配方，还有二次利用时的补加体积。输入数值，点「计算」。</p>
+</div>
+</section>
+<section aria-label="计算器" class="doc shrine-interior">
+<div class="wrap">
+<div class="calc">
+<div class="calc-card" data-rv="" id="sec1">
+<h2>1. 面积密度 → 体积密度计算</h2>
+<div class="form-row"><label for="pConc">目标面积密度：</label><input id="pConc" placeholder="如 1.5E6"/><span>个/cm²</span></div>
+<div class="form-row"><label for="pArea">平面面积：</label><input id="pArea" placeholder="如 2.5"/><select id="pAreaUnit"><option value="cm2">cm²</option><option value="mm2">mm²</option></select></div>
+<div class="form-row"><label for="pVol">目标加入体积：</label><input id="pVol" placeholder="如 1"/><select id="pVolUnit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+<button class="btn btn--primary" onclick="calc1()" type="button">计算</button>
+<div class="calc-out" id="out1"></div>
+</div>
+<div class="calc-card" data-rv="" id="sec2">
+<h2>2. 离心重悬建议体积计算</h2>
+<div class="form-row"><label for="cNum">管体标记细胞数：</label><input id="cNum" placeholder="如 2.0E6"/><span>个</span></div>
+<div class="form-row"><label for="tConc2">目标浓度：</label><input id="tConc2" placeholder="自动填充或手动输入"/><span>个/mL</span></div>
+<button class="btn btn--primary" onclick="calc2()" type="button">计算</button>
+<div class="calc-out" id="out2"></div>
+</div>
+<div class="calc-card" data-rv="" id="sec3">
+<h2>3. 稀释及辅料计算</h2>
+<div class="form-row"><label for="cConc3">当前浓度：</label><input id="cConc3" placeholder="如 1E6"/><span>个/mL</span></div>
+<div class="form-row"><label for="cVol3">当前体积：</label><input id="cVol3" placeholder="如 2"/><select id="cVol3Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+<div class="form-row"><label for="tConc3">目标浓度：</label><input id="tConc3" placeholder="自动填充或手动输入"/><span>个/mL</span></div>
+<button class="btn btn--primary" onclick="calc3()" type="button">计算</button>
+<div class="calc-out" id="out3"></div>
+</div>
+<div class="calc-card" data-rv="" id="sec4">
+<h2>4. 二次利用补加体积计算</h2>
+<div class="form-row"><label for="cConc4">当前浓度：</label><input id="cConc4" placeholder="自动填充或手动输入"/><span>个/mL</span></div>
+<div class="form-row"><label for="preVol4">之前体积：</label><input id="preVol4" placeholder="自动填充或手动输入"/><select id="preVol4Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+<div class="form-row"><label for="usedVol4">已用体积：</label><input id="usedVol4" placeholder="如 0.5"/><select id="usedVol4Unit"><option value="mL">mL</option><option value="uL">uL</option></select></div>
+<div class="form-row"><label for="tConc4">目标浓度：</label><input id="tConc4" placeholder="如 5E5"/><span>个/mL</span></div>
+<button class="btn btn--primary" onclick="calc4()" type="button">计算</button>
+<div class="calc-out" id="out4"></div>
+</div>
+</div>
+</div>
+</section>
+</main><footer class="scene-foot wrap"><div><a class="global-brand" href="/">全人類の緋想天</a><p>有頂天より</p><p>© 2022–<span data-site-year>2026</span> GitHub@Hisou-Tenshi</p></div><nav aria-label="页脚导航"><a href="https://github.com/Hisou-Tenshi">GitHub</a><a href="/about-us/">About</a><a href="/contact-us/">Contact</a><a href="/sites/">Directory</a><a href="/changelog/">Chronicle</a><a href="/privacy-policy/">Privacy</a><a href="/terms-and-conditions/">Terms</a></nav></footer><div class="edge-bullets" id="edgeBullets" aria-hidden="true"></div><div class="ritual-overlay" id="ritualOverlay" role="dialog" aria-modal="true" aria-label="神社器物" hidden><button class="ritual-close" type="button" aria-label="关闭预览">×</button><div class="ritual-circle" aria-hidden="true"></div><div class="ritual-dialog" id="ritualDialog"></div></div><script defer src="/static/js/site-content.js?v=7ef09ab3"></script><script defer src="/static/js/script.js?v=b4586134"></script>
+<script>
 		function getVal(id, unitId) {
 			let v = parseFloat(document.getElementById(id).value);
 			if (isNaN(v)) return NaN;
@@ -325,6 +287,4 @@ Improvement：GitHub@Hisou-Tenshi & ChatGPT & DeepSeek & Gemini
 			let addVol = tvol - (prev - used);
 			document.getElementById('out4').innerHTML = '目标稀释体积:\n' + formatVal(tvol) + ' mL (' + formatVal(tvol * 1000) + ' uL)\n需要增加体积:\n' + formatVal(addVol) + ' mL (' + formatVal(addVol * 1000) + ' uL)';
 		}
-	</script>
-</body>
-</html>
+	</script><script defer src="/static/js/danmaku.js?v=15bf253f"></script><script defer src="/static/js/shrine.js?v=43722832"></script></body></html>

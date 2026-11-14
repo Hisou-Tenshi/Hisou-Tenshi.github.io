@@ -1,0 +1,171 @@
+{
+  "theme": "莉莉概念光标 (64x) Ver1.2",
+  "states": {
+    "normal": {
+      "sprite": "/static/cursors/lily/normal.webp?v=f28df41dca85",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 0,
+      "hotspotY": 0,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "正常选择.ani",
+      "sourceSha256": "f39e24919f0a4df36d0291e80ca72c7e5aed524fac110b8e26f357a51dca6aab"
+    },
+    "link": {
+      "sprite": "/static/cursors/lily/link.webp?v=22834b1d89b5",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 0,
+      "hotspotY": 0,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "链接选择.ani",
+      "sourceSha256": "720e696639af81865139762b9f8ab2ccaff355caf2668e855227a43df1f9ae5e"
+    },
+    "text": {
+      "sprite": "/static/cursors/lily/text.webp?v=8a7acf9cb8c1",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 30,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "文本选择.ani",
+      "sourceSha256": "d3b510501a8889f156f6191093811c19c05dafc251363e329dbf1f4c2ec255d9"
+    },
+    "unavailable": {
+      "sprite": "/static/cursors/lily/unavailable.webp?v=fb0404bbdfd3",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 27,
+      "hotspotY": 27,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "不可用.ani",
+      "sourceSha256": "9f029dec51e84e21f6d63b26ed261c41b89fcce8ea16150eaa670d7b6b089f53"
+    },
+    "help": {
+      "sprite": "/static/cursors/lily/help.webp?v=64dc14fdd957",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 0,
+      "hotspotY": 0,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "帮助选择.ani",
+      "sourceSha256": "fb570dcc1aef5ebd6239478453df22244efa25fdabc6d7cacd1112d07b9fd92e"
+    },
+    "progress": {
+      "sprite": "/static/cursors/lily/progress.webp?v=2558318711b3",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 0,
+      "hotspotY": 0,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "后台运行.ani",
+      "sourceSha256": "08177902b79601985667868e7ec7ddc09b079f37d8dd216a192ed9f785b2d129"
+    },
+    "busy": {
+      "sprite": "/static/cursors/lily/busy.webp?v=eae3a2ec7a74",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 0,
+      "hotspotY": 0,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "忙.ani",
+      "sourceSha256": "451f35a7c9b8d247a46390bb0da419dde15b41abe6a63041c3af6ef63b65a371"
+    },
+    "crosshair": {
+      "sprite": "/static/cursors/lily/crosshair.webp?v=3acface435d2",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 31,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "精确选择.ani",
+      "sourceSha256": "941c44713ac3756cbdb9bb85749a55fcba6c50d920ef8c11205de8ff5cb29ee4"
+    },
+    "move": {
+      "sprite": "/static/cursors/lily/move.webp?v=ef4a790478e5",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 30,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "移动.ani",
+      "sourceSha256": "bf4c219b94a15b07d8df915185566dbd5b46e828833eb3e36f6af012206d1e6a"
+    },
+    "ns-resize": {
+      "sprite": "/static/cursors/lily/ns-resize.webp?v=97f776f745af",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 29,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "垂直调整大小.ani",
+      "sourceSha256": "1e6d76f79be05df451a38549c0f6ca59ff0b3e2f329e7e8b216203c838b0c441"
+    },
+    "ew-resize": {
+      "sprite": "/static/cursors/lily/ew-resize.webp?v=cd5674b01c8c",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 31,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "水平调整大小.ani",
+      "sourceSha256": "f2e7fdc8e7c5db7138f0f06b1e157d46e878b66d2e617b4a1e578b75120ed76a"
+    },
+    "nwse-resize": {
+      "sprite": "/static/cursors/lily/nwse-resize.webp?v=3e5b74bcd836",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 32,
+      "hotspotY": 31,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "沿对角线调整大小 1.ani",
+      "sourceSha256": "85df4a2fb7a757c699f6e6e7c6e0897b06535356e98d87784d15e4b781e48cbb"
+    },
+    "nesw-resize": {
+      "sprite": "/static/cursors/lily/nesw-resize.webp?v=dd22d95304e0",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 31,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "沿对角线调整大小 2.ani",
+      "sourceSha256": "3ed92949882a7fb4e672bccc1edf5de1315e1fbf0b1741b0a04920c3610460a9"
+    },
+    "alternate": {
+      "sprite": "/static/cursors/lily/alternate.webp?v=06cdb751fe93",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 31,
+      "hotspotY": 3,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "候选.ani",
+      "sourceSha256": "dbaf9c3765b98637d967f22a9d1c76864633c4a7cf105596b4589967f7a66a31"
+    },
+    "handwriting": {
+      "sprite": "/static/cursors/lily/handwriting.webp?v=d2b39d8b74db",
+      "width": 64,
+      "height": 64,
+      "hotspotX": 0,
+      "hotspotY": 0,
+      "frames": 85,
+      "durationMs": 2833.333,
+      "source": "手写.ani",
+      "sourceSha256": "72e73ef0b639ff186e52bdc3177506c0a4126b9597bd7f1a28a810c5a569fe7e"
+    }
+  },
+  "displayScale": 0.43333333333333335
+}

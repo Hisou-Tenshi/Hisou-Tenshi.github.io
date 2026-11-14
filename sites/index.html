@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+	<script>
+		/* Runs before paint: sets theme + marks JS availability (no network). */
+		(function (d) {
+			var c = d.cookie, g = function (k) { var m = c.match(new RegExp(k + '=([^;]+)')); return m ? m[1] : null; };
+			var mode = g('themeMode') || 'auto', st = g('themeState') || 'Light';
+			var dark = mode === 'auto'
+				? !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+				: st === 'Dark';
+			var h = d.documentElement;
+			h.setAttribute('data-theme', dark ? 'Dark' : 'Light');
+			h.className += ' js';
+		})(document);
+	</script>
+	<title>幻想乡目录 - 全人類の緋想天</title>
+	<meta name="description" content="浏览器书签里的常客，收在神社的书架里。">
+	<meta name="keywords" content="緋想天,比那名居天子,東方Project,幻想郷,个人主页,ACGMN">
+	<meta name="author" content="Hisou-Tenshi">
+	<meta name="theme-color" content="#F4E9DC" media="(prefers-color-scheme: light)">
+	<meta name="theme-color" content="#172638" media="(prefers-color-scheme: dark)">
+	<meta property="og:type" content="website">
+	<meta property="og:site_name" content="全人類の緋想天">
+	<meta property="og:title" content="幻想乡目录">
+	<meta property="og:description" content="浏览器书签里的常客，收在神社的书架里。">
+	<meta property="og:image" content="https://avatars.githubusercontent.com/u/97383295">
+	<meta property="og:url" content="https://tenshi.qzz.io/sites/">
+	<meta name="twitter:card" content="summary">
+	<link rel="icon" href="/static/img/opt/favicon-32.png?v=6d841c43" sizes="32x32" type="image/png">
+	<link rel="apple-touch-icon" href="/static/img/opt/favicon-180.png?v=22e44718">
+	<link rel="canonical" href="https://tenshi.qzz.io/sites/">
+	<link rel="stylesheet" href="/static/css/root.css?v=9a7b9db8">
+	<link rel="stylesheet" href="/static/css/style.css?v=e0f53c1f">
+
+<link rel="preload" href="/static/fonts/shrine-hand.woff2?v=1ac1c84f" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/scenes.css?v=66d7e268">
+<link rel="stylesheet" href="/static/css/lily-cursor.css?v=fb82fec3">
+<script defer src="/static/js/lily-cursor.js?v=b76df7f7"></script>
+</head>
+<body class="shrine-site scene directory-scene scene--directory" data-page="directory"><a class="skip-link" href="#main">跳到主要内容</a><header class="global-nav" id="nav"><a class="global-brand" href="/" aria-label="全人類の緋想天 — 首页">全人類の緋想天</a><nav id="navLinks" class="primary-links" aria-label="主导航"><a class="nav__link" href="/" data-nav-page="home">Home</a><a class="nav__link" href="/about-us/" data-nav-page="about">About</a><a class="nav__link" href="/tools/" data-nav-page="tools">Tools</a><a class="nav__link" href="/sites/" data-nav-page="directory" aria-current="page">Directory</a><a class="nav__link" href="/download/" data-nav-page="download">Download</a><a class="nav__link" href="/contact-us/" data-nav-page="contact">Contact</a><a class="nav__link" href="/changelog/" data-nav-page="chronicle">Chronicle</a><a class="nav__link" href="/privacy-policy/" data-nav-page="privacy">Privacy</a><a class="nav__link" href="/terms-and-conditions/" data-nav-page="terms">Terms</a></nav><div class="nav__tools">
+          <button class="nav__icon" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">
+            <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.2" /><path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6" /></svg>
+            <svg class="icon-moon" viewBox="0 0 24 24"><path d="M20 14.4A8.4 8.4 0 1 1 9.6 4a6.9 6.9 0 0 0 10.4 10.4z" /></svg>
+          </button>
+          <button class="nav__auto" id="themeAutoBtn" type="button" title="跟随系统主题" aria-label="跟随系统主题" aria-pressed="true">Auto</button>
+<button class="nav__burger" id="burger" type="button" aria-label="菜单" aria-expanded="false" aria-controls="navLinks">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div></header><main id="main"><div class="location-title wrap"><p class="eyebrow">DIRECTORY / 社務所の書庫</p><h1>藏書目録</h1><p class="subtitle">按书签分类翻阅，沿着页签寻找下一站。</p></div><div class="book-stack"><i style="--a:-4deg"></i><i style="--a:4deg"></i><i style="--a:-2deg"></i></div><section class="catalogue"><div class="catalogue-tabs"><!-- archive:filters:start -->
+<button type="button" data-category-filter="AI 与模型" class="active" aria-pressed="true" aria-controls="catalogueEntries">AI 与模型</button>
+<button type="button" data-category-filter="动画与影像" class="" aria-pressed="false" aria-controls="catalogueEntries">动画与影像</button>
+<button type="button" data-category-filter="实用工具" class="" aria-pressed="false" aria-controls="catalogueEntries">实用工具</button>
+<button type="button" data-category-filter="游戏与社区" class="" aria-pressed="false" aria-controls="catalogueEntries">游戏与社区</button>
+<!-- archive:filters:end --></div><div class="catalogue-top"><div><span class="eyebrow red">CATALOGUE / 目録</span><h2>私藏传送门</h2><p class="small">沿着目录，寻找下一处风景。</p></div><label class="catalogue-search"><span class="search-icon">⌕</span><input aria-controls="catalogueEntries" aria-label="检索藏书" id="catalogueSearch" placeholder="在当前分类中检索网站" type="search"/></label></div><div class="catalogue-entries" id="catalogueEntries"><!-- archive:sites:start -->
+<a class="catalogue-entry" href="https://chat.deepseek.com" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-01.svg?v=ba1e0c5e" alt="" width="26" height="26" loading="lazy"><span><strong>DeepSeek</strong><small>探索未至之境</small></span><span class="page-no">01</span></a>
+<a class="catalogue-entry" href="https://claude.ai" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-02.svg?v=f5ada353" alt="" width="26" height="26" loading="lazy"><span><strong>Claude</strong><small>Next generation AI assistant built by Anthropic</small></span><span class="page-no">02</span></a>
+<a class="catalogue-entry" href="https://chatgpt.com" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-03.svg?v=2f399ff2" alt="" width="26" height="26" loading="lazy"><span><strong>ChatGPT</strong><small>What can I help with?</small></span><span class="page-no">03</span></a>
+<a class="catalogue-entry" href="https://gemini.google.com" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-04.svg?v=c1d60b63" alt="" width="26" height="26" loading="lazy"><span><strong>Gemini</strong><small>探索 Gem</small></span><span class="page-no">04</span></a>
+<a class="catalogue-entry" href="https://grok.com" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-05.svg?v=c0016435" alt="" width="26" height="26" loading="lazy"><span><strong>Grok</strong><small>Free AI assistant designed by xAI</small></span><span class="page-no">05</span></a>
+<a class="catalogue-entry" href="https://copilot.microsoft.com" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-06.svg?v=8a20a4a1" alt="" width="26" height="26" loading="lazy"><span><strong>Copilot</strong><small>Your AI companion</small></span><span class="page-no">06</span></a>
+<a class="catalogue-entry" href="https://openrouter.ai/" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-07.svg?v=125f3020" alt="" width="26" height="26" loading="lazy"><span><strong>OpenRouter</strong><small>聚合各家模型的统一接口</small></span><span class="page-no">07</span></a>
+<a class="catalogue-entry" href="https://magmarouter.com/chat/" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-08.svg?v=ab4f0bff" alt="" width="26" height="26" loading="lazy"><span><strong>MagmaRouter</strong><small>多模型切换的聊天前端</small></span><span class="page-no">08</span></a>
+<a class="catalogue-entry" href="https://chatglm.cn/" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-09.svg?v=d80b256c" alt="" width="26" height="26" loading="lazy"><span><strong>智谱</strong><small>智谱清言，GLM 系列模型</small></span><span class="page-no">09</span></a>
+<a class="catalogue-entry" href="https://kimi.moonshot.cn/" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-10.svg?v=5b0e0ed9" alt="" width="26" height="26" loading="lazy"><span><strong>KIMI</strong><small>会推理解析，能深度思考的AI助手</small></span><span class="page-no">10</span></a>
+<a class="catalogue-entry" href="https://www.qianwen.com/" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-11.svg?v=9c51b8b0" alt="" width="26" height="26" loading="lazy"><span><strong>千问</strong><small>通义千问网页版</small></span><span class="page-no">11</span></a>
+<a class="catalogue-entry" href="https://www.doubao.com" target="_blank" rel="noopener noreferrer" data-cat="AI 与模型"><img src="/static/svg/shrine/sites/site-12.svg?v=ed791100" alt="" width="26" height="26" loading="lazy"><span><strong>豆包</strong><small>字节跳动旗下AI智能助手</small></span><span class="page-no">12</span></a>
+<a class="catalogue-entry" href="https://www.nicovideo.jp" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-13.svg?v=b082869d" alt="" width="26" height="26" loading="lazy"><span><strong>ニコニコ</strong><small>ニコニコにようこそ。</small></span><span class="page-no">13</span></a>
+<a class="catalogue-entry" href="https://www.bilibili.com" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-14.svg?v=19b77f11" alt="" width="26" height="26" loading="lazy"><span><strong>bilibili</strong><small>哔哩哔哩 ( ゜- ゜)つロ 乾杯~</small></span><span class="page-no">14</span></a>
+<a class="catalogue-entry" href="https://www.cycity.pro" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-15.svg?v=4d7370d2" alt="" width="26" height="26" loading="lazy"><span><strong>次元城·CYCITY</strong><small>充满对另一个世界的无尽幻想！</small></span><span class="page-no">15</span></a>
+<a class="catalogue-entry" href="https://www.ezdmw.site" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-16.svg?v=7f396579" alt="" width="26" height="26" loading="lazy"><span><strong>E站弹幕网</strong><small>E站动漫 (゜-゜)つロ 干杯~</small></span><span class="page-no">16</span></a>
+<a class="catalogue-entry" href="https://www.fanchawu.cc/" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-17.svg?v=b118ee61" alt="" width="26" height="26" loading="lazy"><span><strong>番茶屋</strong><small>海量番剧蓝光高清免费看</small></span><span class="page-no">17</span></a>
+<a class="catalogue-entry" href="https://www.ntdm9.com" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-18.svg?v=c8a9900f" alt="" width="26" height="26" loading="lazy"><span><strong>NT动漫</strong><small>新番在线动漫-专注动漫的网站</small></span><span class="page-no">18</span></a>
+<a class="catalogue-entry" href="https://www.miluxing.com" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-19.svg?v=70a5c962" alt="" width="26" height="26" loading="lazy"><span><strong>新番列表</strong><small>当季新番列表</small></span><span class="page-no">19</span></a>
+<a class="catalogue-entry" href="https://ai.animedb.cn" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-20.svg?v=110bb16b" alt="" width="26" height="26" loading="lazy"><span><strong>AnimeTrace-以图识番</strong><small>在线AI识番引擎|日漫识别|动漫查询|动漫基因库</small></span><span class="page-no">20</span></a>
+<a class="catalogue-entry" href="https://gitmirror.com" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-21.svg?v=56700e00" alt="" width="26" height="26" loading="lazy"><span><strong>GitMirror</strong><small>GitHub文件加速</small></span><span class="page-no">21</span></a>
+<a class="catalogue-entry" href="https://snapany.com/zh" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-22.svg?v=9d164e2a" alt="" width="26" height="26" loading="lazy"><span><strong>Snapany</strong><small>从bilibili，TikTok等1k+平台保存视频和图片</small></span><span class="page-no">22</span></a>
+<a class="catalogue-entry" href="https://github.com/Momo707577045/m3u8-downloader" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-23.svg?v=40686454" alt="" width="26" height="26" loading="lazy"><span><strong>M3U8 Downloader</strong><small>m3u8 视频在线提取工具</small></span><span class="page-no">23</span></a>
+<a class="catalogue-entry" href="https://3g.gljlw.com/music/wy/index.php" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-24.svg?v=20b5cf39" alt="" width="26" height="26" loading="lazy"><span><strong>网易云音乐下载链接提取</strong><small>提供简单方便的解析下载服务</small></span><span class="page-no">24</span></a>
+<a class="catalogue-entry" href="https://www.watermarkremover.io/zh" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-25.svg?v=618ba055" alt="" width="26" height="26" loading="lazy"><span><strong>水印去除剂</strong><small>删除照片中的任何水印</small></span><span class="page-no">25</span></a>
+<a class="catalogue-entry" href="https://www.remove.bg/zh" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-26.svg?v=e7785f00" alt="" width="26" height="26" loading="lazy"><span><strong>图片背景消除</strong><small>100% 全自动且免费</small></span><span class="page-no">26</span></a>
+<a class="catalogue-entry" href="https://bigjpg.com/" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-27.svg?v=a44dd3d6" alt="" width="26" height="26" loading="lazy"><span><strong>Bigjpg</strong><small>AI深度卷积神经网络CNN图片放大</small></span><span class="page-no">27</span></a>
+<a class="catalogue-entry" href="https://www.iloveimg.com/zh-cn" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-28.svg?v=198f48db" alt="" width="26" height="26" loading="lazy"><span><strong>I♡Img</strong><small>可批量编辑图片的所有工具</small></span><span class="page-no">28</span></a>
+<a class="catalogue-entry" href="https://zvv.quest/" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-29.svg?v=624236e9" alt="" width="26" height="26" loading="lazy"><span><strong>VVQuest</strong><small>用神经网络查询张维为教授经典语录</small></span><span class="page-no">29</span></a>
+<a class="catalogue-entry" href="https://toolwa.com" target="_blank" rel="noopener noreferrer" data-cat="实用工具" hidden><img src="/static/svg/shrine/sites/site-30.svg?v=2b755502" alt="" width="26" height="26" loading="lazy"><span><strong>工具哇</strong><small>在线工具大全</small></span><span class="page-no">30</span></a>
+<a class="catalogue-entry" href="https://anitabi.cn/map" target="_blank" rel="noopener noreferrer" data-cat="动画与影像" hidden><img src="/static/svg/shrine/sites/site-31.svg?v=f0f3e6f3" alt="" width="26" height="26" loading="lazy"><span><strong>巡礼地图</strong><small>共享取景地标与截图-动画圣地巡礼</small></span><span class="page-no">31</span></a>
+<a class="catalogue-entry" href="https://www.kungal.com/zh-cn" target="_blank" rel="noopener noreferrer" data-cat="游戏与社区" hidden><img src="/static/svg/shrine/sites/site-32.svg?v=02c02bb6" alt="" width="26" height="26" loading="lazy"><span><strong>鲲 Galgame 论坛</strong><small>开源 Galgame 网站</small></span><span class="page-no">32</span></a>
+<a class="catalogue-entry" href="https://www.touchgal.io" target="_blank" rel="noopener noreferrer" data-cat="游戏与社区" hidden><img src="/static/svg/shrine/sites/site-33.svg?v=1b89b2e4" alt="" width="26" height="26" loading="lazy"><span><strong>TouchGal</strong><small>一站式 Galgame 文化社区！</small></span><span class="page-no">33</span></a>
+<a class="catalogue-entry" href="https://2dfan.com" target="_blank" rel="noopener noreferrer" data-cat="游戏与社区" hidden><img src="/static/svg/shrine/sites/site-34.svg?v=50a616fa" alt="" width="26" height="26" loading="lazy"><span><strong>2DFan</strong><small>Galgame download</small></span><span class="page-no">34</span></a>
+<a class="catalogue-entry" href="https://www.ggbases.com" target="_blank" rel="noopener noreferrer" data-cat="游戏与社区" hidden><img src="/static/svg/shrine/sites/site-35.svg?v=2c56047e" alt="" width="26" height="26" loading="lazy"><span><strong>GGBases</strong><small>galgame BT/磁力鏈結下載倉庫!</small></span><span class="page-no">35</span></a>
+<a class="catalogue-entry" href="https://tieba.baidu.com/" target="_blank" rel="noopener noreferrer" data-cat="游戏与社区" hidden><img src="/static/svg/shrine/sites/site-36.svg?v=ed276167" alt="" width="26" height="26" loading="lazy"><span><strong>百度贴吧</strong><small>不知道贴啥了就放个贴吧罢，经验+3，告辞</small></span><span class="page-no">36</span></a>
+<!-- archive:sites:end --></div><div class="catalogue-page-foot"><span>全人類の緋想天 · 私家目録</span><span aria-live="polite" id="catalogueCount" role="status">AI 与模型 · 12 ITEMS</span></div><p class="catalogue-empty" hidden="" role="status">当前分类没有找到相应网站。</p><noscript><style>.catalogue-entry[hidden]{display:grid!important}</style><p>JavaScript 未启用，展示所有分类书签。</p></noscript></section></main><footer class="scene-foot wrap"><div><a class="global-brand" href="/">全人類の緋想天</a><p>有頂天より</p><p>© 2022–<span data-site-year>2026</span> GitHub@Hisou-Tenshi</p></div><nav aria-label="页脚导航"><a href="https://github.com/Hisou-Tenshi">GitHub</a><a href="/about-us/">About</a><a href="/contact-us/">Contact</a><a href="/sites/">Directory</a><a href="/changelog/">Chronicle</a><a href="/privacy-policy/">Privacy</a><a href="/terms-and-conditions/">Terms</a></nav></footer><div class="edge-bullets" id="edgeBullets" aria-hidden="true"></div><div class="ritual-overlay" id="ritualOverlay" role="dialog" aria-modal="true" aria-label="神社器物" hidden><button class="ritual-close" type="button" aria-label="关闭预览">×</button><div class="ritual-circle" aria-hidden="true"></div><div class="ritual-dialog" id="ritualDialog"></div></div><script defer src="/static/js/site-content.js?v=7ef09ab3"></script><script defer src="/static/js/script.js?v=b4586134"></script><script defer src="/static/js/danmaku.js?v=15bf253f"></script><script defer src="/static/js/shrine.js?v=43722832"></script></body></html>

@@ -1,0 +1,1038 @@
+{
+  "title": "東方幻存神籤 ～ Whispered Oracle of Hakurei Shrine",
+  "firstSourcePage": 17,
+  "lastSourcePage": 148,
+  "excludedSourcePages": [
+    52,
+    79,
+    117,
+    139
+  ],
+  "count": 128,
+  "items": [
+    {
+      "number": 1,
+      "sourcePage": 17,
+      "src": "/static/img/shrine/oracles/fortune-001.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 595962
+    },
+    {
+      "number": 2,
+      "sourcePage": 18,
+      "src": "/static/img/shrine/oracles/fortune-002.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 689820
+    },
+    {
+      "number": 3,
+      "sourcePage": 19,
+      "src": "/static/img/shrine/oracles/fortune-003.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1899500
+    },
+    {
+      "number": 4,
+      "sourcePage": 20,
+      "src": "/static/img/shrine/oracles/fortune-004.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 745932
+    },
+    {
+      "number": 5,
+      "sourcePage": 21,
+      "src": "/static/img/shrine/oracles/fortune-005.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 710606
+    },
+    {
+      "number": 6,
+      "sourcePage": 22,
+      "src": "/static/img/shrine/oracles/fortune-006.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 786076
+    },
+    {
+      "number": 7,
+      "sourcePage": 23,
+      "src": "/static/img/shrine/oracles/fortune-007.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 821404
+    },
+    {
+      "number": 8,
+      "sourcePage": 24,
+      "src": "/static/img/shrine/oracles/fortune-008.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 747472
+    },
+    {
+      "number": 9,
+      "sourcePage": 25,
+      "src": "/static/img/shrine/oracles/fortune-009.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1786632
+    },
+    {
+      "number": 10,
+      "sourcePage": 26,
+      "src": "/static/img/shrine/oracles/fortune-010.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 640994
+    },
+    {
+      "number": 11,
+      "sourcePage": 27,
+      "src": "/static/img/shrine/oracles/fortune-011.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 649272
+    },
+    {
+      "number": 12,
+      "sourcePage": 28,
+      "src": "/static/img/shrine/oracles/fortune-012.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 790848
+    },
+    {
+      "number": 13,
+      "sourcePage": 29,
+      "src": "/static/img/shrine/oracles/fortune-013.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 765048
+    },
+    {
+      "number": 14,
+      "sourcePage": 30,
+      "src": "/static/img/shrine/oracles/fortune-014.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 707084
+    },
+    {
+      "number": 15,
+      "sourcePage": 31,
+      "src": "/static/img/shrine/oracles/fortune-015.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 734418
+    },
+    {
+      "number": 16,
+      "sourcePage": 32,
+      "src": "/static/img/shrine/oracles/fortune-016.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 722148
+    },
+    {
+      "number": 17,
+      "sourcePage": 33,
+      "src": "/static/img/shrine/oracles/fortune-017.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 677056
+    },
+    {
+      "number": 18,
+      "sourcePage": 34,
+      "src": "/static/img/shrine/oracles/fortune-018.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 719818
+    },
+    {
+      "number": 19,
+      "sourcePage": 35,
+      "src": "/static/img/shrine/oracles/fortune-019.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 807954
+    },
+    {
+      "number": 20,
+      "sourcePage": 36,
+      "src": "/static/img/shrine/oracles/fortune-020.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 849376
+    },
+    {
+      "number": 21,
+      "sourcePage": 37,
+      "src": "/static/img/shrine/oracles/fortune-021.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 832944
+    },
+    {
+      "number": 22,
+      "sourcePage": 38,
+      "src": "/static/img/shrine/oracles/fortune-022.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 793514
+    },
+    {
+      "number": 23,
+      "sourcePage": 39,
+      "src": "/static/img/shrine/oracles/fortune-023.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 899336
+    },
+    {
+      "number": 24,
+      "sourcePage": 40,
+      "src": "/static/img/shrine/oracles/fortune-024.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 925496
+    },
+    {
+      "number": 25,
+      "sourcePage": 41,
+      "src": "/static/img/shrine/oracles/fortune-025.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 910790
+    },
+    {
+      "number": 26,
+      "sourcePage": 42,
+      "src": "/static/img/shrine/oracles/fortune-026.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 877322
+    },
+    {
+      "number": 27,
+      "sourcePage": 43,
+      "src": "/static/img/shrine/oracles/fortune-027.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 921586
+    },
+    {
+      "number": 28,
+      "sourcePage": 44,
+      "src": "/static/img/shrine/oracles/fortune-028.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1391490
+    },
+    {
+      "number": 29,
+      "sourcePage": 45,
+      "src": "/static/img/shrine/oracles/fortune-029.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 2047568
+    },
+    {
+      "number": 30,
+      "sourcePage": 46,
+      "src": "/static/img/shrine/oracles/fortune-030.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1042624
+    },
+    {
+      "number": 31,
+      "sourcePage": 47,
+      "src": "/static/img/shrine/oracles/fortune-031.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 766852
+    },
+    {
+      "number": 32,
+      "sourcePage": 48,
+      "src": "/static/img/shrine/oracles/fortune-032.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 973394
+    },
+    {
+      "number": 33,
+      "sourcePage": 49,
+      "src": "/static/img/shrine/oracles/fortune-033.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 841142
+    },
+    {
+      "number": 34,
+      "sourcePage": 50,
+      "src": "/static/img/shrine/oracles/fortune-034.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 786426
+    },
+    {
+      "number": 35,
+      "sourcePage": 51,
+      "src": "/static/img/shrine/oracles/fortune-035.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 797634
+    },
+    {
+      "number": 36,
+      "sourcePage": 53,
+      "src": "/static/img/shrine/oracles/fortune-036.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 725288
+    },
+    {
+      "number": 37,
+      "sourcePage": 54,
+      "src": "/static/img/shrine/oracles/fortune-037.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 860750
+    },
+    {
+      "number": 38,
+      "sourcePage": 55,
+      "src": "/static/img/shrine/oracles/fortune-038.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1887510
+    },
+    {
+      "number": 39,
+      "sourcePage": 56,
+      "src": "/static/img/shrine/oracles/fortune-039.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 759742
+    },
+    {
+      "number": 40,
+      "sourcePage": 57,
+      "src": "/static/img/shrine/oracles/fortune-040.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 755438
+    },
+    {
+      "number": 41,
+      "sourcePage": 58,
+      "src": "/static/img/shrine/oracles/fortune-041.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 852556
+    },
+    {
+      "number": 42,
+      "sourcePage": 59,
+      "src": "/static/img/shrine/oracles/fortune-042.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 922672
+    },
+    {
+      "number": 43,
+      "sourcePage": 60,
+      "src": "/static/img/shrine/oracles/fortune-043.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 823966
+    },
+    {
+      "number": 44,
+      "sourcePage": 61,
+      "src": "/static/img/shrine/oracles/fortune-044.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 896166
+    },
+    {
+      "number": 45,
+      "sourcePage": 62,
+      "src": "/static/img/shrine/oracles/fortune-045.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1060098
+    },
+    {
+      "number": 46,
+      "sourcePage": 63,
+      "src": "/static/img/shrine/oracles/fortune-046.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 809494
+    },
+    {
+      "number": 47,
+      "sourcePage": 64,
+      "src": "/static/img/shrine/oracles/fortune-047.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1567578
+    },
+    {
+      "number": 48,
+      "sourcePage": 65,
+      "src": "/static/img/shrine/oracles/fortune-048.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 724908
+    },
+    {
+      "number": 49,
+      "sourcePage": 66,
+      "src": "/static/img/shrine/oracles/fortune-049.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 871894
+    },
+    {
+      "number": 50,
+      "sourcePage": 67,
+      "src": "/static/img/shrine/oracles/fortune-050.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 779850
+    },
+    {
+      "number": 51,
+      "sourcePage": 68,
+      "src": "/static/img/shrine/oracles/fortune-051.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1779086
+    },
+    {
+      "number": 52,
+      "sourcePage": 69,
+      "src": "/static/img/shrine/oracles/fortune-052.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 2047926
+    },
+    {
+      "number": 53,
+      "sourcePage": 70,
+      "src": "/static/img/shrine/oracles/fortune-053.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 773386
+    },
+    {
+      "number": 54,
+      "sourcePage": 71,
+      "src": "/static/img/shrine/oracles/fortune-054.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 702258
+    },
+    {
+      "number": 55,
+      "sourcePage": 72,
+      "src": "/static/img/shrine/oracles/fortune-055.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 736964
+    },
+    {
+      "number": 56,
+      "sourcePage": 73,
+      "src": "/static/img/shrine/oracles/fortune-056.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 794120
+    },
+    {
+      "number": 57,
+      "sourcePage": 74,
+      "src": "/static/img/shrine/oracles/fortune-057.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1479168
+    },
+    {
+      "number": 58,
+      "sourcePage": 75,
+      "src": "/static/img/shrine/oracles/fortune-058.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 868628
+    },
+    {
+      "number": 59,
+      "sourcePage": 76,
+      "src": "/static/img/shrine/oracles/fortune-059.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 854298
+    },
+    {
+      "number": 60,
+      "sourcePage": 77,
+      "src": "/static/img/shrine/oracles/fortune-060.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 770824
+    },
+    {
+      "number": 61,
+      "sourcePage": 78,
+      "src": "/static/img/shrine/oracles/fortune-061.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 828964
+    },
+    {
+      "number": 62,
+      "sourcePage": 80,
+      "src": "/static/img/shrine/oracles/fortune-062.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 672766
+    },
+    {
+      "number": 63,
+      "sourcePage": 81,
+      "src": "/static/img/shrine/oracles/fortune-063.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 635240
+    },
+    {
+      "number": 64,
+      "sourcePage": 82,
+      "src": "/static/img/shrine/oracles/fortune-064.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 650720
+    },
+    {
+      "number": 65,
+      "sourcePage": 83,
+      "src": "/static/img/shrine/oracles/fortune-065.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 666712
+    },
+    {
+      "number": 66,
+      "sourcePage": 84,
+      "src": "/static/img/shrine/oracles/fortune-066.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 600168
+    },
+    {
+      "number": 67,
+      "sourcePage": 85,
+      "src": "/static/img/shrine/oracles/fortune-067.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 653908
+    },
+    {
+      "number": 68,
+      "sourcePage": 86,
+      "src": "/static/img/shrine/oracles/fortune-068.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 641602
+    },
+    {
+      "number": 69,
+      "sourcePage": 87,
+      "src": "/static/img/shrine/oracles/fortune-069.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 615912
+    },
+    {
+      "number": 70,
+      "sourcePage": 88,
+      "src": "/static/img/shrine/oracles/fortune-070.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 772400
+    },
+    {
+      "number": 71,
+      "sourcePage": 89,
+      "src": "/static/img/shrine/oracles/fortune-071.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 835330
+    },
+    {
+      "number": 72,
+      "sourcePage": 90,
+      "src": "/static/img/shrine/oracles/fortune-072.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1181274
+    },
+    {
+      "number": 73,
+      "sourcePage": 91,
+      "src": "/static/img/shrine/oracles/fortune-073.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 917008
+    },
+    {
+      "number": 74,
+      "sourcePage": 92,
+      "src": "/static/img/shrine/oracles/fortune-074.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 805278
+    },
+    {
+      "number": 75,
+      "sourcePage": 93,
+      "src": "/static/img/shrine/oracles/fortune-075.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 712948
+    },
+    {
+      "number": 76,
+      "sourcePage": 94,
+      "src": "/static/img/shrine/oracles/fortune-076.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 717658
+    },
+    {
+      "number": 77,
+      "sourcePage": 95,
+      "src": "/static/img/shrine/oracles/fortune-077.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 654182
+    },
+    {
+      "number": 78,
+      "sourcePage": 96,
+      "src": "/static/img/shrine/oracles/fortune-078.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1737126
+    },
+    {
+      "number": 79,
+      "sourcePage": 97,
+      "src": "/static/img/shrine/oracles/fortune-079.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 807282
+    },
+    {
+      "number": 80,
+      "sourcePage": 98,
+      "src": "/static/img/shrine/oracles/fortune-080.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 772524
+    },
+    {
+      "number": 81,
+      "sourcePage": 99,
+      "src": "/static/img/shrine/oracles/fortune-081.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 785464
+    },
+    {
+      "number": 82,
+      "sourcePage": 100,
+      "src": "/static/img/shrine/oracles/fortune-082.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 846666
+    },
+    {
+      "number": 83,
+      "sourcePage": 101,
+      "src": "/static/img/shrine/oracles/fortune-083.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 628238
+    },
+    {
+      "number": 84,
+      "sourcePage": 102,
+      "src": "/static/img/shrine/oracles/fortune-084.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 577282
+    },
+    {
+      "number": 85,
+      "sourcePage": 103,
+      "src": "/static/img/shrine/oracles/fortune-085.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 583634
+    },
+    {
+      "number": 86,
+      "sourcePage": 104,
+      "src": "/static/img/shrine/oracles/fortune-086.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 699124
+    },
+    {
+      "number": 87,
+      "sourcePage": 105,
+      "src": "/static/img/shrine/oracles/fortune-087.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 691148
+    },
+    {
+      "number": 88,
+      "sourcePage": 106,
+      "src": "/static/img/shrine/oracles/fortune-088.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1644472
+    },
+    {
+      "number": 89,
+      "sourcePage": 107,
+      "src": "/static/img/shrine/oracles/fortune-089.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 688092
+    },
+    {
+      "number": 90,
+      "sourcePage": 108,
+      "src": "/static/img/shrine/oracles/fortune-090.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1695528
+    },
+    {
+      "number": 91,
+      "sourcePage": 109,
+      "src": "/static/img/shrine/oracles/fortune-091.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 2009024
+    },
+    {
+      "number": 92,
+      "sourcePage": 110,
+      "src": "/static/img/shrine/oracles/fortune-092.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 747696
+    },
+    {
+      "number": 93,
+      "sourcePage": 111,
+      "src": "/static/img/shrine/oracles/fortune-093.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 812522
+    },
+    {
+      "number": 94,
+      "sourcePage": 112,
+      "src": "/static/img/shrine/oracles/fortune-094.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 718064
+    },
+    {
+      "number": 95,
+      "sourcePage": 113,
+      "src": "/static/img/shrine/oracles/fortune-095.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 776548
+    },
+    {
+      "number": 96,
+      "sourcePage": 114,
+      "src": "/static/img/shrine/oracles/fortune-096.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 635814
+    },
+    {
+      "number": 97,
+      "sourcePage": 115,
+      "src": "/static/img/shrine/oracles/fortune-097.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 652290
+    },
+    {
+      "number": 98,
+      "sourcePage": 116,
+      "src": "/static/img/shrine/oracles/fortune-098.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1460832
+    },
+    {
+      "number": 99,
+      "sourcePage": 118,
+      "src": "/static/img/shrine/oracles/fortune-099.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 787118
+    },
+    {
+      "number": 100,
+      "sourcePage": 119,
+      "src": "/static/img/shrine/oracles/fortune-100.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 784864
+    },
+    {
+      "number": 101,
+      "sourcePage": 120,
+      "src": "/static/img/shrine/oracles/fortune-101.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 773512
+    },
+    {
+      "number": 102,
+      "sourcePage": 121,
+      "src": "/static/img/shrine/oracles/fortune-102.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 764718
+    },
+    {
+      "number": 103,
+      "sourcePage": 122,
+      "src": "/static/img/shrine/oracles/fortune-103.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 704694
+    },
+    {
+      "number": 104,
+      "sourcePage": 123,
+      "src": "/static/img/shrine/oracles/fortune-104.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 880682
+    },
+    {
+      "number": 105,
+      "sourcePage": 124,
+      "src": "/static/img/shrine/oracles/fortune-105.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1045806
+    },
+    {
+      "number": 106,
+      "sourcePage": 125,
+      "src": "/static/img/shrine/oracles/fortune-106.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 838498
+    },
+    {
+      "number": 107,
+      "sourcePage": 126,
+      "src": "/static/img/shrine/oracles/fortune-107.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 716784
+    },
+    {
+      "number": 108,
+      "sourcePage": 127,
+      "src": "/static/img/shrine/oracles/fortune-108.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 908884
+    },
+    {
+      "number": 109,
+      "sourcePage": 128,
+      "src": "/static/img/shrine/oracles/fortune-109.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 880666
+    },
+    {
+      "number": 110,
+      "sourcePage": 129,
+      "src": "/static/img/shrine/oracles/fortune-110.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 840600
+    },
+    {
+      "number": 111,
+      "sourcePage": 130,
+      "src": "/static/img/shrine/oracles/fortune-111.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1770574
+    },
+    {
+      "number": 112,
+      "sourcePage": 131,
+      "src": "/static/img/shrine/oracles/fortune-112.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 835122
+    },
+    {
+      "number": 113,
+      "sourcePage": 132,
+      "src": "/static/img/shrine/oracles/fortune-113.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1027028
+    },
+    {
+      "number": 114,
+      "sourcePage": 133,
+      "src": "/static/img/shrine/oracles/fortune-114.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1023268
+    },
+    {
+      "number": 115,
+      "sourcePage": 134,
+      "src": "/static/img/shrine/oracles/fortune-115.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 681288
+    },
+    {
+      "number": 116,
+      "sourcePage": 135,
+      "src": "/static/img/shrine/oracles/fortune-116.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 734580
+    },
+    {
+      "number": 117,
+      "sourcePage": 136,
+      "src": "/static/img/shrine/oracles/fortune-117.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1493582
+    },
+    {
+      "number": 118,
+      "sourcePage": 137,
+      "src": "/static/img/shrine/oracles/fortune-118.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 739318
+    },
+    {
+      "number": 119,
+      "sourcePage": 138,
+      "src": "/static/img/shrine/oracles/fortune-119.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 795354
+    },
+    {
+      "number": 120,
+      "sourcePage": 140,
+      "src": "/static/img/shrine/oracles/fortune-120.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 801026
+    },
+    {
+      "number": 121,
+      "sourcePage": 141,
+      "src": "/static/img/shrine/oracles/fortune-121.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 714362
+    },
+    {
+      "number": 122,
+      "sourcePage": 142,
+      "src": "/static/img/shrine/oracles/fortune-122.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 826820
+    },
+    {
+      "number": 123,
+      "sourcePage": 143,
+      "src": "/static/img/shrine/oracles/fortune-123.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 903360
+    },
+    {
+      "number": 124,
+      "sourcePage": 144,
+      "src": "/static/img/shrine/oracles/fortune-124.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 1849330
+    },
+    {
+      "number": 125,
+      "sourcePage": 145,
+      "src": "/static/img/shrine/oracles/fortune-125.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 836902
+    },
+    {
+      "number": 126,
+      "sourcePage": 146,
+      "src": "/static/img/shrine/oracles/fortune-126.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 772254
+    },
+    {
+      "number": 127,
+      "sourcePage": 147,
+      "src": "/static/img/shrine/oracles/fortune-127.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 908826
+    },
+    {
+      "number": 128,
+      "sourcePage": 148,
+      "src": "/static/img/shrine/oracles/fortune-128.webp",
+      "width": 1443,
+      "height": 2048,
+      "bytes": 929724
+    }
+  ]
+}

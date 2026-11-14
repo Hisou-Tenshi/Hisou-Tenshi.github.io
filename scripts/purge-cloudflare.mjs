@@ -39,7 +39,7 @@ function changedPaths() {
 }
 
 /** repo path → public URL */
-function urlFor(path, html) {
+function urlFor(path) {
 	if (path === 'index.html') return `${base}/`;
 	if (path.endsWith('/index.html')) return `${base}/${path.slice(0, -'index.html'.length)}`;
 	if (path.endsWith('.html')) return `${base}/${path}`;
@@ -47,27 +47,35 @@ function urlFor(path, html) {
 }
 
 const paths = changedPaths().filter((p) => /\.(html|css|js|json|svg|woff2?|webp|png|jpe?g|mp3)$/i.test(p));
-const urls = [...new Set(paths.map((p) => urlFor(p)))];
-// the HTML directory of any changed page is what actually gets edge-cached
-for (const p of paths.filter((x) => x.endsWith('.html'))) urls.push(urlFor(p));
+// Purge page documents first, followed by every changed resource. Large theme
+// commits can exceed 200 paths; never silently drop the remainder.
+const urls = [...new Set([
+	...paths.filter(p => p.endsWith('.html')).map(p => urlFor(p)),
+	...paths.map(p => urlFor(p)),
+])];
 
 if (!urls.length) {
 	console.log('nothing to purge');
 	process.exit(0);
 }
 
-const list = [...new Set(urls)].slice(0, 200);
+const list = urls;
 console.log(`purging ${list.length} URL(s):`);
 for (const u of list) console.log('  ' + u);
 
-const res = await fetch(`https://api.cloudflare.com/client/v4/zones/${zone}/purge_cache`, {
-	method: 'POST',
-	headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-	body: JSON.stringify({ files: list })
-});
-const body = await res.json().catch(() => ({}));
-if (!res.ok || body.success === false) {
-	console.error('purge failed', res.status, JSON.stringify(body.errors || body).slice(0, 500));
-	process.exit(1);
+for (let offset = 0; offset < list.length; offset += 30) {
+	const batch = list.slice(offset, offset + 30);
+	const res = await fetch(`https://api.cloudflare.com/client/v4/zones/${zone}/purge_cache`, {
+		method: 'POST',
+		headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+		body: JSON.stringify({ files: batch })
+	});
+	const body = await res.json().catch(() => ({}));
+	if (!res.ok || body.success === false) {
+		console.error('purge failed', res.status, JSON.stringify(body.errors || body).slice(0, 500));
+		process.exit(1);
+	}
+	console.log(`purged ${Math.min(offset + batch.length, list.length)}/${list.length}`);
+	if (offset + 30 < list.length) await new Promise(resolve => setTimeout(resolve, 1000));
 }
 console.log('purged ✓');

@@ -1,0 +1,326 @@
+[
+  {
+    "url": "https://chat.deepseek.com",
+    "name": "DeepSeek",
+    "description": "探索未至之境",
+    "id": "site-01",
+    "category": "AI 与模型",
+    "featured": true,
+    "icon": "/static/svg/shrine/sites/site-01.svg"
+  },
+  {
+    "url": "https://claude.ai",
+    "name": "Claude",
+    "description": "Next generation AI assistant built by Anthropic",
+    "id": "site-02",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-02.svg"
+  },
+  {
+    "url": "https://chatgpt.com",
+    "name": "ChatGPT",
+    "description": "What can I help with?",
+    "id": "site-03",
+    "category": "AI 与模型",
+    "featured": true,
+    "icon": "/static/svg/shrine/sites/site-03.svg"
+  },
+  {
+    "url": "https://gemini.google.com",
+    "name": "Gemini",
+    "description": "探索 Gem",
+    "id": "site-04",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-04.svg"
+  },
+  {
+    "url": "https://grok.com",
+    "name": "Grok",
+    "description": "Free AI assistant designed by xAI",
+    "id": "site-05",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-05.svg"
+  },
+  {
+    "url": "https://copilot.microsoft.com",
+    "name": "Copilot",
+    "description": "Your AI companion",
+    "id": "site-06",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-06.svg"
+  },
+  {
+    "url": "https://openrouter.ai/",
+    "name": "OpenRouter",
+    "description": "聚合各家模型的统一接口",
+    "id": "site-07",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-07.svg"
+  },
+  {
+    "url": "https://magmarouter.com/chat/",
+    "name": "MagmaRouter",
+    "description": "多模型切换的聊天前端",
+    "id": "site-08",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-08.svg"
+  },
+  {
+    "url": "https://chatglm.cn/",
+    "name": "智谱",
+    "description": "智谱清言，GLM 系列模型",
+    "id": "site-09",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-09.svg"
+  },
+  {
+    "url": "https://kimi.moonshot.cn/",
+    "name": "KIMI",
+    "description": "会推理解析，能深度思考的AI助手",
+    "id": "site-10",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-10.svg"
+  },
+  {
+    "url": "https://www.qianwen.com/",
+    "name": "千问",
+    "description": "通义千问网页版",
+    "id": "site-11",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-11.svg"
+  },
+  {
+    "url": "https://www.doubao.com",
+    "name": "豆包",
+    "description": "字节跳动旗下AI智能助手",
+    "id": "site-12",
+    "category": "AI 与模型",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-12.svg"
+  },
+  {
+    "url": "https://www.nicovideo.jp",
+    "name": "ニコニコ",
+    "description": "ニコニコにようこそ。",
+    "id": "site-13",
+    "category": "动画与影像",
+    "featured": true,
+    "icon": "/static/svg/shrine/sites/site-13.svg"
+  },
+  {
+    "url": "https://www.bilibili.com",
+    "name": "bilibili",
+    "description": "哔哩哔哩 ( ゜- ゜)つロ 乾杯~",
+    "id": "site-14",
+    "category": "动画与影像",
+    "featured": true,
+    "icon": "/static/svg/shrine/sites/site-14.svg"
+  },
+  {
+    "url": "https://www.cycity.pro",
+    "name": "次元城·CYCITY",
+    "description": "充满对另一个世界的无尽幻想！",
+    "id": "site-15",
+    "category": "动画与影像",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-15.svg"
+  },
+  {
+    "url": "https://www.ezdmw.site",
+    "name": "E站弹幕网",
+    "description": "E站动漫 (゜-゜)つロ 干杯~",
+    "id": "site-16",
+    "category": "动画与影像",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-16.svg"
+  },
+  {
+    "url": "https://www.fanchawu.cc/",
+    "name": "番茶屋",
+    "description": "海量番剧蓝光高清免费看",
+    "id": "site-17",
+    "category": "动画与影像",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-17.svg"
+  },
+  {
+    "url": "https://www.ntdm9.com",
+    "name": "NT动漫",
+    "description": "新番在线动漫-专注动漫的网站",
+    "id": "site-18",
+    "category": "动画与影像",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-18.svg"
+  },
+  {
+    "url": "https://www.miluxing.com",
+    "name": "新番列表",
+    "description": "当季新番列表",
+    "id": "site-19",
+    "category": "动画与影像",
+    "featured": true,
+    "icon": "/static/svg/shrine/sites/site-19.svg"
+  },
+  {
+    "url": "https://ai.animedb.cn",
+    "name": "AnimeTrace-以图识番",
+    "description": "在线AI识番引擎|日漫识别|动漫查询|动漫基因库",
+    "id": "site-20",
+    "category": "动画与影像",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-20.svg"
+  },
+  {
+    "url": "https://gitmirror.com",
+    "name": "GitMirror",
+    "description": "GitHub文件加速",
+    "id": "site-21",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-21.svg"
+  },
+  {
+    "url": "https://snapany.com/zh",
+    "name": "Snapany",
+    "description": "从bilibili，TikTok等1k+平台保存视频和图片",
+    "id": "site-22",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-22.svg"
+  },
+  {
+    "url": "https://github.com/Momo707577045/m3u8-downloader",
+    "name": "M3U8 Downloader",
+    "description": "m3u8 视频在线提取工具",
+    "id": "site-23",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-23.svg"
+  },
+  {
+    "url": "https://3g.gljlw.com/music/wy/index.php",
+    "name": "网易云音乐下载链接提取",
+    "description": "提供简单方便的解析下载服务",
+    "id": "site-24",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-24.svg"
+  },
+  {
+    "url": "https://www.watermarkremover.io/zh",
+    "name": "水印去除剂",
+    "description": "删除照片中的任何水印",
+    "id": "site-25",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-25.svg"
+  },
+  {
+    "url": "https://www.remove.bg/zh",
+    "name": "图片背景消除",
+    "description": "100% 全自动且免费",
+    "id": "site-26",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-26.svg"
+  },
+  {
+    "url": "https://bigjpg.com/",
+    "name": "Bigjpg",
+    "description": "AI深度卷积神经网络CNN图片放大",
+    "id": "site-27",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-27.svg"
+  },
+  {
+    "url": "https://www.iloveimg.com/zh-cn",
+    "name": "I♡Img",
+    "description": "可批量编辑图片的所有工具",
+    "id": "site-28",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-28.svg"
+  },
+  {
+    "url": "https://zvv.quest/",
+    "name": "VVQuest",
+    "description": "用神经网络查询张维为教授经典语录",
+    "id": "site-29",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-29.svg"
+  },
+  {
+    "url": "https://toolwa.com",
+    "name": "工具哇",
+    "description": "在线工具大全",
+    "id": "site-30",
+    "category": "实用工具",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-30.svg"
+  },
+  {
+    "url": "https://anitabi.cn/map",
+    "name": "巡礼地图",
+    "description": "共享取景地标与截图-动画圣地巡礼",
+    "id": "site-31",
+    "category": "动画与影像",
+    "featured": true,
+    "icon": "/static/svg/shrine/sites/site-31.svg"
+  },
+  {
+    "url": "https://www.kungal.com/zh-cn",
+    "name": "鲲 Galgame 论坛",
+    "description": "开源 Galgame 网站",
+    "id": "site-32",
+    "category": "游戏与社区",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-32.svg"
+  },
+  {
+    "url": "https://www.touchgal.io",
+    "name": "TouchGal",
+    "description": "一站式 Galgame 文化社区！",
+    "id": "site-33",
+    "category": "游戏与社区",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-33.svg"
+  },
+  {
+    "url": "https://2dfan.com",
+    "name": "2DFan",
+    "description": "Galgame download",
+    "id": "site-34",
+    "category": "游戏与社区",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-34.svg"
+  },
+  {
+    "url": "https://www.ggbases.com",
+    "name": "GGBases",
+    "description": "galgame BT/磁力鏈結下載倉庫!",
+    "id": "site-35",
+    "category": "游戏与社区",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-35.svg"
+  },
+  {
+    "url": "https://tieba.baidu.com/",
+    "name": "百度贴吧",
+    "description": "不知道贴啥了就放个贴吧罢，经验+3，告辞",
+    "id": "site-36",
+    "category": "游戏与社区",
+    "featured": false,
+    "icon": "/static/svg/shrine/sites/site-36.svg"
+  }
+]

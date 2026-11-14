@@ -63,6 +63,9 @@ jobs:
           BASE_URL: https://tenshi.qzz.io
         run: node scripts/purge-cloudflare.mjs
 
+      - name: Verify shrine routes and archive content
+        run: node scripts/check-shrine.mjs
+
       # Runs last so a drift report never blocks the purge itself.
       - name: Verify Projects copy is in sync
         run: node scripts/check-repos.mjs

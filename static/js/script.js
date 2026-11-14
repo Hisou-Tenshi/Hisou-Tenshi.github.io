@@ -1,8 +1,8 @@
 /* ==========================================================================
    script.js — 全人類の緋想天
    Vanilla, dependency-free, deferred work only.
-   Nothing here fetches a byte until the visitor asks for it
-   (the BGM playlist is loaded on first player interaction).
+   Large media waits until its section approaches or the visitor asks for it.
+   The BGM playlist is loaded on first player interaction.
    ========================================================================== */
 (function () {
 	'use strict';
@@ -98,26 +98,31 @@
 	})();
 
 	/* ------------------------------------------------- idle image loading */
-	/* The portrait marquee holds ~2.5x more images than fit on screen at once
-	   and moves with a CSS transform, which lazy-loading never re-evaluates.
-	   So the first few paint immediately and the rest arrive once the page is
-	   idle — after LCP, and free of main-thread contention. */
+	/* Load the complete moving strip only near its section, so CSS scrolling
+	   never reveals blanks and a Hero-only visit does not fetch every portrait. */
 	(function idleImages() {
 		var imgs = $$('img[data-src]');
 		if (!imgs.length) return;
+		var strip = $('.strip');
+		var loaded = false;
 		var run = function () {
+			if (loaded) return;
+			loaded = true;
 			imgs.forEach(function (img) {
 				if (img.getAttribute('src')) return;
 				img.src = img.getAttribute('data-src');
 				img.removeAttribute('data-src');
 			});
 		};
-		window.addEventListener('load', function () {
-			setTimeout(function () {
-				if ('requestIdleCallback' in window) window.requestIdleCallback(run, { timeout: 2500 });
-				else run();
-			}, 320);
-		});
+		if (strip && 'IntersectionObserver' in window) {
+			var observer = new IntersectionObserver(function (entries) {
+				if (!entries.some(function (entry) { return entry.isIntersecting; })) return;
+				observer.disconnect();
+				run();
+			}, { rootMargin: '400px 0px' });
+			observer.observe(strip);
+		} else if (doc.readyState === 'complete') run();
+		else window.addEventListener('load', run, { once: true });
 	})();
 
 	/* ------------------------------------------------------------------- nav */
@@ -152,7 +157,7 @@
 				if (e.key === 'Escape') setOpen(false);
 			});
 			window.addEventListener('resize', function () {
-				if (window.innerWidth > 900) setOpen(false);
+				if (window.innerWidth > 1100) setOpen(false);
 			});
 		}
 
@@ -777,6 +782,10 @@
 		if (!box) return;
 		var items = data && data.items;
 		if (!Array.isArray(items) || !items.length) return;
+		if (box.classList.contains('project-collection') && window.ShrineProjects) {
+			box.innerHTML = window.ShrineProjects.render(items);
+			return;
+		}
 		var html = '';
 		items.forEach(function (it, i) {
 			if (!it || !it.url) return;
