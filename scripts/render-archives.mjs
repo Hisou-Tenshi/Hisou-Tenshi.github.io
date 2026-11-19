@@ -20,5 +20,6 @@ replace('index.html','sites-preview',sites.filter(s=>s.featured).slice(0,5).map(
 replace('index.html','logs-preview',logs.slice(0,5).map(l=>`<div class="mini-row"><span>${esc(l.name)}</span><time datetime="${esc(l.date)}">${esc(l.date)}</time></div>`).join('\n'));
 replace('index.html','projects',projects.render(repos));
 files.set('index.html',files.get('index.html').replace(/查看全部 \d+ 条更新记录/, '查看全部 '+logs.length+' 条更新记录'));
+files.set('changelog/index.html',files.get('changelog/index.html').replace(/(id="logPageCount"[^>]*>[^<]* \/ )\d+(?=<\/span>)/,(_,prefix)=>prefix+logs.length));
 for(const [file,value] of files){const clean=s=>s.replace(/\?v=[0-9a-f]{8}/g,'');if(clean(read(file))!==clean(value)){if(check)throw Error(file+' is out of sync. Run node scripts/render-archives.mjs');writeFileSync(path.join(root,file),value);}}
 console.log(`Scenes ${check?'verified':'rendered'}: ${sites.length} sites, ${logs.length} records, ${repos.length} projects.`);

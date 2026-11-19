@@ -34,7 +34,9 @@ for (const [file, text] of html) {
  if (new Set(found).size !== found.length) fail.push(`${file}: duplicate element ID`);
  if ((text.match(/<h1\b/g) || []).length !== 1) fail.push(`${file}: expected one h1`);
  if (!text.includes('id="themeAutoBtn"') || !text.includes('/static/js/shrine.js')) fail.push(`${file}: missing shared interactions`);
- if (!text.includes('/static/js/danmaku.js')) fail.push(`${file}: missing page-specific danmaku`);
+ if (!text.includes('/static/css/shrine-details.css')) fail.push(`${file}: missing shared shrine navigation styles`);
+ if (/edgeBullets|\/static\/(?:js\/danmaku\.js|img\/shrine\/danmaku\/)/.test(text)) fail.push(`${file}: retired navigation animation is still wired up`);
+ if (/\/static\/(?:css|js)\/lily-cursor\./.test(text)) fail.push(`${file}: retired cursor override is still wired up`);
 }
 for (const [file, text] of html) {
  for (const [, raw] of text.matchAll(/\bhref="([^"]+)"/g)) {
@@ -47,6 +49,7 @@ for (const [file, text] of html) {
  }
 }
 const home = html.get('index.html');
+if (!home.includes('class="hero-v2"') || !home.includes('class="fixed-sky"') || !home.includes('class="player__pill"')) fail.push('Home: missing original sky entrance or player');
 const profile = home.match(/<section\b[^>]*id="profile"[\s\S]*?<\/section>/)?.[0] || '';
 if ((profile.match(/class="chip"/g) || []).length !== 32) fail.push('Profile: expected all 32 original tags');
 if ((profile.match(/role="listitem"/g) || []).length !== 24) fail.push('Profile: expected all 24 original characters');

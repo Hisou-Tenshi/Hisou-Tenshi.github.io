@@ -2,9 +2,9 @@
 (function () {
  'use strict';
  var doc=document, root=doc.documentElement, body=doc.body, page=body.dataset.page||'home';
- var nav=doc.getElementById('nav'), reduced=matchMedia('(prefers-reduced-motion: reduce)');
+ var reduced=matchMedia('(prefers-reduced-motion: reduce)');
  var overlay=doc.getElementById('ritualOverlay'), dialog=doc.getElementById('ritualDialog'), circle=overlay.querySelector('.ritual-circle');
- var edge=doc.getElementById('edgeBullets'), lastFocus=null, inertNodes=[], oraclesPromise=null, projectsPromise=null, drawnOracle=null, drawing=false;
+ var lastFocus=null, inertNodes=[], oraclesPromise=null, projectsPromise=null, drawnOracle=null, drawing=false;
  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
  function json(url){return fetch(url,{credentials:'same-origin'}).then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();});}
  function cookie(n){var m=doc.cookie.match(new RegExp('(?:^|; )'+n+'=([^;]*)'));return m?decodeURIComponent(m[1]):null;}
@@ -14,14 +14,18 @@
  if(auto)auto.addEventListener('click',function(){writeCookie('themeMode','auto');var dark=matchMedia('(prefers-color-scheme: dark)').matches;root.setAttribute('data-theme',dark?'Dark':'Light');if(toggle){toggle.setAttribute('aria-label',dark?'切换到浅色模式':'切换到深色模式');toggle.title=dark?'浅色模式':'深色模式';}syncAuto();});
  if(toggle)toggle.addEventListener('click',syncAuto);syncAuto();
  doc.querySelectorAll('[data-site-year]').forEach(function(el){el.textContent=new Date().getFullYear();});
- // At scrollY=0, the Home header has zero fill and zero backdrop blur.
- if(page==='home'&&nav){var frame=0;var paintNav=function(){frame=0;var hero=doc.getElementById('entrance');var p=Math.min(1,Math.max(0,scrollY/Math.min(500,hero.clientHeight*.55)));nav.style.setProperty('--nav-alpha',(p/3).toFixed(3));nav.style.setProperty('--nav-blur',(p*14).toFixed(1)+'px');body.classList.toggle('at-entrance',p<.3);};addEventListener('scroll',function(){if(!frame)frame=requestAnimationFrame(paintNav);},{passive:true});addEventListener('resize',paintNav);paintNav();}
- function burst(destination){if(page==='home'||!edge||reduced.matches||!nav||!window.ShrineDanmaku)return;var key=destination||page;if(key==='home')return;var navKey=key==='calculator'?'tools':key==='lost'?'home':key;var item=nav.querySelector('[data-nav-page="'+navKey+'"]');if(!item)return;var r=item.getBoundingClientRect();if(!r.width||getComputedStyle(item.parentElement).visibility==='hidden')r=doc.getElementById('burger').getBoundingClientRect();window.ShrineDanmaku.burst(key,{x:r.left+r.width/2,y:nav.getBoundingClientRect().bottom});}
- // A navigation click arms one arrival only; reload, hover, focus and scrolling do not.
- var routes={'/':'home','/about-us/':'about','/tools/':'tools','/sites/':'directory','/download/':'download','/contact-us/':'contact','/changelog/':'chronicle','/privacy-policy/':'privacy','/terms-and-conditions/':'terms','/tools/cellCalculator/':'calculator','/404.html':'lost'};
- function routePath(path){return path.replace(/index\.html$/,'');}
- try{var arrival=JSON.parse(sessionStorage.getItem('shrine-arrival')||'null');sessionStorage.removeItem('shrine-arrival');if(arrival&&arrival.page===page&&arrival.path===routePath(location.pathname)&&Date.now()-arrival.at<30000)setTimeout(function(){burst();},180);}catch(_){}
- doc.addEventListener('click',function(e){if(e.defaultPrevented||e.button!==0||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey)return;var a=e.target.closest('a[href]');if(!a||a.hasAttribute('download')||(a.target&&a.target!=='_self'))return;var url=new URL(a.href,location.href),path=routePath(url.pathname);if(url.origin!==location.origin||!routes[path]||url.hash)return;try{if(routes[path]==='home'){sessionStorage.removeItem('shrine-arrival');return;}sessionStorage.setItem('shrine-arrival',JSON.stringify({page:routes[path],path:path,at:Date.now()}));}catch(_){};});
+ // The fixed mobile fortune button is only visible and focusable at the entrance.
+ var hero=doc.getElementById('entrance');
+ if(page==='home'&&hero){
+  var frame=0;
+  var paintEntrance=function(){
+   frame=0;
+   body.classList.toggle('at-entrance',scrollY<.3*Math.min(500,hero.clientHeight*.55));
+  };
+  addEventListener('scroll',function(){if(!frame)frame=requestAnimationFrame(paintEntrance);},{passive:true});
+  addEventListener('resize',paintEntrance);
+  paintEntrance();
+ }
  function inert(on){if(on){inertNodes=[];Array.from(body.children).forEach(function(el){if(el===overlay||el.tagName==='SCRIPT'||el.tagName==='STYLE')return;inertNodes.push({el:el,had:el.hasAttribute('inert')});el.setAttribute('inert','');});}else{inertNodes.forEach(function(x){if(!x.had)x.el.removeAttribute('inert');});inertNodes=[];}}
  function open(markup,type,label){if(overlay.hidden){lastFocus=doc.activeElement;inert(true);}dialog.innerHTML=markup;dialog.className='ritual-dialog '+(type||'');circle.hidden=type==='plain'||type==='oracle-dialog';overlay.setAttribute('aria-label',label||'神社器物');overlay.hidden=false;overlay.classList.add('opening');body.classList.add('ritual-open');overlay.querySelector('.ritual-close').focus({preventScroll:true});}
  function close(){if(overlay.hidden)return;overlay.hidden=true;overlay.classList.remove('opening');body.classList.remove('ritual-open');inert(false);dialog.innerHTML='';if(lastFocus&&lastFocus.isConnected)lastFocus.focus({preventScroll:true});}
