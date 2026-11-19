@@ -211,10 +211,12 @@
 		var img = $('#tcImg');
 		if (!tc || !img) return;
 		var get = $('#tcGet');
+		var download = $('#tcDownload');
 		var open = function (src, alt, orig) {
 			img.src = src;
 			img.alt = alt || '';
 			if (get) {
+				if (download) download.hidden = !orig;
 				if (orig) {
 					get.href = orig;
 					get.hidden = false;
@@ -231,6 +233,7 @@
 		var close = function () {
 			tc.classList.remove('is-open');
 			img.removeAttribute('src');
+			if (download) download.hidden = true;
 			if (get) {
 				get.hidden = true;
 				get.removeAttribute('href');
@@ -247,7 +250,7 @@
 				);
 				return;
 			}
-			if (tc.classList.contains('is-open')) close();
+			if (tc.classList.contains('is-open') && !(download && download.contains(e.target))) close();
 		});
 		doc.addEventListener('keydown', function (e) {
 			if (e.key === 'Escape' && tc.classList.contains('is-open')) close();

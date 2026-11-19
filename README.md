@@ -9,9 +9,14 @@
 
 ### 开源与法律说明
 
-本站原创软件沿用 [AGPL-3.0](LICENSE)，可依许可证复制、修改、分发和商业使用。分发或提供支持远程网络交互的修改版时，请按许可证提供相应声明及对应源码。字体、角色图片、音乐、御神籤页图和个人文档不因与代码同库而自动采用同一许可；已知来源、独立许可和待补全事项见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+© 2022–2026 緋想天子（GitHub: Hisou-Tenshi），仅限维护者享有权利的原创部分；其他贡献者及权利人保留各自权利。
 
-公开法律页面：[隐私政策](https://tenshi.qzz.io/privacy-policy/) · [服务条款及开源说明](https://tenshi.qzz.io/terms-and-conditions/#open-source)。两页于 2026-11-15 对照浏览器代码与线上响应完成复核，保留原章节锚点，补充 Cloudflare、网络错误报告、直接 GitHub 媒体请求、浏览器会话存储、邮件及下载留存、开源贡献和素材授权边界。
+- **软件**：原创站点软件沿用 [AGPL-3.0](LICENSE)，可依许可复制、修改、分发和商业使用；分发和部署修改版时按许可证保留声明并提供对应源码。
+- **内容**：仅 [CONTENT-LICENSE.md](CONTENT-LICENSE.md) 列出的原创文字及逐项明确标注的原创内容采用 **CC BY-NC-SA 4.0**，不覆盖代码、第三方素材或加密档案。两处加密档案及解密文件由各权利人保留所有权利。字体、角色图片、音乐、御神籤页图和发布附件的已知来源、独立许可和待核实事项见 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+- **非官方同人**：本站部分内容基于上海アリス幻樂団（ZUN）的東方Project，与官方或其他权利人无隶属、赞助或背书关系。参见[东方二创说明](https://tenshi.qzz.io/terms-and-conditions/#touhou)和[官方二创指引](https://touhou-project.news/guideline/)。
+- **下载**：先查文件来源和许可；权利不明时不要下载或复用。仅经权利人许可的临时样本适用个人学习、私下技术交流、非商业、不转发和最迟 24 小时删除的提示，独立许可、授权或法律另有允许的除外。参见[下载声明](https://tenshi.qzz.io/terms-and-conditions/#download-terms)和[侵权/署名反馈](https://tenshi.qzz.io/terms-and-conditions/#feedback)。
+
+公开法律页面（2026-11-19 修订）：[隐私政策](https://tenshi.qzz.io/privacy-policy/) · [服务条款](https://tenshi.qzz.io/terms-and-conditions/)。
 
 ---
 
@@ -26,7 +31,7 @@
 - Download：木箱、封印御札、展开卷轴与直接下载链接；原密码入口、密文与解密逻辑保留。
 - `/sites/`：36 个书签按分类显示，移除「全部」筛选；搜索限定当前分类。无 JavaScript 时通过 noscript 展示所有书签。
 - `/changelog/`：17 条记录（含全部 15 条原记录）存在于 HTML，按蛇腹朱印帐翻页。桌面每折 4 条、平板 2 条、手机 1 条；无 JavaScript 时全部可读。
-- Privacy / Terms：分别为结界文档与规约卷轴；2026-11-15 复核后为 24／25 个章节，保留原章节锚点、目录及打印入口，补充实际数据处理、AGPL 开源与素材授权边界。
+- Privacy / Terms：分别为结界文档与规约卷轴；保留原章节锚点、目录及打印入口，并分别说明数据处理、软件和内容许可、东方二创、下载及侵权处理。
 
 ### 文件分工
 

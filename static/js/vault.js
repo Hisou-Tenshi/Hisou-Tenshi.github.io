@@ -245,6 +245,9 @@
 				link.href = url;
 				link.download = name;
 				link.textContent = '↓ ' + name;
+				if (document.getElementById('sealed-download-notice')) {
+					link.setAttribute('aria-describedby', 'sealed-download-notice');
+				}
 				out.appendChild(link);
 				say(note, '校验通过 · ' + (body.byteLength / 1024).toFixed(0) + ' KB', '');
 			})

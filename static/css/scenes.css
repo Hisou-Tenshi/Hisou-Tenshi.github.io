@@ -201,6 +201,10 @@ body.shrine-site.download-scene{background-color:#272b30}.calculator-scene .kick
 /* Opened and sealed archives share a readable paper palette, including Dark. */
 .shrine-site .vault{--ink:#3d3832;--ink-2:#514b41;--ink-3:#6c6151;--ink-4:#79684f;--line:#b6a07a;--line-2:#ad936850;--line-3:#b59c733b;--card:#fff7e5;--bg:#f3e8cd;--bg-band:#e9ddc1;--accent-deep:#964353;--arc:#964353;--arc-soft:#b45c7320;--pink-deep:#a6384b;padding:0;scroll-margin-top:calc(var(--nav-h) + 24px);color:var(--ink);min-width:0}
 .shrine-site .vault.is-open,.shrine-site .treasury-secure .vault{padding:0}
+.download-legal,.chronicle-licence{font-size:.875rem;line-height:1.65}
+.download-legal{margin-block:0 18px}
+.download-legal a,.chronicle-licence a,.scene-foot p a{color:inherit;text-decoration:underline;text-underline-offset:.15em}
+.chronicle-licence{padding-block:12px;text-align:center}
 .shrine-site .vault__gate{padding:clamp(24px,3.2vw,40px);background:none}
 .shrine-site .vault__lock{border:2px double var(--arc);border-radius:2px;background:none;color:var(--arc);transform:rotate(-5deg);margin-bottom:16px}
 .shrine-site .vault__label{color:var(--arc);font-size:10px;letter-spacing:.14em}

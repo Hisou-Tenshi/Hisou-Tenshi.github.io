@@ -1243,11 +1243,32 @@ html.term-view-lock body {
 	transform: none;
 }
 
-.tc__get {
+.tc__download {
 	position: absolute;
 	bottom: clamp(16px, 3vh, 34px);
-	left: 50%;
-	transform: translate(-50%, 8px);
+	inset-inline: 12px;
+	justify-self: center;
+	width: fit-content;
+	max-width: calc(100% - 24px);
+	padding: 10px 14px;
+	border-radius: 8px;
+	background: #17171a;
+	color: #fff;
+	text-align: center;
+}
+
+.tc__download p {
+	margin: 0 0 8px;
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+.tc__download p a {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.tc__get {
 	display: inline-flex;
 	align-items: center;
 	gap: 7px;
@@ -1264,14 +1285,13 @@ html.term-view-lock body {
 	text-decoration: none;
 	opacity: 0;
 	pointer-events: none;
-	transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease),
+	transition: opacity var(--t-med) var(--ease),
 		background var(--t-fast) var(--ease);
 }
 
 .tc.is-open .tc__get {
 	opacity: 1;
 	pointer-events: auto;
-	transform: translate(-50%, 0);
 }
 
 .tc__get:hover {

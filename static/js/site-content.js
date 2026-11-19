@@ -12,8 +12,7 @@ window.SITE_CONTENT = {
     footer: {
         startYear: 2022,
         author: 'GitHub@Hisou-Tenshi',
-        authorUrl: 'https://github.com/Hisou-Tenshi',
-        rights: 'All rights reserved.'
+        authorUrl: 'https://github.com/Hisou-Tenshi'
     },
 
     titlePairs: [

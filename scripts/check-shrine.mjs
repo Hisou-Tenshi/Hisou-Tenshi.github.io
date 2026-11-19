@@ -35,6 +35,8 @@ for (const [file, text] of html) {
  if ((text.match(/<h1\b/g) || []).length !== 1) fail.push(`${file}: expected one h1`);
  if (!text.includes('id="themeAutoBtn"') || !text.includes('/static/js/shrine.js')) fail.push(`${file}: missing shared interactions`);
  if (!text.includes('/static/css/shrine-details.css')) fail.push(`${file}: missing shared shrine navigation styles`);
+ const footer = text.match(/<footer class="scene-foot wrap">[\s\S]*?<\/footer>/)?.[0] || '';
+ if (!['#touhou', '#copyright'].every(anchor => footer.includes(`/terms-and-conditions/${anchor}`))) fail.push(`${file}: missing fan-work or copyright notice in footer`);
  if (/edgeBullets|\/static\/(?:js\/danmaku\.js|img\/shrine\/danmaku\/)/.test(text)) fail.push(`${file}: retired navigation animation is still wired up`);
  if (/\/static\/(?:css|js)\/lily-cursor\./.test(text)) fail.push(`${file}: retired cursor override is still wired up`);
 }
@@ -49,6 +51,11 @@ for (const [file, text] of html) {
  }
 }
 const home = html.get('index.html');
+const download = html.get('download/index.html');
+const publicNotice = download.indexOf('id="public-download-notice"');
+const sealedNotice = download.indexOf('id="sealed-download-notice"');
+if (publicNotice < 0 || publicNotice > download.indexOf('class="scroll-direct"') || sealedNotice < 0 || sealedNotice > download.indexOf('data-vault-src')) fail.push('Download: show notices before the direct links and vault');
+if (!home.includes('aria-describedby="tcDownloadNotice"')) fail.push('Home: original-image link must identify its download notice');
 if (!home.includes('class="hero-v2"') || !home.includes('class="fixed-sky"') || !home.includes('class="player__pill"')) fail.push('Home: missing original sky entrance or player');
 const profile = home.match(/<section\b[^>]*id="profile"[\s\S]*?<\/section>/)?.[0] || '';
 if ((profile.match(/class="chip"/g) || []).length !== 32) fail.push('Profile: expected all 32 original tags');
